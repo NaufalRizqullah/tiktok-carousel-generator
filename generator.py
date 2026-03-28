@@ -25,8 +25,8 @@ INI_CANVAS_WIDTH = 1080
 INI_CANVAS_HEIGHT = 1920
 
 # Ukuran font default
-INI_TITLE_FONT_SIZE = 85
-INI_CONTENT_FONT_SIZE = 68
+INI_TITLE_FONT_SIZE = 80
+INI_CONTENT_FONT_SIZE = 65
 
 # Auto shrink font
 INI_AUTO_SHRINK_TEXT = False
@@ -182,7 +182,7 @@ class TikTokCarouselGenerator:
 
         raise RuntimeError(f"Gagal memanggil Gemini. Error terakhir: {last_exc}") from last_exc
 
-    def generate_carousel_content(self, topic, num_slides):
+    def generate_carousel_content(self, topic, num_slides, style="outline"):
         if not self.gemini_key:
             raise ValueError("GOOGLE_API_KEY tidak ditemukan. Set di .env atau parameter.")
 
@@ -210,51 +210,71 @@ class TikTokCarouselGenerator:
             </context_history>
             """
 
+        if style == "box-title-content":
+            format_wajib = f"""
+        Format wajib:
+        {{
+            "tiktok_title": "Judul Postingan Catchy",
+            "tiktok_description": "Deskripsi/caption singkat dan menarik.",
+            "tiktok_tags": ["tag1", "tag2", "tag3"],
+            "slides": [
+                {{"type": "judul", "teks": "Judul cover TikTok", "keyword_gambar": "keyword pexels"}},
+                {{"type": "konten", "slide_title": "1. JUDUL PENDEK", "teks": "Dulu aku kira begini...\\n\\nTernyata eh ternyata begitu...\\n\\nSekarang jadi beda banget.", "keyword_gambar": "keyword pexels"}}
+            ]
+        }}
+        
+        Aturan khusus teks (PENTING):
+        - WAJIB tambahkan field "slide_title" yang SUPER SINGKAT dan HURUF KAPITAL (UPPERCASE) pada slide konten.
+        - Teks "teks" HARUS bercerita pengalaman pribadi secara natural (gunakan "aku", "ternyata", "dulu", dll), JANGAN KAKU/FORMAL/MENGGURUI.
+        - Pisahkan kalimat demi kalimat dalam field "teks" dengan dua kali enter (\\n\\n) langsung di JSON sebagai pemisah alinea/paragraf.
+            """
+        else:
+            format_wajib = f"""
+        Format wajib:
+        {{
+            "tiktok_title": "Judul Postingan Catchy",
+            "tiktok_description": "Deskripsi/caption singkat dan menarik.",
+            "tiktok_tags": ["tag1", "tag2", "tag3"],
+            "slides": [
+                {{"type": "judul", "teks": "Judul singkat", "keyword_gambar": "keyword pexels"}},
+                {{"type": "konten", "teks": "Isi slide 1", "keyword_gambar": "keyword pexels"}}
+            ]
+        }}
+            """
+            if INI_POINTS_ONLY_TEXT:
+                format_wajib += f"""
+        Aturan khusus teks slide:
+        - Isi teks slide harus POINT SINGKAT saja.
+        - Setiap konten hanya boleh berisi 1 poin utama.
+        - Maksimal {INI_MAX_WORDS_PER_SLIDE} kata per slide.
+        - Gunakan bahasa Indonesia singkat, tajam, dan enak dibaca.
+                """
+            else:
+                format_wajib += f"""
+        Aturan khusus teks:
+        - Teks harus memuat fakta/data, jelas, dan padat.
+                """
+
         base_rules = f"""
         Kamu adalah pembuat konten TikTok profesional.
 
         Tugas:
-        1. Gunakan Google Search untuk mencari fakta, data, atau tren terbaru tentang "{topic}".
-        2. Kembalikan HANYA JSON valid berbentuk OBJECT, bukan array langsung.
-        3. Buatkan juga judul catchy, deskripsi untuk caption, dan 3 hashtag.
-        4. Jangan pakai markdown, jangan pakai ```json, jangan beri kalimat tambahan.
+        1. Gunakan Google Search untuk riset {topic}.
+        2. Kembalikan JSON (OBJECT) tanpa markdown ```json.
+        3. Buatkan judul, deskripsi, hashtag.
 
         {context_instruction}
 
-        Format wajib:
-        {{
-            "tiktok_title": "Judul Postingan Catchy",
-            "tiktok_description": "Deskripsi/caption singkat dan menarik yang memancing interaksi.",
-            "tiktok_tags": ["tag1", "tag2", "tag3"],
-            "slides": [
-                {{"type": "judul", "teks": "Judul singkat di gambar", "keyword_gambar": "keyword pexels"}},
-                {{"type": "konten", "teks": "Isi slide 1", "keyword_gambar": "keyword pexels"}}
-            ]
-        }}
+        {format_wajib}
 
         Aturan output umum:
-        - keyword_gambar harus Bahasa Inggris, maksimal 2 kata
-        - slide array: Total item {num_slides + 1} (1 judul, {num_slides} konten)
+        - keyword_gambar harus Bahasa Inggris
+        - total slide = {num_slides + 1}
+        - JANGAN PERNAH memberikan emoji di dalam "teks", "slide_title", "judul" agar gambar tidak error kotak-kotak.
         """
 
-        if INI_POINTS_ONLY_TEXT:
-            prompt = base_rules + f"""
-            Aturan khusus teks slide:
-            - Isi teks slide harus berupa POINT SINGKAT saja, bukan paragraf.
-            - Setiap slide konten hanya boleh berisi 1 poin utama.
-            - Maksimal {INI_MAX_WORDS_PER_SLIDE} kata per slide konten.
-            - Gunakan bahasa Indonesia yang singkat, tajam, dan enak dibaca di gambar.
-            - Hindari tanda baca berlebihan.
-            """
-        else:
-            prompt = base_rules + f"""
-            Aturan khusus teks slide:
-            - Teks konten harus memuat fakta/data terbaru.
-            - Boleh memakai kalimat yang agak panjang, tapi tetap padat dan jelas.
-            """
-
         print(f"🧠 Meminta Gemini riset & membuat konten + metadata untuk topik: '{topic}'...")
-        return self._generate_json_with_retry(client, prompt)
+        return self._generate_json_with_retry(client, base_rules)
 
     # ==========================================
     # MODUL 2: IMAGE SOURCING (PEXELS)
@@ -343,7 +363,7 @@ class TikTokCarouselGenerator:
     def _calculate_text_layout(self, draw, text, font_size, style):
         font = self._load_font(font_size)
 
-        if style == "box":
+        if style in ("box", "box-title-content"):
             max_text_width = INI_CANVAS_WIDTH - (INI_TEXT_SIDE_MARGIN * 2) - (INI_BOX_PADDING_X * 2)
         else:
             max_text_width = INI_CANVAS_WIDTH - (INI_TEXT_SIDE_MARGIN * 2)
@@ -361,7 +381,7 @@ class TikTokCarouselGenerator:
         t_width = bbox[2] - bbox[0]
         t_height = bbox[3] - bbox[1]
 
-        if style == "box":
+        if style in ("box", "box-title-content"):
             final_height = t_height + (INI_BOX_PADDING_Y * 2)
         else:
             final_height = t_height
@@ -391,7 +411,7 @@ class TikTokCarouselGenerator:
 
         return current_size, best_layout
 
-    def process_slide_image(self, img, text, font_size, style):
+    def process_slide_image(self, img, text, font_size, style, title_text=""):
         target_size = (INI_CANVAS_WIDTH, INI_CANVAS_HEIGHT)
         img_ratio = img.width / img.height
         target_ratio = target_size[0] / target_size[1]
@@ -409,6 +429,78 @@ class TikTokCarouselGenerator:
 
         img = img.convert("RGBA")
         draw = ImageDraw.Draw(img)
+
+        if style == "box-title-content" and title_text:
+            title_text = title_text.upper()
+            title_font = self._load_font(font_size + 5)
+            c_font = self._load_font(font_size)
+            max_p_width = INI_CANVAS_WIDTH - (INI_TEXT_SIDE_MARGIN * 2) - (INI_BOX_PADDING_X * 2)
+            
+            paragraphs = [p.strip() for p in text.split("\n") if p.strip()]
+            
+            # Wrap titlenya juga agar kalau kepanjangan bisa turun ke bawah
+            wrapped_title = self._wrap_text_by_pixel_width(draw, title_text, title_font, max_p_width)
+            
+            # 1. Hitung total tinggi
+            t_bbox = draw.multiline_textbbox((0, 0), wrapped_title, font=title_font, align="center", spacing=INI_TEXT_LINE_SPACING)
+            tt_w = t_bbox[2] - t_bbox[0]
+            tt_h = t_bbox[3] - t_bbox[1]
+            title_box_h = tt_h + (INI_BOX_PADDING_Y * 2)
+            
+            total_h = title_box_h
+            SPACING_TITLE_CONTENT = 60
+            SPACING_PARAGRAPHS = 25
+            
+            total_h += SPACING_TITLE_CONTENT
+            
+            wrapped_paragraphs = []
+            for p in paragraphs:
+                wp = self._wrap_text_by_pixel_width(draw, p, c_font, max_p_width)
+                p_bbox = draw.multiline_textbbox((0, 0), wp, font=c_font, spacing=INI_TEXT_LINE_SPACING)
+                pw = p_bbox[2] - p_bbox[0]
+                ph = p_bbox[3] - p_bbox[1]
+                wrapped_paragraphs.append((wp, pw, ph))
+                total_h += ph + (INI_BOX_PADDING_Y * 2) + SPACING_PARAGRAPHS
+                
+            if paragraphs:
+                total_h -= SPACING_PARAGRAPHS
+                
+            start_y = (img.height - total_h) / 2
+            
+            # 2. Gambar block judul
+            t_x = (img.width - tt_w) / 2
+            t_y = start_y + INI_BOX_PADDING_Y
+            
+            title_box_left = t_x - INI_BOX_PADDING_X
+            title_box_top = start_y
+            title_box_right = t_x + tt_w + INI_BOX_PADDING_X
+            title_box_bottom = start_y + title_box_h
+            
+            draw.rounded_rectangle(
+                [title_box_left, title_box_top, title_box_right, title_box_bottom],
+                radius=INI_BOX_RADIUS,
+                fill=INI_BOX_FILL
+            )
+            draw.multiline_text((t_x, t_y), wrapped_title, font=title_font, fill=INI_BOX_TEXT_FILL, align="center", spacing=INI_TEXT_LINE_SPACING)
+            
+            content_y = title_box_bottom + SPACING_TITLE_CONTENT
+            
+            # 3. Gambar block konten
+            for wp, pw, ph in wrapped_paragraphs:
+                px = INI_TEXT_SIDE_MARGIN + INI_BOX_PADDING_X
+                py = content_y + INI_BOX_PADDING_Y
+                
+                b_left = px - INI_BOX_PADDING_X
+                b_top = content_y
+                b_right = px + max(pw, 10) + INI_BOX_PADDING_X
+                b_bottom = content_y + ph + (INI_BOX_PADDING_Y * 2)
+                
+                draw.rounded_rectangle([b_left, b_top, b_right, b_bottom], radius=INI_BOX_RADIUS, fill=INI_BOX_FILL)
+                draw.multiline_text((px, py), wp, font=c_font, fill=INI_BOX_TEXT_FILL, align="left", spacing=INI_TEXT_LINE_SPACING)
+                
+                content_y = b_bottom + SPACING_PARAGRAPHS
+                
+            return img.convert("RGB")
 
         final_font_size, layout = self._get_best_fitting_layout(draw, text, font_size, style)
         font = layout["font"]
@@ -432,7 +524,7 @@ class TikTokCarouselGenerator:
                 stroke_fill=INI_OUTLINE_STROKE_FILL
             )
 
-        elif style == "box":
+        elif style in ("box", "box-title-content"):
             box_left = x_pos - INI_BOX_PADDING_X
             box_top = y_pos - INI_BOX_PADDING_Y
             box_right = x_pos + t_width + INI_BOX_PADDING_X
@@ -465,7 +557,7 @@ class TikTokCarouselGenerator:
 
         try:
             # 1. Dapatkan JSON yang sekarang berisi Metadata + Slides
-            full_data = self.generate_carousel_content(topic, num_slides)
+            full_data = self.generate_carousel_content(topic, num_slides, style)
 
             # 2. Ekstraksi data
             tiktok_title = full_data.get("tiktok_title", "Tanpa Judul")
@@ -506,9 +598,14 @@ class TikTokCarouselGenerator:
 
                 slide_text = slide.get("teks", "")
                 slide_text = slide_text.replace(". ", ".\n\n")
+                slide_title = slide.get("slide_title", "")
+
+                # Bersihkan emoji atau simbol non-huruf dasar dari teks yang akan di-render agar tidak menjadi kotak file missing
+                slide_text = re.sub(r'[^\u0000-\uFFFF]', '', slide_text)
+                slide_title = re.sub(r'[^\u0000-\uFFFF]', '', slide_title)
 
                 raw_img = self.get_pexels_image(slide.get("keyword_gambar", "background"))
-                final_img = self.process_slide_image(raw_img, slide_text, font_size, style)
+                final_img = self.process_slide_image(raw_img, slide_text, font_size, style, slide_title)
 
                 filename = os.path.join(self.output_dir, f"slide_{i:02d}.jpg")
                 final_img.save(filename, quality=INI_JPG_QUALITY)

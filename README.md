@@ -13,9 +13,10 @@ Mempermudah *Content Creator* dan *Affiliate Marketer* dalam memproduksi konten 
 3. **🎨 Smart Image Processing (Pillow):** - Otomatis *crop* dan *resize* gambar ke rasio 9:16 (1080x1920).
    - Menambahkan *overlay* teks presisi di tengah layar.
    - **Auto-shrink Text:** Ukuran font akan otomatis mengecil jika teks terlalu panjang agar tidak keluar batas layar.
-4. **💅 Dua Gaya Visual Teks TikTok:**
+4. **💅 Tiga Gaya Visual Teks TikTok:**
    - `outline`: Teks putih tebal dengan garis luar (*stroke*) hitam pekat (Gaya klasik TikTok).
    - `box`: Teks putih di dalam kotak transparan bersudut melengkung (*Rounded Rectangle*).
+   - `box-title-content`: Teks bergaya cerita (personal) dengan judul *uppercase* di kotak terpisah pada posisi atas, serta isi tulisan yang dipecah per baris menjadi kotak-kotak melayang.
 5. **🧠 Smart Context Memory (Multi-part Series):** Otomatis menyimpan histori *generate* ke dalam `context.txt`. Jika kamu membuat "Part 2", AI akan membaca file ini dan **tidak akan mengulangi** poin yang sama dari "Part 1".
 6. **📦 Auto-Metadata Generation:** Menghasilkan file `metadata.json` yang berisi Judul Catchy, Deskripsi/Caption, dan Hashtag yang siap di-*copy-paste* saat *upload*.
 7. **🅰️ Auto-Download Font:** Tidak punya font *bold*? Sistem akan otomatis mengunduh font **Montserrat-Black** jika file font tidak ditemukan di komputermu.
@@ -94,7 +95,7 @@ python main.py -t "Ide Usaha Modal Kecil part 2" -o "usaha_p2"
 | :--- | :--- | :--- | :--- |
 | `-t` | `--topic` | **(Wajib)** Topik pembahasan untuk di-generate AI | *None* |
 | `-s` | `--slides` | Jumlah slide konten (tidak termasuk slide judul) | `5` |
-| `--style` | `--style` | Gaya visual teks (`outline` atau `box`) | `outline` |
+| `--style` | `--style` | Gaya visual teks (`outline`, `box`, atau `box-title-content`) | `outline` |
 | `--font` | `--font` | Path ke file custom font (`.ttf`) | `font.ttf` |
 | `-o` | `--output` | Nama folder tempat hasil gambar dan metadata disimpan | `output` |
 

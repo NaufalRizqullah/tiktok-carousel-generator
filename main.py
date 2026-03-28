@@ -13,7 +13,7 @@ def main():
     parser = argparse.ArgumentParser(description="TikTok Carousel Image Generator")
     parser.add_argument("-t", "--topic", type=str, required=True, help="Topik pembahasan untuk di-generate AI")
     parser.add_argument("-s", "--slides", type=int, default=5, help="Jumlah slide konten (default: 5)")
-    parser.add_argument("--style", type=str, choices=['outline', 'box'], default="outline", help="Gaya teks (outline/box)")
+    parser.add_argument("--style", type=str, choices=['outline', 'box', 'box-title-content'], default="outline", help="Gaya teks (outline/box/box-title-content)")
     parser.add_argument("--font", type=str, default="font.ttf", help="Path ke file font (default: font.ttf)")
     parser.add_argument("-o", "--output", type=str, default="output", help="Nama folder output (default: output)")
 
