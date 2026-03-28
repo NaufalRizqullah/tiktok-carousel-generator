@@ -32,7 +32,7 @@ Berikut adalah contoh gambar yang dihasilkan oleh sistem ini:
 
 ---
 
-## �🛠️ Persiapan & Instalasi
+## 🛠️ Persiapan & Instalasi
 
 **1. Clone Repositori & Masuk ke Folder**
 ```bash
