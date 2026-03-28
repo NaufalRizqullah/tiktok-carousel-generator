@@ -22,7 +22,16 @@ Mempermudah *Content Creator* dan *Affiliate Marketer* dalam memproduksi konten 
 
 ---
 
-## 🛠️ Persiapan & Instalasi
+## 📸 Contoh Hasil
+Berikut adalah contoh gambar yang dihasilkan oleh sistem ini:
+
+| Judul (Slide 00) | Konten (Slide 01) | Konten (Slide 02) |
+| :---: | :---: | :---: |
+| ![Slide 00](src/images/slide_00.jpg) | ![Slide 01](src/images/slide_01.jpg) | ![Slide 02](src/images/slide_02.jpg) |
+
+---
+
+## �🛠️ Persiapan & Instalasi
 
 **1. Clone Repositori & Masuk ke Folder**
 ```bash
