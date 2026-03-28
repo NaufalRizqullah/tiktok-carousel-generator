@@ -10,3 +10,6 @@ wheels/
 .venv
 
 .env
+
+# Output
+output/
