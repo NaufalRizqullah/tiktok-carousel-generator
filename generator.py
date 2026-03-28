@@ -41,7 +41,7 @@ INI_TEXT_SIDE_MARGIN = 40
 
 # Jarak dalam box putih
 INI_BOX_PADDING_X = 40
-INI_BOX_PADDING_Y = 20
+INI_BOX_PADDING_Y = 40
 
 # Radius sudut box
 INI_BOX_RADIUS = 20
