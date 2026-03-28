@@ -315,26 +315,30 @@ class TikTokCarouselGenerator:
             return ImageFont.load_default()
 
     def _wrap_text_by_pixel_width(self, draw, text, font, max_width):
-        words = text.split()
-        if not words:
-            return ""
+        paragraphs = text.split("\n")
+        final_lines = []
 
-        lines = []
-        current_line = words[0]
+        for paragraph in paragraphs:
+            words = paragraph.split()
+            if not words:
+                final_lines.append("")
+                continue
 
-        for word in words[1:]:
-            candidate = f"{current_line} {word}"
-            bbox = draw.textbbox((0, 0), candidate, font=font)
-            candidate_width = bbox[2] - bbox[0]
+            current_line = words[0]
+            for word in words[1:]:
+                candidate = f"{current_line} {word}"
+                bbox = draw.textbbox((0, 0), candidate, font=font)
+                candidate_width = bbox[2] - bbox[0]
 
-            if candidate_width <= max_width:
-                current_line = candidate
-            else:
-                lines.append(current_line)
-                current_line = word
+                if candidate_width <= max_width:
+                    current_line = candidate
+                else:
+                    final_lines.append(current_line)
+                    current_line = word
 
-        lines.append(current_line)
-        return "\n".join(lines)
+            final_lines.append(current_line)
+
+        return "\n".join(final_lines)
 
     def _calculate_text_layout(self, draw, text, font_size, style):
         font = self._load_font(font_size)
@@ -500,8 +504,11 @@ class TikTokCarouselGenerator:
 
                 font_size = INI_TITLE_FONT_SIZE if slide.get("type") == "judul" else INI_CONTENT_FONT_SIZE
 
+                slide_text = slide.get("teks", "")
+                slide_text = slide_text.replace(". ", ".\n\n")
+
                 raw_img = self.get_pexels_image(slide.get("keyword_gambar", "background"))
-                final_img = self.process_slide_image(raw_img, slide.get("teks", ""), font_size, style)
+                final_img = self.process_slide_image(raw_img, slide_text, font_size, style)
 
                 filename = os.path.join(self.output_dir, f"slide_{i:02d}.jpg")
                 final_img.save(filename, quality=INI_JPG_QUALITY)
