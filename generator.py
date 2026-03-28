@@ -30,21 +30,21 @@ INI_CONTENT_FONT_SIZE = 65
 
 # Auto shrink font
 INI_AUTO_SHRINK_TEXT = False
-INI_AUTO_SHRINK_MIN_FONT_SIZE = 42
+INI_AUTO_SHRINK_MIN_FONT_SIZE = 45
 INI_AUTO_SHRINK_STEP = 2
 
 # Area aman atas/bawah agar box tidak terlalu mentok ke tepi
-INI_SAFE_TOP_BOTTOM_MARGIN = 180
+INI_SAFE_TOP_BOTTOM_MARGIN = 140
 
 # Jarak teks dari tepi kiri/kanan gambar
-INI_TEXT_SIDE_MARGIN = 80
+INI_TEXT_SIDE_MARGIN = 40
 
 # Jarak dalam box putih
-INI_BOX_PADDING_X = 55
-INI_BOX_PADDING_Y = 35
+INI_BOX_PADDING_X = 40
+INI_BOX_PADDING_Y = 20
 
 # Radius sudut box
-INI_BOX_RADIUS = 28
+INI_BOX_RADIUS = 20
 
 # Warna style box
 INI_BOX_FILL = (255, 255, 255, 235)   # putih
@@ -66,7 +66,7 @@ INI_JPG_QUALITY = 95
 
 # Gemini Point text image
 INI_POINTS_ONLY_TEXT = True
-INI_MAX_WORDS_PER_SLIDE = 30
+INI_MAX_WORDS_PER_SLIDE = 25
 
 
 class TikTokCarouselGenerator:
@@ -270,7 +270,7 @@ class TikTokCarouselGenerator:
         Aturan output umum:
         - keyword_gambar harus Bahasa Inggris
         - total slide = {num_slides + 1}
-        - JANGAN PERNAH memberikan emoji di dalam "teks", "slide_title", "judul" agar gambar tidak error kotak-kotak.
+        - JANGAN PERNAH memberikan emoji di dalam "teks", "slide_title", "judul" agar gambar tidak error kotak-kotak. Kamu sangat disarankan menggunakan banyak emoji memikat pada "tiktok_title" dan "tiktok_description".
         """
 
         print(f"🧠 Meminta Gemini riset & membuat konten + metadata untuk topik: '{topic}'...")
