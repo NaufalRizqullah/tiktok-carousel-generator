@@ -392,6 +392,8 @@ class TikTokCarouselGenerator:
             "text_width": t_width,
             "text_height": t_height,
             "block_height": final_height,
+            "offset_x": bbox[0],
+            "offset_y": bbox[1],
         }
 
     def _get_best_fitting_layout(self, draw, text, initial_font_size, style):
@@ -445,6 +447,8 @@ class TikTokCarouselGenerator:
             t_bbox = draw.multiline_textbbox((0, 0), wrapped_title, font=title_font, align="center", spacing=INI_TEXT_LINE_SPACING)
             tt_w = t_bbox[2] - t_bbox[0]
             tt_h = t_bbox[3] - t_bbox[1]
+            title_offset_x = t_bbox[0]
+            title_offset_y = t_bbox[1]
             title_box_h = tt_h + (INI_BOX_PADDING_Y * 2)
             
             total_h = title_box_h
@@ -459,7 +463,7 @@ class TikTokCarouselGenerator:
                 p_bbox = draw.multiline_textbbox((0, 0), wp, font=c_font, spacing=INI_TEXT_LINE_SPACING)
                 pw = p_bbox[2] - p_bbox[0]
                 ph = p_bbox[3] - p_bbox[1]
-                wrapped_paragraphs.append((wp, pw, ph))
+                wrapped_paragraphs.append((wp, pw, ph, p_bbox[0], p_bbox[1]))
                 total_h += ph + (INI_BOX_PADDING_Y * 2) + SPACING_PARAGRAPHS
                 
             if paragraphs:
@@ -481,12 +485,12 @@ class TikTokCarouselGenerator:
                 radius=INI_BOX_RADIUS,
                 fill=INI_BOX_FILL
             )
-            draw.multiline_text((t_x, t_y), wrapped_title, font=title_font, fill=INI_BOX_TEXT_FILL, align="center", spacing=INI_TEXT_LINE_SPACING)
+            draw.multiline_text((t_x - title_offset_x, t_y - title_offset_y), wrapped_title, font=title_font, fill=INI_BOX_TEXT_FILL, align="center", spacing=INI_TEXT_LINE_SPACING)
             
             content_y = title_box_bottom + SPACING_TITLE_CONTENT
             
             # 3. Gambar block konten
-            for wp, pw, ph in wrapped_paragraphs:
+            for wp, pw, ph, p_offset_x, p_offset_y in wrapped_paragraphs:
                 px = INI_TEXT_SIDE_MARGIN + INI_BOX_PADDING_X
                 py = content_y + INI_BOX_PADDING_Y
                 
@@ -496,7 +500,7 @@ class TikTokCarouselGenerator:
                 b_bottom = content_y + ph + (INI_BOX_PADDING_Y * 2)
                 
                 draw.rounded_rectangle([b_left, b_top, b_right, b_bottom], radius=INI_BOX_RADIUS, fill=INI_BOX_FILL)
-                draw.multiline_text((px, py), wp, font=c_font, fill=INI_BOX_TEXT_FILL, align="left", spacing=INI_TEXT_LINE_SPACING)
+                draw.multiline_text((px - p_offset_x, py - p_offset_y), wp, font=c_font, fill=INI_BOX_TEXT_FILL, align="left", spacing=INI_TEXT_LINE_SPACING)
                 
                 content_y = b_bottom + SPACING_PARAGRAPHS
                 
@@ -507,6 +511,8 @@ class TikTokCarouselGenerator:
         wrapped_text = layout["wrapped_text"]
         t_width = layout["text_width"]
         t_height = layout["text_height"]
+        t_offset_x = layout["offset_x"]
+        t_offset_y = layout["offset_y"]
 
         x_pos = (img.width - t_width) / 2
         y_pos = ((img.height - t_height) / 2) + INI_TEXT_VERTICAL_OFFSET
@@ -514,7 +520,7 @@ class TikTokCarouselGenerator:
         if style == "outline":
             stroke_width = max(2, int(final_font_size * INI_OUTLINE_STROKE_RATIO))
             draw.multiline_text(
-                (x_pos, y_pos),
+                (x_pos - t_offset_x, y_pos - t_offset_y),
                 wrapped_text,
                 font=font,
                 fill=INI_OUTLINE_TEXT_FILL,
@@ -537,7 +543,7 @@ class TikTokCarouselGenerator:
             )
 
             draw.multiline_text(
-                (x_pos, y_pos),
+                (x_pos - t_offset_x, y_pos - t_offset_y),
                 wrapped_text,
                 font=font,
                 fill=INI_BOX_TEXT_FILL,
