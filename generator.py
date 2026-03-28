@@ -12,11 +12,13 @@ from PIL import Image, ImageDraw, ImageFont
 from google import genai
 from google.genai import types
 
-
 # =========================================================
 # INI_VARIABLE
 # Semua yang sering di-custom saya taruh di sini
 # =========================================================
+
+# File untuk menyimpan memori/konteks agar tidak mengulang poin di Part selanjutnya
+INI_CONTEXT_FILE = "context.txt"
 
 # Ukuran canvas output
 INI_CANVAS_WIDTH = 1080
@@ -27,8 +29,6 @@ INI_TITLE_FONT_SIZE = 85
 INI_CONTENT_FONT_SIZE = 68
 
 # Auto shrink font
-# True  = font akan mengecil otomatis kalau teks kepanjangan
-# False = pakai ukuran font default di atas apa adanya
 INI_AUTO_SHRINK_TEXT = False
 INI_AUTO_SHRINK_MIN_FONT_SIZE = 42
 INI_AUTO_SHRINK_STEP = 2
@@ -80,7 +80,6 @@ class TikTokCarouselGenerator:
         self.used_pexels_ids = set()
 
         # Gemini Config
-        # self.MODEL = "gemini-3-flash-preview"
         self.MODEL = "gemini-2.5-flash"
         self.MAX_ATTEMPTS = 10
         self.INITIAL_WAIT_SECONDS = 60
@@ -89,7 +88,7 @@ class TikTokCarouselGenerator:
         self.RETRYABLE_STATUS_CODES = {408, 429, 500, 502, 503, 504}
 
     # ==========================================
-    # UTILITY: DOWNLOAD FONT
+    # UTILITY: DOWNLOAD FONT & CONTEXT
     # ==========================================
     def _download_font_if_missing(self):
         """Mengecek dan mendownload font default jika belum ada di lokal."""
@@ -105,6 +104,22 @@ class TikTokCarouselGenerator:
             except Exception as e:
                 print(f"⚠️ Gagal mengunduh font: {e}")
                 print("⚠️ Akan menggunakan font default sistem (tampilan mungkin kurang maksimal).")
+
+    def _read_context(self):
+        """Membaca file context history jika ada."""
+        if os.path.exists(INI_CONTEXT_FILE):
+            with open(INI_CONTEXT_FILE, "r", encoding="utf-8") as f:
+                return f.read().strip()
+        return ""
+
+    def _append_context(self, topic, slides):
+        """Menyimpan poin-poin yang baru di-generate ke file context."""
+        with open(INI_CONTEXT_FILE, "a", encoding="utf-8") as f:
+            f.write(f"\n[TOPIK: {topic}]\n")
+            for slide in slides:
+                if slide.get("type") == "konten":
+                    teks = slide.get("teks", "").replace("\n", " ")
+                    f.write(f"- {teks}\n")
 
     # ==========================================
     # MODUL 1: AI CONTENT GENERATOR (GEMINI)
@@ -127,12 +142,8 @@ class TikTokCarouselGenerator:
             return True
         msg = str(exc).lower()
         transient_keywords = (
-            "timeout",
-            "temporarily unavailable",
-            "deadline",
-            "connection reset",
-            "connection aborted",
-            "service unavailable",
+            "timeout", "temporarily unavailable", "deadline", "connection reset",
+            "connection aborted", "service unavailable",
         )
         return any(k in msg for k in transient_keywords)
 
@@ -183,56 +194,66 @@ class TikTokCarouselGenerator:
             ),
         )
 
-        if INI_POINTS_ONLY_TEXT:
-            prompt = f"""
-            Kamu adalah pembuat konten TikTok profesional.
+        # Cek apakah ada context dari part sebelumnya
+        previous_context = self._read_context()
+        context_instruction = ""
+        if previous_context:
+            print(f"📚 Ditemukan {INI_CONTEXT_FILE}! Mengingatkan AI agar tidak mengulang poin lama...")
+            context_instruction = f"""
+            PENTING (CONTEXT HISTORY):
+            Berikut adalah poin-poin yang SUDAH DIBAHAS pada part/generasi sebelumnya.
+            Kamu DILARANG KERAS mengulangi poin, fakta, atau ide yang ada di bawah ini.
+            Berikan poin/fakta yang sepenuhnya BARU untuk topik ini.
+            
+            <context_history>
+            {previous_context}
+            </context_history>
+            """
 
-            Tugas:
-            1. Gunakan Google Search untuk mencari fakta, data, atau tren terbaru tentang "{topic}".
-            2. Kembalikan HANYA JSON valid.
-            3. Isi teks slide harus berupa POINT SINGKAT saja, bukan paragraf.
-            4. Setiap slide konten hanya boleh berisi 1 poin utama.
-            5. Maksimal {INI_MAX_WORDS_PER_SLIDE} kata per slide konten.
-            6. Gunakan bahasa Indonesia yang singkat, tajam, dan enak dibaca di gambar.
-            7. Jangan pakai penjelasan panjang.
-            8. Jangan pakai markdown, jangan pakai ```json, jangan beri kalimat tambahan.
+        base_rules = f"""
+        Kamu adalah pembuat konten TikTok profesional.
 
-            Format wajib:
-            [
-            {{"type": "judul", "teks": "Judul singkat dan menarik", "keyword_gambar": "keyword pexels"}},
-            {{"type": "konten", "teks": "Poin singkat slide 1", "keyword_gambar": "keyword pexels"}}
+        Tugas:
+        1. Gunakan Google Search untuk mencari fakta, data, atau tren terbaru tentang "{topic}".
+        2. Kembalikan HANYA JSON valid berbentuk OBJECT, bukan array langsung.
+        3. Buatkan juga judul catchy, deskripsi untuk caption, dan 3 hashtag.
+        4. Jangan pakai markdown, jangan pakai ```json, jangan beri kalimat tambahan.
+
+        {context_instruction}
+
+        Format wajib:
+        {{
+            "tiktok_title": "Judul Postingan Catchy",
+            "tiktok_description": "Deskripsi/caption singkat dan menarik yang memancing interaksi.",
+            "tiktok_tags": ["tag1", "tag2", "tag3"],
+            "slides": [
+                {{"type": "judul", "teks": "Judul singkat di gambar", "keyword_gambar": "keyword pexels"}},
+                {{"type": "konten", "teks": "Isi slide 1", "keyword_gambar": "keyword pexels"}}
             ]
+        }}
 
-            Aturan output:
-            - Total item: {num_slides + 1}
-            - 1 item pertama type="judul"
-            - {num_slides} item berikutnya type="konten"
-            - keyword_gambar harus Bahasa Inggris, maksimal 2 kata
-            - teks konten harus pendek, padat, satu poin per slide
-            - hindari tanda baca berlebihan
+        Aturan output umum:
+        - keyword_gambar harus Bahasa Inggris, maksimal 2 kata
+        - slide array: Total item {num_slides + 1} (1 judul, {num_slides} konten)
+        """
+
+        if INI_POINTS_ONLY_TEXT:
+            prompt = base_rules + f"""
+            Aturan khusus teks slide:
+            - Isi teks slide harus berupa POINT SINGKAT saja, bukan paragraf.
+            - Setiap slide konten hanya boleh berisi 1 poin utama.
+            - Maksimal {INI_MAX_WORDS_PER_SLIDE} kata per slide konten.
+            - Gunakan bahasa Indonesia yang singkat, tajam, dan enak dibaca di gambar.
+            - Hindari tanda baca berlebihan.
             """
         else:
-            prompt = f"""
-            Kamu adalah pembuat konten TikTok profesional.
-
-            Tugas:
-            1. Gunakan Google Search untuk mencari fakta/data/tren terbaru tentang "{topic}".
-            2. Kembalikan HANYA JSON valid.
-            3. Jangan gunakan markdown, jangan pakai ```json, jangan beri penjelasan tambahan.
-
-            Format wajib:
-            [
-            {{"type": "judul", "teks": "Judul Menarik Di Sini", "keyword_gambar": "keyword pexels"}},
-            {{"type": "konten", "teks": "Fakta terbaru poin 1...", "keyword_gambar": "keyword pexels"}}
-            ]
-
-            Total item: {num_slides + 1}
-            - 1 item type="judul"
-            - {num_slides} item type="konten"
-            - keyword_gambar harus Bahasa Inggris, maksimal 2 kata
+            prompt = base_rules + f"""
+            Aturan khusus teks slide:
+            - Teks konten harus memuat fakta/data terbaru.
+            - Boleh memakai kalimat yang agak panjang, tapi tetap padat dan jelas.
             """
 
-        print(f"🧠 Meminta Gemini riset & membuat konten untuk topik: '{topic}'...")
+        print(f"🧠 Meminta Gemini riset & membuat konten + metadata untuk topik: '{topic}'...")
         return self._generate_json_with_retry(client, prompt)
 
     # ==========================================
@@ -371,7 +392,6 @@ class TikTokCarouselGenerator:
         img_ratio = img.width / img.height
         target_ratio = target_size[0] / target_size[1]
 
-        # Resize + crop agar pas 1080x1920
         if img_ratio > target_ratio:
             new_width = int(target_size[1] * img_ratio)
             img = img.resize((new_width, target_size[1]), Image.Resampling.LANCZOS)
@@ -440,21 +460,54 @@ class TikTokCarouselGenerator:
             os.makedirs(self.output_dir)
 
         try:
-            slide_data = self.generate_carousel_content(topic, num_slides)
+            # 1. Dapatkan JSON yang sekarang berisi Metadata + Slides
+            full_data = self.generate_carousel_content(topic, num_slides)
 
-            for i, slide in enumerate(slide_data):
-                print(f"\n▶️ Memproses Slide {i} ({slide['type']})")
+            # 2. Ekstraksi data
+            tiktok_title = full_data.get("tiktok_title", "Tanpa Judul")
+            tiktok_desc = full_data.get("tiktok_description", "")
+            tiktok_tags = full_data.get("tiktok_tags", [])
+            slides = full_data.get("slides", [])
 
-                font_size = INI_TITLE_FONT_SIZE if slide["type"] == "judul" else INI_CONTENT_FONT_SIZE
+            # 3. Print Metadata ke Console
+            print("\n" + "="*50)
+            print("📱 METADATA TIKTOK POST")
+            print("="*50)
+            print(f"📍 Judul     : {tiktok_title}")
+            print(f"📍 Deskripsi : {tiktok_desc}")
+            
+            # Format hashtag agar ada tanda '#' nya jika AI lupa
+            formatted_tags = " ".join([f"#{t.replace('#', '')}" for t in tiktok_tags])
+            print(f"📍 Tags      : {formatted_tags}")
+            print("="*50 + "\n")
 
-                raw_img = self.get_pexels_image(slide["keyword_gambar"])
-                final_img = self.process_slide_image(raw_img, slide["teks"], font_size, style)
+            # 4. Simpan Metadata ke file metadata.json
+            metadata_filepath = os.path.join(self.output_dir, "metadata.json")
+            with open(metadata_filepath, "w", encoding="utf-8") as f:
+                json.dump(full_data, f, ensure_ascii=False, indent=4)
+            print(f"💾 Metadata berhasil disimpan di: {metadata_filepath}")
+
+            # 5. Simpan isi konten ke context.txt untuk memori generasi berikutnya
+            if slides:
+                self._append_context(topic, slides)
+                print(f"📝 Sejarah konten (Context) berhasil di-update di: {INI_CONTEXT_FILE}")
+            else:
+                print("⚠️ Peringatan: Data 'slides' kosong dari AI.")
+
+            # 6. Proses Render Gambar Slide
+            for i, slide in enumerate(slides):
+                print(f"\n▶️ Memproses Slide {i} ({slide.get('type', 'unknown')})")
+
+                font_size = INI_TITLE_FONT_SIZE if slide.get("type") == "judul" else INI_CONTENT_FONT_SIZE
+
+                raw_img = self.get_pexels_image(slide.get("keyword_gambar", "background"))
+                final_img = self.process_slide_image(raw_img, slide.get("teks", ""), font_size, style)
 
                 filename = os.path.join(self.output_dir, f"slide_{i:02d}.jpg")
                 final_img.save(filename, quality=INI_JPG_QUALITY)
                 print(f"✅ Berhasil disimpan: {filename}")
 
-            print(f"\n🎉 SELESAI! Semua gambar telah disimpan di folder '{self.output_dir}'.")
+            print(f"\n🎉 SELESAI! Semua file gambar dan metadata telah disimpan di folder '{self.output_dir}'.")
 
         except Exception as e:
             print(f"\n❌ Terjadi kesalahan saat eksekusi: {e}")
