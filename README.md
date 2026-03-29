@@ -27,8 +27,8 @@ Mempermudah *Content Creator* dan *Affiliate Marketer* dalam memproduksi konten 
 
 **1. Clone Repositori & Masuk ke Folder**
 ```bash
-git clone [https://github.com/username-kamu/tiktok-image-gen.git](https://github.com/username-kamu/tiktok-image-gen.git)
-cd tiktok-image-gen
+git clone https://github.com/NaufalRizqullah/tiktok-carousel-generator
+cd tiktok-carousel-generator
 ```
 
 **2. Install Dependencies**
