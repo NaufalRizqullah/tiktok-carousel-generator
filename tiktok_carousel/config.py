@@ -11,8 +11,8 @@ CANVAS_WIDTH = 1080
 CANVAS_HEIGHT = 1920
 
 # Ukuran font default
-TITLE_FONT_SIZE = 80
-CONTENT_FONT_SIZE = 65
+TITLE_FONT_SIZE = 70 # default 80/85
+CONTENT_FONT_SIZE = 55 # default 60/65
 
 # Auto shrink font
 AUTO_SHRINK_TEXT = False
