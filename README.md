@@ -1,5 +1,7 @@
 # 🚀 TikTok Carousel Image Generator (Auto-Content Creator)
 
+> 🌐 **Language:** 🇮🇩 Bahasa Indonesia | [🇬🇧 English](README_EN.md)
+
 Proyek *open-source* berbasis Python untuk mengotomatisasi pembuatan konten Karosel (Slideshow) TikTok, Instagram Reels, dan YouTube Shorts. 
 
 Hanya dengan memberikan satu baris ide/topik, sistem ini akan melakukan riset internet, menulis naskah konten, mencari gambar *background* beresolusi tinggi, merender teks bergaya TikTok, dan menyiapkan metadata (Caption & Hashtag) siap *upload*.
