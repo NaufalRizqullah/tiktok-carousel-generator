@@ -2,8 +2,8 @@ import os
 import argparse
 from dotenv import load_dotenv
 
-# Import Class yang baru kita buat
-from generator import TikTokCarouselGenerator
+# Import Class dari package tiktok_carousel
+from tiktok_carousel import TikTokCarouselGenerator
 
 def main():
     # Load environment variables dari file .env jika ada

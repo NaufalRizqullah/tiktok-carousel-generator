@@ -23,15 +23,6 @@ Mempermudah *Content Creator* dan *Affiliate Marketer* dalam memproduksi konten 
 
 ---
 
-## 📸 Contoh Hasil
-Berikut adalah contoh gambar yang dihasilkan oleh sistem ini:
-
-| Judul (Slide 00) | Konten (Slide 01) | Konten (Slide 02) |
-| :---: | :---: | :---: |
-| ![Slide 00](src/images/slide_00.jpg) | ![Slide 01](src/images/slide_01.jpg) | ![Slide 02](src/images/slide_02.jpg) |
-
----
-
 ## 🛠️ Persiapan & Instalasi
 
 **1. Clone Repositori & Masuk ke Folder**
@@ -118,55 +109,123 @@ Selain itu, di *root folder* akan muncul/terupdate file `context.txt` yang menyi
 
 ---
 
+## 📂 Struktur Proyek
+
+Proyek ini menggunakan arsitektur modular. Semua logika inti dipisah ke dalam *package* `tiktok_carousel/` agar mudah di-*maintain*, di-*extend*, dan di-*test*.
+
+```text
+tiktok-image-gen/
+├── main.py                          # Entry point CLI (argparse + load .env)
+├── tiktok_carousel/                 # Package utama
+│   ├── __init__.py                  # Re-export TikTokCarouselGenerator
+│   ├── config.py                    # Semua konstanta konfigurasi (canvas, font, warna, dll)
+│   ├── utils.py                     # Utilitas: download font, context memory, sanitize teks
+│   ├── content.py                   # Modul AI Content Generator (Google Gemini)
+│   ├── image_source.py              # Modul Image Sourcing (Pexels API)
+│   ├── renderer.py                  # Modul Image Processing & Text Rendering (Pillow)
+│   └── generator.py                 # Orchestrator: menggabungkan semua modul jadi pipeline
+├── .env                             # API Keys (tidak di-commit)
+├── .env.example                     # Contoh format .env
+├── context.txt                      # Auto-generated: memori konteks antar Part
+├── font.ttf                         # File font (auto-download jika belum ada)
+├── output/                          # Folder hasil gambar & metadata
+├── pyproject.toml                   # Konfigurasi project Python
+├── requirements.txt                 # Daftar dependensi
+└── README.md
+```
+
+### Penjelasan Tiap Modul
+
+| Modul | Deskripsi |
+| :--- | :--- |
+| `config.py` | Berisi semua variabel konfigurasi global (ukuran canvas, font, warna box/outline, margin, kualitas JPG, dll). Ubah file ini untuk *tweak* tampilan tanpa menyentuh logika. |
+| `utils.py` | Fungsi utilitas murni: auto-download font Montserrat-Black, baca/tulis file `context.txt` untuk fitur *memory*, dan sanitasi teks (hapus emoji/non-BMP). |
+| `content.py` | Class `ContentGenerator` — menangani komunikasi dengan Google Gemini AI, termasuk *prompt engineering*, *retry logic* dengan *exponential backoff*, dan parsing JSON respons. |
+| `image_source.py` | Class `PexelsImageSource` — mencari & mengunduh gambar *portrait* dari Pexels API, dilengkapi logika *anti-duplikat* agar gambar tidak berulang. |
+| `renderer.py` | Class `SlideRenderer` — memproses gambar (*resize/crop* ke 9:16), merender teks dengan berbagai gaya (`outline`, `box`, `box-title-content`), termasuk *auto-shrink* dan *text wrapping*. |
+| `generator.py` | Class `TikTokCarouselGenerator` — *Orchestrator* yang menyatukan semua modul menjadi satu *pipeline*: generate konten → cari gambar → render slide → simpan file. |
+
+---
+
 ## 🛠️ Konfigurasi Lanjutan (Tweak Moding)
 
-Sistem ini didesain agar sangat fleksibel. Kamu bisa mengubah tata letak, warna, ukuran, hingga *behavior* AI hanya dengan mengubah nilai variabel `INI_*` di bagian atas file `generator.py`.
+Sistem ini didesain agar sangat fleksibel. Kamu bisa mengubah tata letak, warna, ukuran, hingga *behavior* AI hanya dengan mengubah nilai variabel di file `tiktok_carousel/config.py`.
 
 Berikut adalah daftar lengkap variabel yang bisa kamu kustomisasi:
 
 ### ⚙️ Pengaturan AI & Sistem
 | Variabel | Deskripsi | Default |
 | :--- | :--- | :--- |
-| `INI_CONTEXT_FILE` | Nama file teks untuk menyimpan memori/konteks agar AI tidak mengulang poin di *Part* selanjutnya. | `"context.txt"` |
-| `INI_POINTS_ONLY_TEXT` | Jika `True`, memaksa AI hanya menulis poin singkat (bukan paragraf). | `True` |
-| `INI_MAX_WORDS_PER_SLIDE`| Batas maksimal jumlah kata yang boleh di-generate AI per slide konten. | `30` |
+| `CONTEXT_FILE` | Nama file teks untuk menyimpan memori/konteks agar AI tidak mengulang poin di *Part* selanjutnya. | `"context.txt"` |
+| `POINTS_ONLY_TEXT` | Jika `True`, memaksa AI hanya menulis poin singkat (bukan paragraf). | `True` |
+| `MAX_WORDS_PER_SLIDE`| Batas maksimal jumlah kata yang boleh di-generate AI per slide konten. | `30` |
 
 ### 📐 Pengaturan Canvas & Margin
 | Variabel | Deskripsi | Default |
 | :--- | :--- | :--- |
-| `INI_CANVAS_WIDTH` | Lebar resolusi gambar output (pixel). | `1080` |
-| `INI_CANVAS_HEIGHT` | Tinggi resolusi gambar output (pixel). | `1920` |
-| `INI_SAFE_TOP_BOTTOM_MARGIN`| Area aman vertikal agar teks tidak tertutup UI TikTok (nama akun, caption, tombol *like*). | `180` |
-| `INI_TEXT_SIDE_MARGIN` | Jarak aman teks dari tepi kiri dan kanan layar. | `80` |
-| `INI_TEXT_VERTICAL_OFFSET`| Geser posisi teks seluruhnya secara vertikal. `0` = pas di tengah layar. | `0` |
+| `CANVAS_WIDTH` | Lebar resolusi gambar output (pixel). | `1080` |
+| `CANVAS_HEIGHT` | Tinggi resolusi gambar output (pixel). | `1920` |
+| `SAFE_TOP_BOTTOM_MARGIN`| Area aman vertikal agar teks tidak tertutup UI TikTok (nama akun, caption, tombol *like*). | `180` |
+| `TEXT_SIDE_MARGIN` | Jarak aman teks dari tepi kiri dan kanan layar. | `80` |
+| `TEXT_VERTICAL_OFFSET`| Geser posisi teks seluruhnya secara vertikal. `0` = pas di tengah layar. | `0` |
 
 ### 🔠 Pengaturan Tipografi (Font)
 | Variabel | Deskripsi | Default |
 | :--- | :--- | :--- |
-| `INI_TITLE_FONT_SIZE` | Ukuran font utama untuk Slide Judul/Cover. | `85` |
-| `INI_CONTENT_FONT_SIZE` | Ukuran font utama untuk Slide Konten. | `68` |
-| `INI_TEXT_LINE_SPACING` | Jarak spasi antar baris teks (*line height*). | `10` |
-| `INI_AUTO_SHRINK_TEXT` | Jika `True`, ukuran font otomatis mengecil jika teks AI terlalu panjang dan melewati batas aman. | `False` |
-| `INI_AUTO_SHRINK_MIN_FONT_SIZE`| Batas ukuran font terkecil saat mode *auto-shrink* aktif. | `42` |
-| `INI_AUTO_SHRINK_STEP` | Jumlah pengurangan ukuran font setiap kali iterasi pengecilan. | `2` |
+| `TITLE_FONT_SIZE` | Ukuran font utama untuk Slide Judul/Cover. | `85` |
+| `CONTENT_FONT_SIZE` | Ukuran font utama untuk Slide Konten. | `68` |
+| `TEXT_LINE_SPACING` | Jarak spasi antar baris teks (*line height*). | `10` |
+| `AUTO_SHRINK_TEXT` | Jika `True`, ukuran font otomatis mengecil jika teks AI terlalu panjang dan melewati batas aman. | `False` |
+| `AUTO_SHRINK_MIN_FONT_SIZE`| Batas ukuran font terkecil saat mode *auto-shrink* aktif. | `42` |
+| `AUTO_SHRINK_STEP` | Jumlah pengurangan ukuran font setiap kali iterasi pengecilan. | `2` |
 
 ### 🎨 Gaya Visual: Box (Kotak Teks)
 | Variabel | Deskripsi | Default |
 | :--- | :--- | :--- |
-| `INI_BOX_PADDING_X` | Jarak spasi horizontal antara teks dengan tepi dalam kotak. | `55` |
-| `INI_BOX_PADDING_Y` | Jarak spasi vertikal antara teks dengan tepi dalam kotak. | `35` |
-| `INI_BOX_RADIUS` | Tingkat kelengkungan sudut kotak (*rounded rectangle*). | `28` |
-| `INI_BOX_FILL` | Warna latar kotak dalam format `(R, G, B, Opacity)`. Default adalah putih semi-transparan. | `(255, 255, 255, 235)` |
-| `INI_BOX_TEXT_FILL` | Warna teks di dalam kotak. Default adalah hitam. | `(0, 0, 0)` |
+| `BOX_PADDING_X` | Jarak spasi horizontal antara teks dengan tepi dalam kotak. | `55` |
+| `BOX_PADDING_Y` | Jarak spasi vertikal antara teks dengan tepi dalam kotak. | `35` |
+| `BOX_RADIUS` | Tingkat kelengkungan sudut kotak (*rounded rectangle*). | `28` |
+| `BOX_FILL` | Warna latar kotak dalam format `(R, G, B, Opacity)`. Default adalah putih semi-transparan. | `(255, 255, 255, 235)` |
+| `BOX_TEXT_FILL` | Warna teks di dalam kotak. Default adalah hitam. | `(0, 0, 0)` |
 
 ### 🖌️ Gaya Visual: Outline (Garis Luar)
 | Variabel | Deskripsi | Default |
 | :--- | :--- | :--- |
-| `INI_OUTLINE_TEXT_FILL` | Warna utama teks. | `"white"` |
-| `INI_OUTLINE_STROKE_FILL`| Warna garis tepi (*stroke/outline*). | `"black"` |
-| `INI_OUTLINE_STROKE_RATIO`| Rasio ketebalan garis tepi terhadap ukuran font (misal: `0.08` x font `85`). | `0.08` |
+| `OUTLINE_TEXT_FILL` | Warna utama teks. | `"white"` |
+| `OUTLINE_STROKE_FILL`| Warna garis tepi (*stroke/outline*). | `"black"` |
+| `OUTLINE_STROKE_RATIO`| Rasio ketebalan garis tepi terhadap ukuran font (misal: `0.08` x font `85`). | `0.08` |
 
 ### 💾 Pengaturan Output
 | Variabel | Deskripsi | Default |
 | :--- | :--- | :--- |
-| `INI_JPG_QUALITY` | Kualitas kompresi gambar JPG yang disimpan (skala 1-100). | `95` |
+| `JPG_QUALITY` | Kualitas kompresi gambar JPG yang disimpan (skala 1-100). | `95` |
+
+---
+
+## 📸 Contoh Hasil
+
+Berikut adalah contoh gambar yang dihasilkan oleh sistem ini untuk setiap gaya visual:
+
+### 🖌️ Style: `outline`
+
+| Slide 00 | Slide 01 |
+| :---: | :---: |
+| ![Slide 00](src/images/outline/slide_00.jpg) | ![Slide 01](src/images/outline/slide_01.jpg) |
+| **Slide 02** | **Slide 03** |
+| ![Slide 02](src/images/outline/slide_02.jpg) | ![Slide 03](src/images/outline/slide_03.jpg) |
+
+### 📦 Style: `box`
+
+| Slide 00 | Slide 01 |
+| :---: | :---: |
+| ![Slide 00](src/images/box/slide_00.jpg) | ![Slide 01](src/images/box/slide_01.jpg) |
+| **Slide 02** | **Slide 03** |
+| ![Slide 02](src/images/box/slide_02.jpg) | ![Slide 03](src/images/box/slide_03.jpg) |
+
+### 📝 Style: `box-title-content`
+
+| Slide 00 | Slide 01 |
+| :---: | :---: |
+| ![Slide 00](src/images/box-title-content/slide_00.jpg) | ![Slide 01](src/images/box-title-content/slide_01.jpg) |
+| **Slide 02** | **Slide 03** |
+| ![Slide 02](src/images/box-title-content/slide_02.jpg) | ![Slide 03](src/images/box-title-content/slide_03.jpg) |
