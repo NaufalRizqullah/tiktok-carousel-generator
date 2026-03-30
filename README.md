@@ -132,7 +132,7 @@ tiktok-image-gen/
 ├── .env                             # API Keys (tidak di-commit)
 ├── .env.example                     # Contoh format .env
 ├── context.txt                      # Auto-generated: memori konteks antar Part
-├── font.ttf                         # File font (auto-download jika belum ada)
+├── fonts/                           # Direktori untuk menyimpan file font (.ttf)
 ├── output/                          # Folder hasil gambar & metadata
 ├── pyproject.toml                   # Konfigurasi project Python
 ├── requirements.txt                 # Daftar dependensi
