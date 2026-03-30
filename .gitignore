@@ -13,3 +13,6 @@ wheels/
 
 # Output
 output/
+
+# personal Context
+context.txt

@@ -123,6 +123,7 @@ class ContentGenerator:
         
         Aturan khusus teks (PENTING):
         - WAJIB tambahkan field "slide_title" yang SUPER SINGKAT dan HURUF KAPITAL (UPPERCASE) pada slide konten.
+        - KONSISTENSI PENOMORAN: Evaluasi apakah judul slide lebih baik menggunakan angka (1., 2., dst). Jika IYA, berikan angka pada SEMUA `slide_title` konten. Jika TIDAK, hapus angka dari SEMUA `slide_title`. Jangan campur aduk.
         - Teks "teks" HARUS informatif, edukatif, dan memuat fakta/informasi yang jelas secara natural, TAPI TETAP ASIK DIBACA.
         - Pisahkan kalimat demi kalimat dalam field "teks" dengan dua kali enter (\\n\\n) langsung di JSON sebagai pemisah alinea/paragraf.
             """
