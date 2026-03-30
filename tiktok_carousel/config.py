@@ -6,6 +6,15 @@
 # File untuk menyimpan memori/konteks agar tidak mengulang poin di Part selanjutnya
 CONTEXT_FILE = "context.txt"
 
+# Pengaturan Font (Family dan Numeral Weight 100-900)
+# Weight: 100=Thin, 200=ExtraLight, 300=Light, 400=Regular
+#         500=Medium, 600=SemiBold, 700=Bold, 800=ExtraBold, 900=Black
+TITLE_FONT_FAMILY = "LeagueSpartan"
+TITLE_FONT_WEIGHT = 700
+
+CONTENT_FONT_FAMILY = "Poppins"
+CONTENT_FONT_WEIGHT = 400
+
 # Ukuran canvas output
 CANVAS_WIDTH = 1080
 CANVAS_HEIGHT = 1920

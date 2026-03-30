@@ -89,7 +89,10 @@ python main.py -t "Ide Usaha Modal Kecil part 2" -o "usaha_p2"
 | `-t` | `--topic` | **(Wajib)** Topik pembahasan untuk di-generate AI | *None* |
 | `-s` | `--slides` | Jumlah slide konten (tidak termasuk slide judul) | `5` |
 | `--style` | `--style` | Gaya visual teks (`outline`, `box`, atau `box-title-content`) | `outline` |
-| `--font` | `--font` | Path ke file custom font (`.ttf`) | `font.ttf` |
+| `--title-family`| `--title-family`| Family font judul (contoh: `LeagueSpartan` atau `Poppins`) | *dari config* |
+| `--title-weight`| `--title-weight`| Ketebalan font judul (angka `100` - `900`) | *dari config* |
+| `--content-family`| `--content-family`| Family font konten (contoh: `LeagueSpartan` atau `Poppins`) | *dari config* |
+| `--content-weight`| `--content-weight`| Ketebalan font konten (angka `100` - `900`) | *dari config* |
 | `-o` | `--output` | Nama folder tempat hasil gambar dan metadata disimpan | `output` |
 
 ---
@@ -174,6 +177,10 @@ Berikut adalah daftar lengkap variabel yang bisa kamu kustomisasi:
 ### 🔠 Pengaturan Tipografi (Font)
 | Variabel | Deskripsi | Default |
 | :--- | :--- | :--- |
+| `TITLE_FONT_FAMILY`| Nama folder/family font untuk Slide Judul. | `"LeagueSpartan"` |
+| `TITLE_FONT_WEIGHT`| Ketebalan font judul (100=Thin... 400=Regular... 900=Black). | `700` |
+| `CONTENT_FONT_FAMILY`| Nama folder/family font untuk Slide Konten. | `"Poppins"` |
+| `CONTENT_FONT_WEIGHT`| Ketebalan font konten (100=Thin... 400=Regular... 900=Black). | `400` |
 | `TITLE_FONT_SIZE` | Ukuran font utama untuk Slide Judul/Cover. | `85` |
 | `CONTENT_FONT_SIZE` | Ukuran font utama untuk Slide Konten. | `68` |
 | `TEXT_LINE_SPACING` | Jarak spasi antar baris teks (*line height*). | `10` |

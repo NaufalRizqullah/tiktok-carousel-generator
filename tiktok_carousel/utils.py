@@ -3,6 +3,23 @@ import re
 import requests
 
 
+def get_font_path(family: str, weight: int) -> str:
+    """Mengembalikan path font berdasarkan family dan numerik weight (100-900)."""
+    weight_map = {
+        100: "Thin",
+        200: "ExtraLight",
+        300: "Light",
+        400: "Regular",
+        500: "Medium",
+        600: "SemiBold",
+        700: "Bold",
+        800: "ExtraBold",
+        900: "Black"
+    }
+    weight_name = weight_map.get(weight, "Regular")
+    return os.path.join("fonts", family, f"{family}-{weight_name}.ttf")
+
+
 def download_font_if_missing(font_path: str, default_url: str = "https://raw.githubusercontent.com/JulietaUla/Montserrat/master/fonts/ttf/Montserrat-Black.ttf") -> None:
     """Mengecek dan mendownload font default jika belum ada di lokal."""
     if not os.path.exists(font_path):

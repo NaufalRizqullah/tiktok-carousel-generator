@@ -2,7 +2,7 @@ import os
 import json
 
 from . import config
-from .utils import download_font_if_missing, read_context, append_context, sanitize_text
+from .utils import download_font_if_missing, read_context, append_context, sanitize_text, get_font_path
 from .content import ContentGenerator
 from .image_source import PexelsImageSource
 from .renderer import SlideRenderer
@@ -11,9 +11,19 @@ from .renderer import SlideRenderer
 class TikTokCarouselGenerator:
     """Orchestrator utama yang menggabungkan semua modul menjadi satu pipeline."""
 
-    def __init__(self, pexels_key: str, gemini_key: str, title_font_path: str = "fonts/LeagueSpartan/LeagueSpartan-Black.ttf", content_font_path: str = "fonts/Poppins/Poppins-Medium.ttf", output_dir: str = "output"):
-        self.title_font_path = title_font_path
-        self.content_font_path = content_font_path
+    def __init__(self, pexels_key: str, gemini_key: str, 
+                 title_font_family: str = None, title_font_weight: int = None,
+                 content_font_family: str = None, content_font_weight: int = None,
+                 output_dir: str = "output"):
+        
+        tf_family = title_font_family or config.TITLE_FONT_FAMILY
+        tf_weight = title_font_weight or config.TITLE_FONT_WEIGHT
+        self.title_font_path = get_font_path(tf_family, tf_weight)
+
+        cf_family = content_font_family or config.CONTENT_FONT_FAMILY
+        cf_weight = content_font_weight or config.CONTENT_FONT_WEIGHT
+        self.content_font_path = get_font_path(cf_family, cf_weight)
+        
         self.output_dir = output_dir
 
         # Inisialisasi sub-modul

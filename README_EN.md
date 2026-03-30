@@ -90,7 +90,10 @@ python main.py -t "Small Business Ideas part 2" -o "business_p2"
 | `-t` | `--topic` | **(Required)** Topic for AI to generate content about | *None* |
 | `-s` | `--slides` | Number of content slides (excluding the title slide) | `5` |
 | `--style` | `--style` | Text visual style (`outline`, `box`, or `box-title-content`) | `outline` |
-| `--font` | `--font` | Path to a custom font file (`.ttf`) | `font.ttf` |
+| `--title-family`| `--title-family`| Font family for title (e.g., `LeagueSpartan`) | *from config* |
+| `--title-weight`| `--title-weight`| Title font weight (`100` - `900`) | *from config* |
+| `--content-family`| `--content-family`| Font family for content (e.g., `Poppins`) | *from config* |
+| `--content-weight`| `--content-weight`| Content font weight (`100` - `900`) | *from config* |
 | `-o` | `--output` | Name of the folder to save output images and metadata | `output` |
 
 ---
@@ -175,6 +178,10 @@ Here is the complete list of customizable variables:
 ### 🔠 Typography Settings (Font)
 | Variable | Description | Default |
 | :--- | :--- | :--- |
+| `TITLE_FONT_FAMILY`| Font family/folder name for Title Slide. | `"LeagueSpartan"` |
+| `TITLE_FONT_WEIGHT`| Title font weight (100=Thin... 400=Regular... 900=Black). | `700` |
+| `CONTENT_FONT_FAMILY`| Font family/folder name for Content Slide. | `"Poppins"` |
+| `CONTENT_FONT_WEIGHT`| Content font weight (100=Thin... 400=Regular... 900=Black). | `400` |
 | `TITLE_FONT_SIZE` | Main font size for the Title/Cover Slide. | `85` |
 | `CONTENT_FONT_SIZE` | Main font size for Content Slides. | `68` |
 | `TEXT_LINE_SPACING` | Line spacing between text lines (*line height*). | `10` |
