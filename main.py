@@ -14,7 +14,8 @@ def main():
     parser.add_argument("-t", "--topic", type=str, required=True, help="Topik pembahasan untuk di-generate AI")
     parser.add_argument("-s", "--slides", type=int, default=5, help="Jumlah slide konten (default: 5)")
     parser.add_argument("--style", type=str, choices=['outline', 'box', 'box-title-content'], default="outline", help="Gaya teks (outline/box/box-title-content)")
-    parser.add_argument("--font", type=str, default="font.ttf", help="Path ke file font (default: font.ttf)")
+    parser.add_argument("--title-font", type=str, default="fonts/LeagueSpartan/LeagueSpartan-Black.ttf", help="Path ke file font judul")
+    parser.add_argument("--content-font", type=str, default="fonts/Poppins/Poppins-Medium.ttf", help="Path ke file font konten")
     parser.add_argument("-o", "--output", type=str, default="output", help="Nama folder output (default: output)")
 
     args = parser.parse_args()
@@ -27,7 +28,8 @@ def main():
     app = TikTokCarouselGenerator(
         pexels_key=pexels_api_key,
         gemini_key=google_api_key,
-        font_path=args.font,
+        title_font_path=args.title_font,
+        content_font_path=args.content_font,
         output_dir=args.output
     )
 

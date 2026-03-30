@@ -3,13 +3,12 @@ import re
 import requests
 
 
-def download_font_if_missing(font_path: str) -> None:
+def download_font_if_missing(font_path: str, default_url: str = "https://raw.githubusercontent.com/JulietaUla/Montserrat/master/fonts/ttf/Montserrat-Black.ttf") -> None:
     """Mengecek dan mendownload font default jika belum ada di lokal."""
     if not os.path.exists(font_path):
-        print(f"📥 Font '{font_path}' tidak ditemukan. Mengunduh font default (Montserrat-Black)...")
-        url = "https://raw.githubusercontent.com/JulietaUla/Montserrat/master/fonts/ttf/Montserrat-Black.ttf"
+        print(f"📥 Font '{font_path}' tidak ditemukan. Mengunduh font default...")
         try:
-            response = requests.get(url, timeout=15)
+            response = requests.get(default_url, timeout=15)
             response.raise_for_status()
             with open(font_path, "wb") as f:
                 f.write(response.content)

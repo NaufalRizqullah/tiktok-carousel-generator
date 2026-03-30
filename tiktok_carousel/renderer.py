@@ -6,12 +6,13 @@ from . import config
 class SlideRenderer:
     """Modul untuk memproses dan merender teks pada gambar slide."""
 
-    def __init__(self, font_path: str):
-        self.font_path = font_path
+    def __init__(self, title_font_path: str, content_font_path: str):
+        self.title_font_path = title_font_path
+        self.content_font_path = content_font_path
 
-    def _load_font(self, font_size: int) -> ImageFont.FreeTypeFont:
+    def _load_font(self, font_path: str, font_size: int) -> ImageFont.FreeTypeFont:
         try:
-            return ImageFont.truetype(self.font_path, font_size)
+            return ImageFont.truetype(font_path, font_size)
         except IOError:
             return ImageFont.load_default()
 
@@ -41,8 +42,9 @@ class SlideRenderer:
 
         return "\n".join(final_lines)
 
-    def _calculate_text_layout(self, draw: ImageDraw.Draw, text: str, font_size: int, style: str) -> dict:
-        font = self._load_font(font_size)
+    def _calculate_text_layout(self, draw: ImageDraw.Draw, text: str, font_size: int, style: str, font_type: str = "content") -> dict:
+        font_path = self.title_font_path if font_type == "title" else self.content_font_path
+        font = self._load_font(font_path, font_size)
 
         if style in ("box", "box-title-content"):
             max_text_width = config.CANVAS_WIDTH - (config.TEXT_SIDE_MARGIN * 2) - (config.BOX_PADDING_X * 2)
@@ -77,8 +79,8 @@ class SlideRenderer:
             "offset_y": bbox[1],
         }
 
-    def _get_best_fitting_layout(self, draw: ImageDraw.Draw, text: str, initial_font_size: int, style: str):
-        layout = self._calculate_text_layout(draw, text, initial_font_size, style)
+    def _get_best_fitting_layout(self, draw: ImageDraw.Draw, text: str, initial_font_size: int, style: str, font_type: str = "content"):
+        layout = self._calculate_text_layout(draw, text, initial_font_size, style, font_type)
 
         if not config.AUTO_SHRINK_TEXT:
             return initial_font_size, layout
@@ -90,11 +92,11 @@ class SlideRenderer:
 
         while current_size > config.AUTO_SHRINK_MIN_FONT_SIZE and best_layout["block_height"] > max_allowed_height:
             current_size -= config.AUTO_SHRINK_STEP
-            best_layout = self._calculate_text_layout(draw, text, current_size, style)
+            best_layout = self._calculate_text_layout(draw, text, current_size, style, font_type)
 
         return current_size, best_layout
 
-    def process_slide(self, img: Image.Image, text: str, font_size: int, style: str, title_text: str = "") -> Image.Image:
+    def process_slide(self, img: Image.Image, text: str, font_size: int, style: str, title_text: str = "", is_title: bool = False) -> Image.Image:
         """Proses gambar slide: resize/crop ke 9:16, lalu render teks sesuai style."""
         target_size = (config.CANVAS_WIDTH, config.CANVAS_HEIGHT)
         img_ratio = img.width / img.height
@@ -116,8 +118,8 @@ class SlideRenderer:
 
         if style == "box-title-content" and title_text:
             title_text = title_text.upper()
-            title_font = self._load_font(font_size + 5)
-            c_font = self._load_font(font_size)
+            title_font = self._load_font(self.title_font_path, font_size + 5)
+            c_font = self._load_font(self.content_font_path, font_size)
             max_p_width = config.CANVAS_WIDTH - (config.TEXT_SIDE_MARGIN * 2) - (config.BOX_PADDING_X * 2)
 
             paragraphs = [p.strip() for p in text.split("\n") if p.strip()]
@@ -188,7 +190,8 @@ class SlideRenderer:
 
             return img.convert("RGB")
 
-        final_font_size, layout = self._get_best_fitting_layout(draw, text, font_size, style)
+        font_type = "title" if is_title else "content"
+        final_font_size, layout = self._get_best_fitting_layout(draw, text, font_size, style, font_type)
         font = layout["font"]
         wrapped_text = layout["wrapped_text"]
         t_width = layout["text_width"]

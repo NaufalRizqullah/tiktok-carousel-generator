@@ -11,18 +11,20 @@ from .renderer import SlideRenderer
 class TikTokCarouselGenerator:
     """Orchestrator utama yang menggabungkan semua modul menjadi satu pipeline."""
 
-    def __init__(self, pexels_key: str, gemini_key: str, font_path: str = "font.ttf", output_dir: str = "output"):
-        self.font_path = font_path
+    def __init__(self, pexels_key: str, gemini_key: str, title_font_path: str = "fonts/LeagueSpartan/LeagueSpartan-Black.ttf", content_font_path: str = "fonts/Poppins/Poppins-Medium.ttf", output_dir: str = "output"):
+        self.title_font_path = title_font_path
+        self.content_font_path = content_font_path
         self.output_dir = output_dir
 
         # Inisialisasi sub-modul
         self.content_gen = ContentGenerator(api_key=gemini_key)
         self.image_source = PexelsImageSource(api_key=pexels_key)
-        self.renderer = SlideRenderer(font_path=font_path)
+        self.renderer = SlideRenderer(title_font_path=self.title_font_path, content_font_path=self.content_font_path)
 
     def run(self, topic: str, num_slides: int, style: str) -> None:
         """Jalankan pipeline: generate konten → cari gambar → render slide → simpan."""
-        download_font_if_missing(self.font_path)
+        download_font_if_missing(self.title_font_path)
+        download_font_if_missing(self.content_font_path)
         if not os.path.exists(self.output_dir):
             os.makedirs(self.output_dir)
 
@@ -76,8 +78,10 @@ class TikTokCarouselGenerator:
                 slide_text = sanitize_text(slide_text)
                 slide_title = sanitize_text(slide_title)
 
+                is_title = slide.get("type") == "judul"
+
                 raw_img = self.image_source.get_image(slide.get("keyword_gambar", "background"))
-                final_img = self.renderer.process_slide(raw_img, slide_text, font_size, style, slide_title)
+                final_img = self.renderer.process_slide(raw_img, slide_text, font_size, style, slide_title, is_title)
 
                 filename = os.path.join(self.output_dir, f"slide_{i:02d}.jpg")
                 final_img.save(filename, quality=config.JPG_QUALITY)
