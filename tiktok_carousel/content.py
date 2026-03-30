@@ -117,13 +117,13 @@ class ContentGenerator:
             "tiktok_tags": ["tag1", "tag2", "tag3"],
             "slides": [
                 {{"type": "judul", "teks": "Judul cover TikTok", "keyword_gambar": "keyword pexels"}},
-                {{"type": "konten", "slide_title": "1. JUDUL PENDEK", "teks": "Dulu aku kira begini...\\n\\nTernyata eh ternyata begitu...\\n\\nSekarang jadi beda banget.", "keyword_gambar": "keyword pexels"}}
+                {{"type": "konten", "slide_title": "1. JUDUL PENDEK", "teks": "Fakta penting yang perlu kamu ketahui adalah...\\n\\nHal ini terjadi karena...\\n\\nOleh karena itu, cara mengatasinya adalah...", "keyword_gambar": "keyword pexels"}}
             ]
         }}
         
         Aturan khusus teks (PENTING):
         - WAJIB tambahkan field "slide_title" yang SUPER SINGKAT dan HURUF KAPITAL (UPPERCASE) pada slide konten.
-        - Teks "teks" HARUS bercerita pengalaman pribadi secara natural (gunakan "aku", "ternyata", "dulu", dll), JANGAN KAKU/FORMAL/MENGGURUI.
+        - Teks "teks" HARUS informatif, edukatif, dan memuat fakta/informasi yang jelas secara natural, TAPI TETAP ASIK DIBACA.
         - Pisahkan kalimat demi kalimat dalam field "teks" dengan dua kali enter (\\n\\n) langsung di JSON sebagai pemisah alinea/paragraf.
             """
         else:
