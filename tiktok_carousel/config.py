@@ -20,8 +20,8 @@ CANVAS_WIDTH = 1080
 CANVAS_HEIGHT = 1920
 
 # Ukuran font default
-TITLE_FONT_SIZE = 70 # default 80/85
-CONTENT_FONT_SIZE = 55 # default 60/65
+TITLE_FONT_SIZE = 65 # default 80/85
+CONTENT_FONT_SIZE = 50 # default 60/65
 
 # Auto shrink font
 AUTO_SHRINK_TEXT = False
@@ -32,14 +32,17 @@ AUTO_SHRINK_STEP = 2
 SAFE_TOP_BOTTOM_MARGIN = 140
 
 # Jarak teks dari tepi kiri/kanan gambar
-TEXT_SIDE_MARGIN = 40
+TEXT_SIDE_MARGIN = 60
 
-# Jarak dalam box putih
-BOX_PADDING_X = 10
-BOX_PADDING_Y = 10
+# Jarak dalam box putih (Inner R)
+BOX_INNER_PADDING = 16
+BOX_PADDING_X = BOX_INNER_PADDING
+BOX_PADDING_Y = BOX_INNER_PADDING
 
 # Radius sudut box
-BOX_RADIUS = 20
+# Outer R = Inner Radius + Padding
+PADDING = 18
+BOX_RADIUS = BOX_INNER_PADDING + PADDING
 
 # Warna style box
 BOX_FILL = (255, 255, 255, 235)   # putih
