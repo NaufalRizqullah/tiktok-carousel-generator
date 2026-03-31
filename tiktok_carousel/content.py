@@ -98,79 +98,193 @@ class ContentGenerator:
         if previous_context:
             print(f"📚 Ditemukan {config.CONTEXT_FILE}! Mengingatkan AI agar tidak mengulang poin lama...")
             context_instruction = f"""
-            PENTING (CONTEXT HISTORY):
-            Berikut adalah poin-poin yang SUDAH DIBAHAS pada part/generasi sebelumnya.
-            Kamu DILARANG KERAS mengulangi poin, fakta, atau ide yang ada di bawah ini.
-            Berikan poin/fakta yang sepenuhnya BARU untuk topik ini.
-            
-            <context_history>
-            {previous_context}
-            </context_history>
+                PENTING (CONTEXT HISTORY):
+                Berikut adalah poin-poin yang SUDAH DIBAHAS pada part/generasi sebelumnya.
+                Kamu DILARANG KERAS mengulangi poin, fakta, ide, sudut bahas, atau insight yang ada di bawah ini.
+                Berikan poin/fakta yang sepenuhnya BARU untuk topik ini.
+
+                <context_history>
+                {previous_context}
+                </context_history>
             """
+
+        style_voice_rules = """
+            ATURAN KHUSUS GAYA BAHASA (WAJIB, PRIORITAS TINGGI):
+            - Tulis isi slide seperti creator TikTok yang sedang ngajelasin sesuatu ke teman sendiri dengan cara santai, sederhana, dan enak diikutin.
+            - Gunakan bahasa Indonesia yang natural, ringan, dan conversational.
+            - Gunakan sudut pandang "aku" saat perlu, dan boleh menyapa audiens dengan "kamu" atau "kalian" secara natural.
+            - Gaya bahasa harus EDUKATIF tapi tetap SANTAI, bukan formal, bukan kaku, dan bukan seperti artikel.
+            - Tujuan utama: bikin audiens paham tanpa merasa sedang digurui.
+
+            NUANSA BAHASA YANG DIINGINKAN:
+            - Terasa seperti orang yang paham topik, lalu menjelaskan dengan simpel.
+            - Bukan gaya dosen, bukan gaya berita, bukan gaya textbook.
+            - Harus terasa ringan, hangat, dan mudah dicerna.
+            - Boleh terdengar seperti "ngobrol sambil ngajarin", tapi tetap rapi dan bernilai.
+
+            POLA KALIMAT YANG DIINGINKAN:
+            - Boleh gunakan pola seperti:
+            "Banyak orang kira..."
+            "Padahal sebenarnya..."
+            "Yang sering bikin salah paham itu..."
+            "Jadi simpelnya..."
+            "Intinya gini..."
+            "Kalau dijelasin gampangnya..."
+            "Makanya..."
+            - Jangan dipakai terus-menerus di semua slide, tapi nuansanya harus sejenis: santai, jelas, dan mudah diikuti.
+
+            STRUKTUR ISI SLIDE:
+            - Paragraf awal: buka dengan hal yang relate, miskonsepsi, pertanyaan, atau masalah yang sering terjadi.
+            - Paragraf tengah: jelaskan inti poin dengan bahasa sederhana.
+            - Paragraf akhir: beri contoh, analogi, dampak, atau simpulan kecil yang bikin audiens makin paham.
+            - Setiap slide harus terasa seperti 1 potongan penjelasan yang utuh dan enak dibaca.
+
+            ATURAN BENTUK KALIMAT:
+            - Gunakan kalimat pendek sampai menengah.
+            - Hindari kalimat berbelit-belit.
+            - Pecah kalimat atau paragraf supaya nyaman dibaca di carousel.
+            - Jelaskan hal rumit dengan kata-kata sederhana.
+            - Boleh ada penekanan pada kata penting dengan HURUF KAPITAL secukupnya, jangan berlebihan.
+            - Hindari terlalu banyak istilah teknis. Kalau harus pakai istilah teknis, langsung sederhanakan artinya.
+
+            LARANGAN GAYA BAHASA:
+            - Jangan terdengar seperti artikel SEO, blog formal, modul, skripsi, jurnal, atau Wikipedia.
+            - Jangan pakai bahasa terlalu kaku seperti:
+            "merupakan", "adapun", "oleh karena itu", "hal tersebut", "guna", "berdasarkan", "dapat disimpulkan", "perlu diketahui".
+            - Jangan terlalu menggurui.
+            - Jangan terlalu salesy, terlalu motivator, atau terlalu heboh.
+            - Jangan terasa generik atau seperti template AI.
+            - Jangan terlalu curhat personal jika topiknya lebih cocok dijelaskan secara edukatif.
+
+            PATOKAN KUALITAS HASIL:
+            - Saat dibaca, audiens harus merasa: "Ohhh, sekarang aku paham."
+            - Penjelasan harus simpel, jelas, santai, dan tetap pintar.
+            - Harus terasa seperti manusia asli yang paham topik lalu menjelaskan dengan ringan.
+            - Setiap slide harus punya nilai edukasi yang jelas, bukan sekadar kata-kata enak dibaca.
+
+            CONTOH RASA YANG BENAR:
+            - "Banyak orang kira niche itu penentu utama views. Padahal belum tentu juga."
+            - "Yang sering bikin salah paham, orang fokus ke topiknya, tapi lupa cek kualitas isi kontennya."
+            - "Jadi simpelnya, bukan cuma bahas apa, tapi gimana cara kamu nyampeinnya."
+
+            CONTOH RASA YANG SALAH:
+            - "Niche konten merupakan elemen penting dalam strategi distribusi audiens."
+            - "Berdasarkan analisis, kualitas konten memiliki korelasi terhadap performa engagement."
+            - "Oleh karena itu, kreator perlu melakukan optimalisasi konten secara konsisten."
+
+            PENTING SEKALI:
+            Jangan menulis seperti AI yang sedang membuat artikel.
+            Tulis seperti creator yang paham topik, lalu menjelaskan dengan santai, simpel, dan enak dibaca di TikTok.
+        """
 
         if style == "box-title-content":
             format_wajib = f"""
-        Format wajib:
-        {{
-            "tiktok_title": "Judul Postingan Catchy",
-            "tiktok_description": "Deskripsi/caption singkat dan menarik.",
-            "tiktok_tags": ["tag1", "tag2", "tag3"],
-            "slides": [
-                {{"type": "judul", "teks": "Judul cover TikTok", "keyword_gambar": "keyword pexels"}},
-                {{"type": "konten", "slide_title": "1. JUDUL PENDEK", "teks": "Fakta penting yang perlu kamu ketahui adalah...\\n\\nHal ini terjadi karena...\\n\\nOleh karena itu, cara mengatasinya adalah...", "keyword_gambar": "keyword pexels"}}
-            ]
-        }}
-        
-        Aturan khusus teks (PENTING):
-        - WAJIB tambahkan field "slide_title" yang SUPER SINGKAT dan HURUF KAPITAL (UPPERCASE) pada slide konten.
-        - KONSISTENSI PENOMORAN: Evaluasi apakah judul slide lebih baik menggunakan angka (1., 2., dst). Jika IYA, berikan angka pada SEMUA `slide_title` konten. Jika TIDAK, hapus angka dari SEMUA `slide_title`. Jangan campur aduk.
-        - Teks "teks" HARUS informatif, edukatif, dan memuat fakta/informasi yang jelas secara natural, TAPI TETAP ASIK DIBACA.
-        - Pisahkan kalimat demi kalimat dalam field "teks" dengan dua kali enter (\\n\\n) langsung di JSON sebagai pemisah alinea/paragraf.
+            Format wajib:
+            {{
+                "tiktok_title": "Judul Postingan Catchy",
+                "tiktok_description": "Deskripsi/caption singkat dan menarik.",
+                "tiktok_tags": ["tag1", "tag2", "tag3"],
+                "slides": [
+                    {{
+                        "type": "judul",
+                        "teks": "Judul cover TikTok",
+                        "keyword_gambar": "keyword pexels"
+                    }},
+                    {{
+                        "type": "konten",
+                        "slide_title": "1. JUDUL PENDEK",
+                        "teks": "Isi slide dengan gaya share pengalaman personal.\\n\\nParagraf dipisahkan dua kali enter.\\n\\nTetap informatif tapi terasa manusiawi.",
+                        "keyword_gambar": "keyword pexels"
+                    }}
+                ]
+            }}
+
+            Aturan khusus "slide_title" (PENTING):
+            - WAJIB ada field "slide_title" pada setiap slide konten.
+            - "slide_title" harus SINGKAT, PADAT, dan HURUF KAPITAL.
+            - Maksimal 2-7 kata.
+            - Harus terdengar seperti judul section carousel TikTok, bukan headline berita.
+            - Contoh gaya yang diinginkan:
+            "NICHE KONTEN"
+            "KONTEN CAMPUR-CAMPUR"
+            "FOKUS KE KUALITAS"
+            "JANGAN SALAH FOKUS"
+            - KONSISTENSI PENOMORAN: Evaluasi apakah judul slide lebih baik menggunakan angka (1., 2., dst).
+            Jika IYA, berikan angka pada SEMUA `slide_title` konten.
+            Jika TIDAK, hapus angka dari SEMUA `slide_title`.
+            Jangan campur aduk.
+
+            Aturan khusus field "teks":
+            - Teks HARUS edukatif, jelas, dan mudah dipahami.
+            - Teks HARUS terasa santai, ringan, dan natural seperti orang yang lagi ngajelasin ke teman.
+            - Jangan terlalu personal seperti curhat mendalam, tapi juga jangan terlalu formal.
+            - Fokus pada penjelasan yang simpel, relate, dan langsung kena.
+            - Pisahkan kalimat atau paragraf dengan dua kali enter (\\n\\n) langsung di JSON.
             """
         else:
             format_wajib = f"""
-        Format wajib:
-        {{
-            "tiktok_title": "Judul Postingan Catchy",
-            "tiktok_description": "Deskripsi/caption singkat dan menarik.",
-            "tiktok_tags": ["tag1", "tag2", "tag3"],
-            "slides": [
-                {{"type": "judul", "teks": "Judul singkat", "keyword_gambar": "keyword pexels"}},
-                {{"type": "konten", "teks": "Isi slide 1", "keyword_gambar": "keyword pexels"}}
-            ]
-        }}
+            Format wajib:
+            {{
+                "tiktok_title": "Judul Postingan Catchy",
+                "tiktok_description": "Deskripsi/caption singkat dan menarik.",
+                "tiktok_tags": ["tag1", "tag2", "tag3"],
+                "slides": [
+                    {{
+                        "type": "judul",
+                        "teks": "Judul singkat",
+                        "keyword_gambar": "keyword pexels"
+                    }},
+                    {{
+                        "type": "konten",
+                        "teks": "Isi slide dengan gaya share pengalaman personal",
+                        "keyword_gambar": "keyword pexels"
+                    }}
+                ]
+            }}
             """
             if config.POINTS_ONLY_TEXT:
                 format_wajib += f"""
-        Aturan khusus teks slide:
-        - Isi teks slide harus POINT SINGKAT saja.
-        - Setiap konten hanya boleh berisi 1 poin utama.
-        - Maksimal {config.MAX_WORDS_PER_SLIDE} kata per slide.
-        - Gunakan bahasa Indonesia singkat, tajam, dan enak dibaca.
-                """
+            Aturan khusus teks slide:
+            - Isi teks slide harus POINT SINGKAT saja.
+            - Setiap konten hanya boleh berisi 1 poin utama.
+            - Maksimal {config.MAX_WORDS_PER_SLIDE} kata per slide.
+            - Gunakan bahasa Indonesia yang singkat, tajam, natural, dan enak dibaca.
+            - Walaupun singkat, gaya bahasanya tetap harus terasa seperti manusia yang sedang share insight, bukan poin formal.
+            """
             else:
                 format_wajib += """
-        Aturan khusus teks:
-        - Teks harus memuat fakta/data, jelas, dan padat.
-                """
+            Aturan khusus field "teks":
+            - Teks HARUS informatif dan jelas, tapi penyampaiannya WAJIB memakai gaya share pengalaman personal.
+            - Teks harus terdengar natural, manusiawi, relatable, tidak generik, dan tidak kaku.
+            - Teks harus seperti creator yang sedang cerita, bukan seperti artikel.
+            - Pisahkan kalimat atau paragraf dengan dua kali enter (\n\n) langsung di JSON.
+            """
 
         base_rules = f"""
-        Kamu adalah pembuat konten TikTok profesional.
+            Kamu adalah pembuat konten TikTok profesional yang sangat paham cara menulis carousel dengan rasa bahasa manusia asli.
 
-        Tugas:
-        1. Gunakan Google Search untuk riset {topic}.
-        2. Kembalikan JSON (OBJECT) tanpa markdown ```json.
-        3. Buatkan judul, deskripsi, hashtag.
+            Tugas:
+            1. Gunakan Google Search untuk riset topik: {topic}
+            2. Kembalikan JSON (OBJECT) tanpa markdown ```json
+            3. Buatkan judul, deskripsi/caption, hashtag, dan isi carousel
 
-        {context_instruction}
+            {context_instruction}
 
-        {format_wajib}
+            {style_voice_rules}
 
-        Aturan output umum:
-        - keyword_gambar harus Bahasa Inggris
-        - total slide = {num_slides + 1}
-        - JANGAN PERNAH memberikan emoji di dalam "teks", "slide_title", "judul" agar gambar tidak error kotak-kotak. Kamu sangat disarankan menggunakan banyak emoji memikat pada "tiktok_title" dan "tiktok_description".
-        """
+            {format_wajib}
+
+            ATURAN OUTPUT UMUM:
+            - keyword_gambar harus Bahasa Inggris
+            - total slide = {num_slides + 1}
+            - JANGAN PERNAH memberikan emoji di dalam "teks", "slide_title", atau judul slide agar render aman
+            - Kamu sangat disarankan menggunakan emoji yang memikat pada "tiktok_title" dan "tiktok_description"
+            - Isi setiap slide harus relevan dengan topik, tidak muter-muter, dan tetap bernilai
+            - Hindari pembukaan yang terlalu generik seperti "Pada era digital saat ini"
+            - Hindari kalimat yang terlalu rapi dan steril seperti tulisan AI
+            - Utamakan rasa: personal, reflektif, hangat, dan relatable
+            - Output harus terasa seperti creator asli yang sedang berbagi pengalaman + insight
+            """
 
         print(f"🧠 Meminta Gemini riset & membuat konten + metadata untuk topik: '{topic}'...")
         return self._generate_json_with_retry(client, base_rules)
