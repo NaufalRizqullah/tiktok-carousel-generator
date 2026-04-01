@@ -134,16 +134,26 @@ class ContentGenerator:
             - Jangan dipakai terus-menerus di semua slide, tapi nuansanya harus sejenis: santai, jelas, dan mudah diikuti.
 
             STRUKTUR ISI SLIDE:
-            - Paragraf awal: buka dengan hal yang relate, miskonsepsi, pertanyaan, atau masalah yang sering terjadi.
-            - Paragraf tengah: jelaskan inti poin dengan bahasa sederhana.
-            - Paragraf akhir: beri contoh, analogi, dampak, atau simpulan kecil yang bikin audiens makin paham.
-            - Setiap slide harus terasa seperti 1 potongan penjelasan yang utuh dan enak dibaca.
+            - Panjang isi slide HARUS fleksibel, tergantung kebutuhan isi.
+            - Kalau poinnya bisa dijelaskan dengan singkat, cukup 1-3 kalimat saja.
+            - Kalau poinnya butuh konteks, contoh, atau penjelasan tambahan, boleh lebih panjang.
+            - Tidak semua slide harus punya pembuka, isi, dan penutup lengkap.
+            - Ada slide yang cukup berisi 1 insight pendek.
+            - Ada slide yang bisa berisi penjelasan + contoh.
+            - Prioritaskan kejelasan dan daya kena, BUKAN panjang tulisan.
+            - Jangan memaksa semua slide terasa penuh.
+            - Kalau sebuah ide sudah jelas dalam kalimat singkat, berhenti di situ. Jangan ditambah filler.
+            - Variasikan panjang antar slide supaya hasil terasa lebih natural dan tidak monoton.
+            - Setiap slide tetap harus terasa utuh, tapi tidak harus panjang.
 
             ATURAN BENTUK KALIMAT:
             - Gunakan kalimat pendek sampai menengah.
             - Hindari kalimat berbelit-belit.
             - Pecah kalimat atau paragraf supaya nyaman dibaca di carousel.
             - Jelaskan hal rumit dengan kata-kata sederhana.
+            - Lebih baik singkat tapi kuat, daripada panjang tapi bertele-tele.
+            - Hindari filler atau pengulangan ide dengan kata berbeda.
+            - Jangan memanjangkan kalimat hanya supaya slide terlihat penuh.
             - Boleh ada penekanan pada kata penting dengan HURUF KAPITAL secukupnya, jangan berlebihan.
             - Hindari terlalu banyak istilah teknis. Kalau harus pakai istilah teknis, langsung sederhanakan artinya.
 
@@ -177,6 +187,16 @@ class ContentGenerator:
             Tulis seperti creator yang paham topik, lalu menjelaskan dengan santai, simpel, dan enak dibaca di TikTok.
         """
 
+        density_rules = """
+            ATURAN KEPADATAN ISI:
+            - Jangan anggap semua slide harus panjang.
+            - Beberapa slide boleh sangat singkat jika pesannya sudah kuat.
+            - Tulis seperlunya saja.
+            - Stop setelah inti poin sudah jelas.
+            - Utamakan konten padat, bukan konten panjang.
+            - Variasikan panjang isi antar slide agar terasa natural.
+        """
+
         if style == "box-title-content":
             format_wajib = f"""
             Format wajib:
@@ -193,7 +213,7 @@ class ContentGenerator:
                     {{
                         "type": "konten",
                         "slide_title": "1. JUDUL PENDEK",
-                        "teks": "Isi slide dengan gaya share pengalaman personal.\\n\\nParagraf dipisahkan dua kali enter.\\n\\nTetap informatif tapi terasa manusiawi.",
+                        "teks": "Isi slide yang fleksibel: bisa singkat, bisa sedang, bisa lebih panjang kalau memang perlu.\\n\\nKalau satu insight sudah jelas dalam 1-3 kalimat, jangan dipanjangkan.\\n\\nKalau butuh contoh atau konteks, baru lanjutkan.",
                         "keyword_gambar": "keyword pexels"
                     }}
                 ]
@@ -219,6 +239,8 @@ class ContentGenerator:
             - Teks HARUS terasa santai, ringan, dan natural seperti orang yang lagi ngajelasin ke teman.
             - Jangan terlalu personal seperti curhat mendalam, tapi juga jangan terlalu formal.
             - Fokus pada penjelasan yang simpel, relate, dan langsung kena.
+            - Panjang teks HARUS fleksibel. Tidak semua slide perlu panjang.
+            - Jika inti poin sudah jelas dalam kalimat singkat, jangan tambahkan filler.
             - Pisahkan kalimat atau paragraf dengan dua kali enter (\\n\\n) langsung di JSON.
             """
         else:
@@ -236,12 +258,13 @@ class ContentGenerator:
                     }},
                     {{
                         "type": "konten",
-                        "teks": "Isi slide dengan gaya share pengalaman personal",
+                        "teks": "Isi slide dengan gaya creator yang santai, jelas, dan fleksibel panjangnya. Kalau cukup singkat, jangan dipanjangkan.",
                         "keyword_gambar": "keyword pexels"
                     }}
                 ]
             }}
             """
+
             if config.POINTS_ONLY_TEXT:
                 format_wajib += f"""
             Aturan khusus teks slide:
@@ -250,6 +273,7 @@ class ContentGenerator:
             - Maksimal {config.MAX_WORDS_PER_SLIDE} kata per slide.
             - Gunakan bahasa Indonesia yang singkat, tajam, natural, dan enak dibaca.
             - Walaupun singkat, gaya bahasanya tetap harus terasa seperti manusia yang sedang share insight, bukan poin formal.
+            - Jangan memanjangkan poin hanya supaya terlihat penuh.
             """
             else:
                 format_wajib += """
@@ -257,7 +281,10 @@ class ContentGenerator:
             - Teks HARUS informatif dan jelas, tapi penyampaiannya WAJIB memakai gaya share pengalaman personal.
             - Teks harus terdengar natural, manusiawi, relatable, tidak generik, dan tidak kaku.
             - Teks harus seperti creator yang sedang cerita, bukan seperti artikel.
-            - Pisahkan kalimat atau paragraf dengan dua kali enter (\n\n) langsung di JSON.
+            - Panjang teks HARUS fleksibel: bisa pendek, bisa sedang, bisa panjang kalau memang perlu.
+            - Kalau satu ide sudah jelas dalam kalimat singkat, berhenti di situ.
+            - Hindari filler, pengulangan, dan kalimat tambahan yang tidak menambah makna.
+            - Pisahkan kalimat atau paragraf dengan dua kali enter (\\n\\n) langsung di JSON.
             """
 
         base_rules = f"""
@@ -272,6 +299,8 @@ class ContentGenerator:
 
             {style_voice_rules}
 
+            {density_rules}
+
             {format_wajib}
 
             ATURAN OUTPUT UMUM:
@@ -284,7 +313,10 @@ class ContentGenerator:
             - Hindari kalimat yang terlalu rapi dan steril seperti tulisan AI
             - Utamakan rasa: personal, reflektif, hangat, dan relatable
             - Output harus terasa seperti creator asli yang sedang berbagi pengalaman + insight
-            """
+            - Jangan samakan panjang semua slide
+            - Biarkan ada variasi: ada slide yang pendek, ada yang sedang, ada yang sedikit lebih panjang bila dibutuhkan
+            - Jangan membuat semua slide terasa seperti paragraf penuh
+        """
 
         print(f"🧠 Meminta Gemini riset & membuat konten + metadata untuk topik: '{topic}'...")
         return self._generate_json_with_retry(client, base_rules)
