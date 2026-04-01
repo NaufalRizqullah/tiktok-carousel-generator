@@ -13,7 +13,7 @@ To make it easy for *Content Creators* and *Affiliate Marketers* to produce educ
 1. **🤖 AI Content Research & Copywriting:** Powered by **Google Gemini AI** with *Google Search Grounding*. The system searches for the most *up-to-date* facts and trends from the internet before writing slide text.
 2. **🖼️ Auto-Sourcing Background:** Integrated with **Pexels API** to automatically search and download high-quality portrait images. Includes *Anti-Duplicate* logic to prevent image repetition.
 3. **🎨 Smart Image Processing (Pillow):**
-   - Automatically *crop* and *resize* images to 9:16 ratio (1080x1920).
+   - Automatically *crop* and *resize* images to 9:16 ratio (1080x1920) or 1:1 (1080x1080).
    - Add precision text *overlay* centered on screen.
    - **Auto-shrink Text:** Font size automatically shrinks if the text is too long, preventing overflow.
 4. **💅 Three TikTok Text Visual Styles:**
@@ -70,7 +70,12 @@ python main.py -t "Beginner Diet Tips"
 python main.py -t "SEO Optimization Tips 2026" -s 7 --style box -o "seo_content"
 ```
 
-**Example 3: Creating a Content Series (Part 1 & Part 2)**
+**Example 3: Square 1:1 Output for feed/photo post**
+```bash
+python main.py -t "How to Build Personal Branding" --style box-title-content --format square -o "branding_square"
+```
+
+**Example 4: Creating a Content Series (Part 1 & Part 2)**
 Thanks to the *Context Memory* feature, you can create serial content without worrying about repetitive material:
 ```bash
 # First run
@@ -90,6 +95,7 @@ python main.py -t "Small Business Ideas part 2" -o "business_p2"
 | `-t` | `--topic` | **(Required)** Topic for AI to generate content about | *None* |
 | `-s` | `--slides` | Number of content slides (excluding the title slide) | `5` |
 | `--style` | `--style` | Text visual style (`outline`, `box`, or `box-title-content`) | `outline` |
+| `--format` | `--format` | Output format (`portrait` = 9:16, `square` = 1:1) | `portrait` |
 | `--title-family`| `--title-family`| Font family for title (e.g., `LeagueSpartan`) | *from config* |
 | `--title-weight`| `--title-weight`| Title font weight (`100` - `900`) | *from config* |
 | `--content-family`| `--content-family`| Font family for content (e.g., `Poppins`) | *from config* |

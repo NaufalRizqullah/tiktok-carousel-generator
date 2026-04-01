@@ -12,7 +12,7 @@ Mempermudah *Content Creator* dan *Affiliate Marketer* dalam memproduksi konten 
 ## ✨ Fitur Utama
 1. **🤖 AI Content Research & Copywriting:** Ditenagai oleh **Google Gemini AI** dengan fitur *Google Search Grounding*. Sistem mencari fakta dan tren paling *up-to-date* dari internet sebelum menulis teks slide.
 2. **🖼️ Auto-Sourcing Background:** Integrasi **Pexels API** untuk otomatis mencari dan mengunduh gambar vertikal berkualitas tinggi. Dilengkapi dengan logika *Anti-Duplikat* agar gambar tidak berulang.
-3. **🎨 Smart Image Processing (Pillow):** - Otomatis *crop* dan *resize* gambar ke rasio 9:16 (1080x1920).
+3. **🎨 Smart Image Processing (Pillow):** - Otomatis *crop* dan *resize* gambar ke rasio 9:16 (1080x1920) atau 1:1 (1080x1080).
    - Menambahkan *overlay* teks presisi di tengah layar.
    - **Auto-shrink Text:** Ukuran font akan otomatis mengecil jika teks terlalu panjang agar tidak keluar batas layar.
 4. **💅 Tiga Gaya Visual Teks TikTok:**
@@ -69,7 +69,12 @@ python main.py -t "Tips Diet Pemula"
 python main.py -t "Cara Optimasi SEO 2026" -s 7 --style box -o "konten_seo"
 ```
 
-**Contoh 3: Membuat Konten Berseri (Part 1 & Part 2)**
+**Contoh 3: Output Square 1:1 untuk feed/photo post**
+```bash
+python main.py -t "Cara Bangun Personal Branding" --style box-title-content --format square -o "branding_square"
+```
+
+**Contoh 4: Membuat Konten Berseri (Part 1 & Part 2)**
 Berkat fitur *Context Memory*, kamu bisa membuat serial konten tanpa takut materinya berulang:
 ```bash
 # Eksekusi pertama
@@ -89,6 +94,7 @@ python main.py -t "Ide Usaha Modal Kecil part 2" -o "usaha_p2"
 | `-t` | `--topic` | **(Wajib)** Topik pembahasan untuk di-generate AI | *None* |
 | `-s` | `--slides` | Jumlah slide konten (tidak termasuk slide judul) | `5` |
 | `--style` | `--style` | Gaya visual teks (`outline`, `box`, atau `box-title-content`) | `outline` |
+| `--format` | `--format` | Format output (`portrait` = 9:16, `square` = 1:1) | `portrait` |
 | `--title-family`| `--title-family`| Family font judul (contoh: `LeagueSpartan` atau `Poppins`) | *dari config* |
 | `--title-weight`| `--title-weight`| Ketebalan font judul (angka `100` - `900`) | *dari config* |
 | `--content-family`| `--content-family`| Family font konten (contoh: `LeagueSpartan` atau `Poppins`) | *dari config* |

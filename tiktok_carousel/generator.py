@@ -11,11 +11,13 @@ from .renderer import SlideRenderer
 class TikTokCarouselGenerator:
     """Orchestrator utama yang menggabungkan semua modul menjadi satu pipeline."""
 
-    def __init__(self, pexels_key: str, gemini_key: str, 
+    def __init__(self, pexels_key: str, gemini_key: str,
                  title_font_family: str = None, title_font_weight: int = None,
                  content_font_family: str = None, content_font_weight: int = None,
-                 output_dir: str = "output"):
-        
+                 output_dir: str = "output", output_format: str = "portrait"):
+
+        config.apply_output_preset(output_format)
+
         tf_family = title_font_family or config.TITLE_FONT_FAMILY
         tf_weight = title_font_weight or config.TITLE_FONT_WEIGHT
         self.title_font_path = get_font_path(tf_family, tf_weight)
@@ -23,8 +25,9 @@ class TikTokCarouselGenerator:
         cf_family = content_font_family or config.CONTENT_FONT_FAMILY
         cf_weight = content_font_weight or config.CONTENT_FONT_WEIGHT
         self.content_font_path = get_font_path(cf_family, cf_weight)
-        
+
         self.output_dir = output_dir
+        self.output_format = output_format
 
         # Inisialisasi sub-modul
         self.content_gen = ContentGenerator(api_key=gemini_key)
@@ -42,6 +45,11 @@ class TikTokCarouselGenerator:
             # 1. Dapatkan JSON yang berisi Metadata + Slides
             previous_context = read_context(config.CONTEXT_FILE)
             full_data = self.content_gen.generate(topic, num_slides, style, previous_context)
+            full_data["output_format"] = self.output_format
+            full_data["canvas_size"] = {
+                "width": config.CANVAS_WIDTH,
+                "height": config.CANVAS_HEIGHT,
+            }
 
             # 2. Ekstraksi data
             tiktok_title = full_data.get("tiktok_title", "Tanpa Judul")
@@ -55,6 +63,7 @@ class TikTokCarouselGenerator:
             print("=" * 50)
             print(f"📍 Judul     : {tiktok_title}")
             print(f"📍 Deskripsi : {tiktok_desc}")
+            print(f"📍 Format    : {self.output_format} ({config.CANVAS_WIDTH}x{config.CANVAS_HEIGHT})")
 
             # Format hashtag agar ada tanda '#' nya jika AI lupa
             formatted_tags = " ".join([f"#{t.replace('#', '')}" for t in tiktok_tags])

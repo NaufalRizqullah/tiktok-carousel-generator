@@ -96,8 +96,88 @@ class SlideRenderer:
 
         return current_size, best_layout
 
+    def _calculate_box_title_content_layout(self, draw: ImageDraw.Draw, text: str, title_text: str,
+                                            title_font_size: int, content_font_size: int) -> dict:
+        """Hitung layout lengkap untuk style box-title-content (judul + paragraf konten)."""
+        title_font = self._load_font(self.title_font_path, title_font_size)
+        content_font = self._load_font(self.content_font_path, content_font_size)
+        max_p_width = config.CANVAS_WIDTH - (config.TEXT_SIDE_MARGIN * 2) - (config.BOX_PADDING_X * 2)
+
+        paragraphs = [p.strip() for p in text.split("\n") if p.strip()]
+        wrapped_title = self._wrap_text_by_pixel_width(draw, title_text, title_font, max_p_width)
+
+        title_bbox = draw.multiline_textbbox(
+            (0, 0), wrapped_title, font=title_font, align="center", spacing=config.TEXT_LINE_SPACING
+        )
+        title_width = title_bbox[2] - title_bbox[0]
+        title_height = title_bbox[3] - title_bbox[1]
+        title_box_height = title_height + (config.BOX_PADDING_Y * 2)
+
+        wrapped_paragraphs = []
+        total_height = title_box_height + config.TITLE_CONTENT_SPACING
+        for paragraph in paragraphs:
+            wrapped_paragraph = self._wrap_text_by_pixel_width(draw, paragraph, content_font, max_p_width)
+            paragraph_bbox = draw.multiline_textbbox(
+                (0, 0), wrapped_paragraph, font=content_font, spacing=config.TEXT_LINE_SPACING
+            )
+            paragraph_width = paragraph_bbox[2] - paragraph_bbox[0]
+            paragraph_height = paragraph_bbox[3] - paragraph_bbox[1]
+            wrapped_paragraphs.append({
+                "text": wrapped_paragraph,
+                "width": paragraph_width,
+                "height": paragraph_height,
+                "offset_x": paragraph_bbox[0],
+                "offset_y": paragraph_bbox[1],
+            })
+            total_height += paragraph_height + (config.BOX_PADDING_Y * 2) + config.PARAGRAPH_SPACING
+
+        if wrapped_paragraphs:
+            total_height -= config.PARAGRAPH_SPACING
+
+        return {
+            "title_font": title_font,
+            "content_font": content_font,
+            "wrapped_title": wrapped_title,
+            "title_width": title_width,
+            "title_height": title_height,
+            "title_offset_x": title_bbox[0],
+            "title_offset_y": title_bbox[1],
+            "title_box_height": title_box_height,
+            "paragraphs": wrapped_paragraphs,
+            "total_height": total_height,
+            "title_font_size": title_font_size,
+            "content_font_size": content_font_size,
+        }
+
+    def _get_best_fitting_box_title_content_layout(self, draw: ImageDraw.Draw, text: str, title_text: str,
+                                                   initial_title_font_size: int, initial_content_font_size: int) -> dict:
+        """Auto-shrink loop: kecilkan font title + content bersamaan sampai muat di canvas."""
+        layout = self._calculate_box_title_content_layout(
+            draw, text, title_text, initial_title_font_size, initial_content_font_size
+        )
+
+        if not config.AUTO_SHRINK_TEXT:
+            return layout
+
+        max_allowed_height = config.CANVAS_HEIGHT - (config.SAFE_TOP_BOTTOM_MARGIN * 2)
+        current_title_size = initial_title_font_size
+        current_content_size = initial_content_font_size
+        best_layout = layout
+
+        while (
+            current_content_size > config.AUTO_SHRINK_MIN_FONT_SIZE
+            and best_layout["total_height"] > max_allowed_height
+        ):
+            current_title_size -= config.AUTO_SHRINK_STEP
+            current_content_size -= config.AUTO_SHRINK_STEP
+            best_layout = self._calculate_box_title_content_layout(
+                draw, text, title_text, current_title_size, current_content_size
+            )
+
+        return best_layout
+
     def process_slide(self, img: Image.Image, text: str, font_size: int, style: str, title_text: str = "", is_title: bool = False) -> Image.Image:
-        """Proses gambar slide: resize/crop ke 9:16, lalu render teks sesuai style."""
+        """Proses gambar slide: resize/crop sesuai preset, lalu render teks sesuai style."""
         target_size = (config.CANVAS_WIDTH, config.CANVAS_HEIGHT)
         img_ratio = img.width / img.height
         target_ratio = target_size[0] / target_size[1]
@@ -118,75 +198,62 @@ class SlideRenderer:
 
         if style == "box-title-content" and title_text:
             title_text = title_text.upper()
-            title_font = self._load_font(self.title_font_path, font_size + 5)
-            c_font = self._load_font(self.content_font_path, font_size)
-            max_p_width = config.CANVAS_WIDTH - (config.TEXT_SIDE_MARGIN * 2) - (config.BOX_PADDING_X * 2)
+            layout = self._get_best_fitting_box_title_content_layout(
+                draw,
+                text,
+                title_text,
+                font_size + config.TITLE_BOX_FONT_BONUS,
+                font_size,
+            )
 
-            paragraphs = [p.strip() for p in text.split("\n") if p.strip()]
+            start_y = (img.height - layout["total_height"]) / 2
 
-            # Wrap titlenya juga agar kalau kepanjangan bisa turun ke bawah
-            wrapped_title = self._wrap_text_by_pixel_width(draw, title_text, title_font, max_p_width)
+            # 1. Gambar block judul
+            title_x = (img.width - layout["title_width"]) / 2
+            title_y = start_y + config.BOX_PADDING_Y
 
-            # 1. Hitung total tinggi
-            t_bbox = draw.multiline_textbbox((0, 0), wrapped_title, font=title_font, align="center", spacing=config.TEXT_LINE_SPACING)
-            tt_w = t_bbox[2] - t_bbox[0]
-            tt_h = t_bbox[3] - t_bbox[1]
-            title_offset_x = t_bbox[0]
-            title_offset_y = t_bbox[1]
-            title_box_h = tt_h + (config.BOX_PADDING_Y * 2)
-
-            total_h = title_box_h
-            SPACING_TITLE_CONTENT = 60
-            SPACING_PARAGRAPHS = 25
-
-            total_h += SPACING_TITLE_CONTENT
-
-            wrapped_paragraphs = []
-            for p in paragraphs:
-                wp = self._wrap_text_by_pixel_width(draw, p, c_font, max_p_width)
-                p_bbox = draw.multiline_textbbox((0, 0), wp, font=c_font, spacing=config.TEXT_LINE_SPACING)
-                pw = p_bbox[2] - p_bbox[0]
-                ph = p_bbox[3] - p_bbox[1]
-                wrapped_paragraphs.append((wp, pw, ph, p_bbox[0], p_bbox[1]))
-                total_h += ph + (config.BOX_PADDING_Y * 2) + SPACING_PARAGRAPHS
-
-            if paragraphs:
-                total_h -= SPACING_PARAGRAPHS
-
-            start_y = (img.height - total_h) / 2
-
-            # 2. Gambar block judul
-            t_x = (img.width - tt_w) / 2
-            t_y = start_y + config.BOX_PADDING_Y
-
-            title_box_left = t_x - config.BOX_PADDING_X
+            title_box_left = title_x - config.BOX_PADDING_X
             title_box_top = start_y
-            title_box_right = t_x + tt_w + config.BOX_PADDING_X
-            title_box_bottom = start_y + title_box_h
+            title_box_right = title_x + layout["title_width"] + config.BOX_PADDING_X
+            title_box_bottom = start_y + layout["title_box_height"]
 
             draw.rounded_rectangle(
                 [title_box_left, title_box_top, title_box_right, title_box_bottom],
                 radius=config.BOX_RADIUS,
                 fill=config.BOX_FILL
             )
-            draw.multiline_text((t_x - title_offset_x, t_y - title_offset_y), wrapped_title, font=title_font, fill=config.BOX_TEXT_FILL, align="center", spacing=config.TEXT_LINE_SPACING)
+            draw.multiline_text(
+                (title_x - layout["title_offset_x"], title_y - layout["title_offset_y"]),
+                layout["wrapped_title"],
+                font=layout["title_font"],
+                fill=config.BOX_TEXT_FILL,
+                align="center",
+                spacing=config.TEXT_LINE_SPACING,
+            )
 
-            content_y = title_box_bottom + SPACING_TITLE_CONTENT
+            content_y = title_box_bottom + config.TITLE_CONTENT_SPACING
 
-            # 3. Gambar block konten
-            for wp, pw, ph, p_offset_x, p_offset_y in wrapped_paragraphs:
+            # 2. Gambar block konten
+            for paragraph in layout["paragraphs"]:
                 px = config.TEXT_SIDE_MARGIN + config.BOX_PADDING_X
                 py = content_y + config.BOX_PADDING_Y
 
-                b_left = px - config.BOX_PADDING_X
-                b_top = content_y
-                b_right = px + max(pw, 10) + config.BOX_PADDING_X
-                b_bottom = content_y + ph + (config.BOX_PADDING_Y * 2)
+                box_left = px - config.BOX_PADDING_X
+                box_top = content_y
+                box_right = px + max(paragraph["width"], 10) + config.BOX_PADDING_X
+                box_bottom = content_y + paragraph["height"] + (config.BOX_PADDING_Y * 2)
 
-                draw.rounded_rectangle([b_left, b_top, b_right, b_bottom], radius=config.BOX_RADIUS, fill=config.BOX_FILL)
-                draw.multiline_text((px - p_offset_x, py - p_offset_y), wp, font=c_font, fill=config.BOX_TEXT_FILL, align="left", spacing=config.TEXT_LINE_SPACING)
+                draw.rounded_rectangle([box_left, box_top, box_right, box_bottom], radius=config.BOX_RADIUS, fill=config.BOX_FILL)
+                draw.multiline_text(
+                    (px - paragraph["offset_x"], py - paragraph["offset_y"]),
+                    paragraph["text"],
+                    font=layout["content_font"],
+                    fill=config.BOX_TEXT_FILL,
+                    align="left",
+                    spacing=config.TEXT_LINE_SPACING,
+                )
 
-                content_y = b_bottom + SPACING_PARAGRAPHS
+                content_y = box_bottom + config.PARAGRAPH_SPACING
 
             return img.convert("RGB")
 
@@ -194,18 +261,18 @@ class SlideRenderer:
         final_font_size, layout = self._get_best_fitting_layout(draw, text, font_size, style, font_type)
         font = layout["font"]
         wrapped_text = layout["wrapped_text"]
-        t_width = layout["text_width"]
-        t_height = layout["text_height"]
-        t_offset_x = layout["offset_x"]
-        t_offset_y = layout["offset_y"]
+        text_width = layout["text_width"]
+        text_height = layout["text_height"]
+        text_offset_x = layout["offset_x"]
+        text_offset_y = layout["offset_y"]
 
-        x_pos = (img.width - t_width) / 2
-        y_pos = ((img.height - t_height) / 2) + config.TEXT_VERTICAL_OFFSET
+        x_pos = (img.width - text_width) / 2
+        y_pos = ((img.height - text_height) / 2) + config.TEXT_VERTICAL_OFFSET
 
         if style == "outline":
             stroke_width = max(2, int(final_font_size * config.OUTLINE_STROKE_RATIO))
             draw.multiline_text(
-                (x_pos - t_offset_x, y_pos - t_offset_y),
+                (x_pos - text_offset_x, y_pos - text_offset_y),
                 wrapped_text,
                 font=font,
                 fill=config.OUTLINE_TEXT_FILL,
@@ -218,8 +285,8 @@ class SlideRenderer:
         elif style in ("box", "box-title-content"):
             box_left = x_pos - config.BOX_PADDING_X
             box_top = y_pos - config.BOX_PADDING_Y
-            box_right = x_pos + t_width + config.BOX_PADDING_X
-            box_bottom = y_pos + t_height + config.BOX_PADDING_Y
+            box_right = x_pos + text_width + config.BOX_PADDING_X
+            box_bottom = y_pos + text_height + config.BOX_PADDING_Y
 
             draw.rounded_rectangle(
                 [box_left, box_top, box_right, box_bottom],
@@ -228,7 +295,7 @@ class SlideRenderer:
             )
 
             draw.multiline_text(
-                (x_pos - t_offset_x, y_pos - t_offset_y),
+                (x_pos - text_offset_x, y_pos - text_offset_y),
                 wrapped_text,
                 font=font,
                 fill=config.BOX_TEXT_FILL,

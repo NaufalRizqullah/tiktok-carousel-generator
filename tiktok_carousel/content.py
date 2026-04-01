@@ -187,7 +187,18 @@ class ContentGenerator:
             Tulis seperti creator yang paham topik, lalu menjelaskan dengan santai, simpel, dan enak dibaca di TikTok.
         """
 
-        density_rules = """
+        # Format-aware density rules
+        format_constraint = ""
+        if config.OUTPUT_FORMAT == "square":
+            format_constraint = f"""
+            PERHATIAN FORMAT SQUARE (1:1):
+            - Output format saat ini adalah SQUARE (1080x1080), ruang vertikal SANGAT TERBATAS.
+            - Maksimal {config.MAX_WORDS_PER_SLIDE} kata per slide, JANGAN LEBIH.
+            - Tulis inti poin saja, tanpa pengantar atau penutup berlebihan.
+            - Kalimat harus sangat ringkas dan padat.
+            """
+
+        density_rules = f"""
             ATURAN KEPADATAN ISI:
             - Jangan anggap semua slide harus panjang.
             - Beberapa slide boleh sangat singkat jika pesannya sudah kuat.
@@ -195,6 +206,7 @@ class ContentGenerator:
             - Stop setelah inti poin sudah jelas.
             - Utamakan konten padat, bukan konten panjang.
             - Variasikan panjang isi antar slide agar terasa natural.
+            {format_constraint}
         """
 
         if style == "box-title-content":
