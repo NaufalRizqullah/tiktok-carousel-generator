@@ -192,10 +192,11 @@ class ContentGenerator:
         if config.OUTPUT_FORMAT == "square":
             format_constraint = f"""
             PERHATIAN FORMAT SQUARE (1:1):
-            - Output format saat ini adalah SQUARE (1080x1080), ruang vertikal SANGAT TERBATAS.
-            - Maksimal {config.MAX_WORDS_PER_SLIDE} kata per slide, JANGAN LEBIH.
-            - Tulis inti poin saja, tanpa pengantar atau penutup berlebihan.
-            - Kalimat harus sangat ringkas dan padat.
+            - Output format saat ini adalah SQUARE (1080x1080).
+            - Maksimal {config.MAX_WORDS_PER_SLIDE} kata per slide.
+            - Tulis penjelasan yang cukup agar audiens paham, tapi tetap ringkas.
+            - Boleh 2-4 kalimat per slide, asal padat dan bermakna.
+            - Jangan terlalu singkat sampai terasa kurang konteks.
             """
 
         density_rules = f"""

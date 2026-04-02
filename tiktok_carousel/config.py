@@ -58,26 +58,39 @@ _BASE_LAYOUT_DEFAULTS = {
 
     # Gemini point text image
     "POINTS_ONLY_TEXT": True,
-    "MAX_WORDS_PER_SLIDE": 25,
+    "MAX_WORDS_PER_SLIDE": 40, # Old 25; 
 }
 
 OUTPUT_PRESETS = {
     "portrait": {},
     "square": {
+        # Ukuran canvas 1:1 untuk feed/photo post TikTok
         "CANVAS_WIDTH": 1080,
         "CANVAS_HEIGHT": 1080,
+
+        # Font lebih kecil dari portrait karena ruang vertikal terbatas
         "TITLE_FONT_SIZE": 58,
         "CONTENT_FONT_SIZE": 42,
+
+        # Wajib aktif agar teks panjang otomatis menyusut, tidak keluar canvas
         "AUTO_SHRINK_TEXT": True,
-        "AUTO_SHRINK_MIN_FONT_SIZE": 30,
-        "SAFE_TOP_BOTTOM_MARGIN": 70,
-        "TEXT_SIDE_MARGIN": 42,
-        "BOX_INNER_PADDING": 14,
-        "BOX_RADIUS_EXTRA": 14,
-        "TEXT_LINE_SPACING": 8,
-        "TITLE_CONTENT_SPACING": 34,
-        "PARAGRAPH_SPACING": 16,
-        "MAX_WORDS_PER_SLIDE": 16,
+        "AUTO_SHRINK_MIN_FONT_SIZE": 30,   # Batas terkecil saat auto-shrink
+
+        # Margin lebih kecil agar area konten lebih luas di canvas 1:1
+        "SAFE_TOP_BOTTOM_MARGIN": 40,      # Jarak aman atas/bawah
+        "TEXT_SIDE_MARGIN": 50,             # Jarak teks dari tepi kiri/kanan
+
+        # Padding dalam box putih (ruang antara teks dan tepi box)
+        "BOX_INNER_PADDING": 18,
+        "BOX_RADIUS_EXTRA": 10,            # Tambahan radius sudut box
+
+        # Spasi antar elemen
+        "TEXT_LINE_SPACING": 8,            # Jarak antar baris teks
+        "TITLE_CONTENT_SPACING": 30,       # Jarak antara box judul dan box konten
+        "PARAGRAPH_SPACING": 14,           # Jarak antar box paragraf konten
+
+        # Batas kata per slide untuk AI (lebih sedikit dari portrait)
+        "MAX_WORDS_PER_SLIDE": 30,
     },
 }
 
