@@ -22,6 +22,9 @@ Mempermudah *Content Creator* dan *Affiliate Marketer* dalam memproduksi konten 
 5. **🧠 Smart Context Memory (Multi-part Series):** Otomatis menyimpan histori *generate* ke dalam `context.txt`. Jika kamu membuat "Part 2", AI akan membaca file ini dan **tidak akan mengulangi** poin yang sama dari "Part 1".
 6. **📦 Auto-Metadata Generation:** Menghasilkan file `metadata.json` yang berisi Judul Catchy, Deskripsi/Caption, dan Hashtag yang siap di-*copy-paste* saat *upload*.
 7. **🅰️ Auto-Download Font:** Tidak punya font *bold*? Sistem akan otomatis mengunduh font **Montserrat-Black** jika file font tidak ditemukan di komputermu.
+8. **📐 Dua Format Output:**
+   - `portrait` (9:16 — 1080x1920): Format default untuk TikTok story/carousel vertikal.
+   - `square` (1:1 — 1080x1080): Format optimal untuk TikTok photo post/feed agar gambar tidak tenggelam dan langsung terlihat penuh.
 
 ---
 
@@ -219,28 +222,42 @@ Berikut adalah daftar lengkap variabel yang bisa kamu kustomisasi:
 
 ## 📸 Contoh Hasil
 
-Berikut adalah contoh gambar yang dihasilkan oleh sistem ini untuk setiap gaya visual:
+Berikut adalah contoh gambar yang dihasilkan oleh sistem ini untuk setiap format dan gaya visual:
 
-### 🖌️ Style: `outline`
+### 📱 Format: Portrait (9:16)
 
-| Slide 00 | Slide 01 |
-| :---: | :---: |
-| ![Slide 00](src/images/outline/slide_00.jpg) | ![Slide 01](src/images/outline/slide_01.jpg) |
-| **Slide 02** | **Slide 03** |
-| ![Slide 02](src/images/outline/slide_02.jpg) | ![Slide 03](src/images/outline/slide_03.jpg) |
-
-### 📦 Style: `box`
+#### 🖌️ Style: `outline`
 
 | Slide 00 | Slide 01 |
 | :---: | :---: |
-| ![Slide 00](src/images/box/slide_00.jpg) | ![Slide 01](src/images/box/slide_01.jpg) |
+| ![Slide 00](src/images/potrait/outline/slide_00.jpg) | ![Slide 01](src/images/potrait/outline/slide_01.jpg) |
 | **Slide 02** | **Slide 03** |
-| ![Slide 02](src/images/box/slide_02.jpg) | ![Slide 03](src/images/box/slide_03.jpg) |
+| ![Slide 02](src/images/potrait/outline/slide_02.jpg) | ![Slide 03](src/images/potrait/outline/slide_03.jpg) |
 
-### 📝 Style: `box-title-content`
+#### 📦 Style: `box`
 
 | Slide 00 | Slide 01 |
 | :---: | :---: |
-| ![Slide 00](src/images/box-title-content/slide_00.jpg) | ![Slide 01](src/images/box-title-content/slide_01.jpg) |
+| ![Slide 00](src/images/potrait/box/slide_00.jpg) | ![Slide 01](src/images/potrait/box/slide_01.jpg) |
 | **Slide 02** | **Slide 03** |
-| ![Slide 02](src/images/box-title-content/slide_02.jpg) | ![Slide 03](src/images/box-title-content/slide_03.jpg) |
+| ![Slide 02](src/images/potrait/box/slide_02.jpg) | ![Slide 03](src/images/potrait/box/slide_03.jpg) |
+
+#### 📝 Style: `box-title-content`
+
+| Slide 00 | Slide 01 |
+| :---: | :---: |
+| ![Slide 00](src/images/potrait/box-title-content/slide_00.jpg) | ![Slide 01](src/images/potrait/box-title-content/slide_01.jpg) |
+| **Slide 02** | **Slide 03** |
+| ![Slide 02](src/images/potrait/box-title-content/slide_02.jpg) | ![Slide 03](src/images/potrait/box-title-content/slide_03.jpg) |
+
+---
+
+### 🟦 Format: Square (1:1)
+
+#### 📝 Style: `box-title-content`
+
+| Slide 00 | Slide 01 |
+| :---: | :---: |
+| ![Slide 00](src/images/square/box-title-content/slide_00.jpg) | ![Slide 01](src/images/square/box-title-content/slide_01.jpg) |
+| **Slide 02** | **Slide 03** |
+| ![Slide 02](src/images/square/box-title-content/slide_02.jpg) | ![Slide 03](src/images/square/box-title-content/slide_03.jpg) |
