@@ -15,6 +15,8 @@ class ContentGenerator:
 
         # Gemini Config
         self.MODEL = "gemini-2.5-flash"
+        # self.MODEL = "gemini-3-flash-preview"
+        # self.MODEL = "gemini-3.1-flash-lite-preview"
         self.MAX_ATTEMPTS = 10
         self.INITIAL_WAIT_SECONDS = 60
         self.WAIT_INCREMENT_SECONDS = 30
