@@ -7,9 +7,8 @@ from google.genai import types
 
 from . import config
 
-
 class ContentGenerator:
-    """Modul AI Content Generator menggunakan Google Gemini."""
+    """Modul AI Content Generator menggunakan Google Gemini dengan Realtime Search."""
 
     def __init__(self, api_key: str):
         self.api_key = api_key
@@ -45,6 +44,27 @@ class ContentGenerator:
         )
         return any(k in msg for k in transient_keywords)
 
+    def _extract_json_from_text(self, text: str) -> dict:
+        """
+        Fungsi sakti untuk mencari pola JSON (mulai dari { sampai }) 
+        di dalam teks yang kotor (berisi basa-basi/markdown).
+        """
+        if not text:
+            raise ValueError("Teks respons kosong.")
+
+        # Cari substring yang dimulai dengan '{' dan diakhiri dengan '}'
+        # re.DOTALL memungkinkan titik (.) untuk mencocokkan karakter newline (\n)
+        match = re.search(r'\{.*\}', text, re.DOTALL)
+        
+        if match:
+            json_str = match.group(0)
+            try:
+                return json.loads(json_str)
+            except json.JSONDecodeError as e:
+                raise ValueError(f"Ditemukan kurung kurawal, tapi isinya bukan JSON valid: {e}\nTeks: {json_str}")
+        else:
+            raise ValueError(f"Tidak dapat menemukan pola JSON (kurung kurawal) pada teks respons:\n{text}")
+
     def _generate_json_with_retry(self, client, prompt_text):
         last_exc = None
         for attempt in range(1, self.MAX_ATTEMPTS + 1):
@@ -54,13 +74,18 @@ class ContentGenerator:
                     model=self.MODEL,
                     contents=prompt_text,
                     config=types.GenerateContentConfig(
-                        tools=[{"google_search": {}}]
+                        # MENGGUNAKAN GOOGLE SEARCH
+                        tools=[{"google_search": {}}],
+                        # PERHATIAN: response_mime_type DIHAPUS agar tools bisa berjalan
                     ),
                 )
 
-                text = (response.text or "").strip()
-                text = text.removeprefix("```json").removesuffix("```").strip()
-                return json.loads(text)
+                # Ekstrak teks dari respons
+                raw_text = (response.text or "").strip()
+                
+                # Gunakan fungsi regex untuk membuang teks basa-basi dan mengambil JSON-nya
+                parsed_json = self._extract_json_from_text(raw_text)
+                return parsed_json
 
             except Exception as exc:
                 last_exc = exc
@@ -96,7 +121,7 @@ class ContentGenerator:
         # Cek apakah ada context dari part sebelumnya
         context_instruction = ""
         if previous_context:
-            print(f"📚 Ditemukan {config.CONTEXT_FILE}! Mengingatkan AI agar tidak mengulang poin lama...")
+            print(f"📚 Ditemukan context! Mengingatkan AI agar tidak mengulang poin lama...")
             context_instruction = f"""
                 PENTING (CONTEXT HISTORY):
                 Berikut adalah poin-poin yang SUDAH DIBAHAS pada part/generasi sebelumnya.
@@ -189,15 +214,16 @@ class ContentGenerator:
 
         # Format-aware density rules
         format_constraint = ""
-        if config.OUTPUT_FORMAT == "square":
-            format_constraint = f"""
+        # Jika Anda masih memakai config.OUTPUT_FORMAT, aktifkan ini
+        # if config.OUTPUT_FORMAT == "square":
+        format_constraint = f"""
             PERHATIAN FORMAT SQUARE (1:1):
-            - Output format saat ini adalah SQUARE (1080x1080).
-            - Maksimal {config.MAX_WORDS_PER_SLIDE} kata per slide.
+            - Output format saat ini adalah SQUARE.
+            - Maksimal 30 kata per slide.
             - Tulis penjelasan yang cukup agar audiens paham, tapi tetap ringkas.
             - Boleh 2-4 kalimat per slide, asal padat dan bermakna.
             - Jangan terlalu singkat sampai terasa kurang konteks.
-            """
+        """
 
         density_rules = f"""
             ATURAN KEPADATAN ISI:
@@ -212,7 +238,7 @@ class ContentGenerator:
 
         if style == "box-title-content":
             format_wajib = f"""
-            Format wajib:
+            Format wajib JSON:
             {{
                 "tiktok_title": "Judul Postingan Catchy",
                 "tiktok_description": "Deskripsi/caption singkat dan menarik.",
@@ -258,7 +284,7 @@ class ContentGenerator:
             """
         else:
             format_wajib = f"""
-            Format wajib:
+            Format wajib JSON:
             {{
                 "tiktok_title": "Judul Postingan Catchy",
                 "tiktok_description": "Deskripsi/caption singkat dan menarik.",
@@ -278,42 +304,17 @@ class ContentGenerator:
             }}
             """
 
-            if config.POINTS_ONLY_TEXT:
-                format_wajib += f"""
-            Aturan khusus teks slide:
-            - Isi teks slide harus POINT SINGKAT saja.
-            - Setiap konten hanya boleh berisi 1 poin utama.
-            - Maksimal {config.MAX_WORDS_PER_SLIDE} kata per slide.
-            - Gunakan bahasa Indonesia yang singkat, tajam, natural, dan enak dibaca.
-            - Walaupun singkat, gaya bahasanya tetap harus terasa seperti manusia yang sedang share insight, bukan poin formal.
-            - Jangan memanjangkan poin hanya supaya terlihat penuh.
-            """
-            else:
-                format_wajib += """
-            Aturan khusus field "teks":
-            - Teks HARUS informatif dan jelas, tapi penyampaiannya WAJIB memakai gaya share pengalaman personal.
-            - Teks harus terdengar natural, manusiawi, relatable, tidak generik, dan tidak kaku.
-            - Teks harus seperti creator yang sedang cerita, bukan seperti artikel.
-            - Panjang teks HARUS fleksibel: bisa pendek, bisa sedang, bisa panjang kalau memang perlu.
-            - Kalau satu ide sudah jelas dalam kalimat singkat, berhenti di situ.
-            - Hindari filler, pengulangan, dan kalimat tambahan yang tidak menambah makna.
-            - Pisahkan kalimat atau paragraf dengan dua kali enter (\\n\\n) langsung di JSON.
-            """
-
         base_rules = f"""
             Kamu adalah pembuat konten TikTok profesional yang sangat paham cara menulis carousel dengan rasa bahasa manusia asli.
 
             Tugas:
-            1. Gunakan Google Search untuk riset topik: {topic}
-            2. Kembalikan JSON (OBJECT) tanpa markdown ```json
-            3. Buatkan judul, deskripsi/caption, hashtag, dan isi carousel
+            1. Gunakan Google Search (wajib) untuk riset data/tren terbaru mengenai topik: {topic}
+            2. Kembalikan HANYA format JSON tanpa teks pengantar atau penutup apapun.
+            3. Buatkan judul, deskripsi/caption, hashtag, dan isi carousel.
 
             {context_instruction}
-
             {style_voice_rules}
-
             {density_rules}
-
             {format_wajib}
 
             ATURAN OUTPUT UMUM:
@@ -329,7 +330,9 @@ class ContentGenerator:
             - Jangan samakan panjang semua slide
             - Biarkan ada variasi: ada slide yang pendek, ada yang sedang, ada yang sedikit lebih panjang bila dibutuhkan
             - Jangan membuat semua slide terasa seperti paragraf penuh
+            
+            PENTING: FORMAT OUTPUT WAJIB BERUPA RAW JSON. PASTIKAN TIDAK ADA SYNTAX ERROR.
         """
 
-        print(f"🧠 Meminta Gemini riset & membuat konten + metadata untuk topik: '{topic}'...")
+        print(f"🧠 Meminta Gemini riset (Search) & membuat konten + metadata untuk topik: '{topic}'...")
         return self._generate_json_with_retry(client, base_rules)
