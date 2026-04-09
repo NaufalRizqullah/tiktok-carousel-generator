@@ -14,6 +14,8 @@ class ContentGenerator:
         self.api_key = api_key
 
         # Gemini Config
+        # Akses gratis (Free Tier) saat ini hanya difokuskan pada keluarga model "Flash"
+        # yang dirancang untuk kecepatan dan efisiensi.
         self.MODEL = "gemini-2.5-flash"
         # self.MODEL = "gemini-3-flash-preview"
         # self.MODEL = "gemini-3.1-flash-lite-preview"
