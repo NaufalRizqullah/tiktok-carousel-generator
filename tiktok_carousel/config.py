@@ -90,7 +90,31 @@ OUTPUT_PRESETS = {
         "PARAGRAPH_SPACING": 14,           # Jarak antar box paragraf konten
 
         # Batas kata per slide untuk AI (lebih sedikit dari portrait)
-        "MAX_WORDS_PER_SLIDE": 30,
+        "MAX_WORDS_PER_SLIDE": 35,
+    },
+    "portrait3_4": {
+        # Ukuran canvas 3:4
+        "CANVAS_WIDTH": 1080,
+        "CANVAS_HEIGHT": 1440,
+
+        # Font size di antara portrait dan square
+        "TITLE_FONT_SIZE": 62,
+        "CONTENT_FONT_SIZE": 46,
+
+        "AUTO_SHRINK_TEXT": True,
+        "AUTO_SHRINK_MIN_FONT_SIZE": 38,
+
+        "SAFE_TOP_BOTTOM_MARGIN": 90,
+        "TEXT_SIDE_MARGIN": 55,
+
+        "BOX_INNER_PADDING": 17,
+        "BOX_RADIUS_EXTRA": 14,
+
+        "TEXT_LINE_SPACING": 9,
+        "TITLE_CONTENT_SPACING": 45,
+        "PARAGRAPH_SPACING": 20,
+
+        "MAX_WORDS_PER_SLIDE": 40,
     },
 }
 

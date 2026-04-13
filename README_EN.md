@@ -23,9 +23,10 @@ To make it easy for *Content Creators* and *Affiliate Marketers* to produce educ
 5. **🧠 Smart Context Memory (Multi-part Series):** Automatically saves generation history to `context.txt`. When creating "Part 2", the AI reads this file and **won't repeat** the same points from "Part 1".
 6. **📦 Auto-Metadata Generation:** Produces a `metadata.json` file containing a Catchy Title, Description/Caption, and Hashtags ready to *copy-paste* when uploading.
 7. **🅰️ Auto-Download Font:** Don't have a *bold* font? The system will automatically download **Montserrat-Black** if the font file is not found on your machine.
-8. **📐 Two Output Formats:**
+8. **📐 Three Output Formats:**
    - `portrait` (9:16 — 1080x1920): Default format for TikTok vertical story/carousel.
    - `square` (1:1 — 1080x1080): Optimal format for TikTok photo post/feed so images display fully without being cropped.
+   - `portrait3_4` (3:4 — 1080x1440): A slightly shorter portrait format, perfect for educational feed content on TikTok.
 
 ---
 
@@ -98,7 +99,7 @@ python main.py -t "Small Business Ideas part 2" -o "business_p2"
 | `-t` | `--topic` | **(Required)** Topic for AI to generate content about | *None* |
 | `-s` | `--slides` | Number of content slides (excluding the title slide) | `5` |
 | `--style` | `--style` | Text visual style (`outline`, `box`, or `box-title-content`) | `outline` |
-| `--format` | `--format` | Output format (`portrait` = 9:16, `square` = 1:1) | `portrait` |
+| `--format` | `--format` | Output format (`portrait` = 9:16, `square` = 1:1, `portrait3_4` = 3:4) | `portrait` |
 | `--title-family`| `--title-family`| Font family for title (e.g., `LeagueSpartan`) | *from config* |
 | `--title-weight`| `--title-weight`| Title font weight (`100` - `900`) | *from config* |
 | `--content-family`| `--content-family`| Font family for content (e.g., `Poppins`) | *from config* |

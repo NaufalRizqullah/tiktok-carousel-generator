@@ -22,9 +22,10 @@ Mempermudah *Content Creator* dan *Affiliate Marketer* dalam memproduksi konten 
 5. **🧠 Smart Context Memory (Multi-part Series):** Otomatis menyimpan histori *generate* ke dalam `context.txt`. Jika kamu membuat "Part 2", AI akan membaca file ini dan **tidak akan mengulangi** poin yang sama dari "Part 1".
 6. **📦 Auto-Metadata Generation:** Menghasilkan file `metadata.json` yang berisi Judul Catchy, Deskripsi/Caption, dan Hashtag yang siap di-*copy-paste* saat *upload*.
 7. **🅰️ Auto-Download Font:** Tidak punya font *bold*? Sistem akan otomatis mengunduh font **Montserrat-Black** jika file font tidak ditemukan di komputermu.
-8. **📐 Dua Format Output:**
+8. **📐 Tiga Format Output:**
    - `portrait` (9:16 — 1080x1920): Format default untuk TikTok story/carousel vertikal.
    - `square` (1:1 — 1080x1080): Format optimal untuk TikTok photo post/feed agar gambar tidak tenggelam dan langsung terlihat penuh.
+   - `portrait3_4` (3:4 — 1080x1440): Format portrait yang lebih membulat di TikTok, pas untuk konten edukasi feed.
 
 ---
 
@@ -97,7 +98,7 @@ python main.py -t "Ide Usaha Modal Kecil part 2" -o "usaha_p2"
 | `-t` | `--topic` | **(Wajib)** Topik pembahasan untuk di-generate AI | *None* |
 | `-s` | `--slides` | Jumlah slide konten (tidak termasuk slide judul) | `5` |
 | `--style` | `--style` | Gaya visual teks (`outline`, `box`, atau `box-title-content`) | `outline` |
-| `--format` | `--format` | Format output (`portrait` = 9:16, `square` = 1:1) | `portrait` |
+| `--format` | `--format` | Format output (`portrait` = 9:16, `square` = 1:1, `portrait3_4` = 3:4) | `portrait` |
 | `--title-family`| `--title-family`| Family font judul (contoh: `LeagueSpartan` atau `Poppins`) | *dari config* |
 | `--title-weight`| `--title-weight`| Ketebalan font judul (angka `100` - `900`) | *dari config* |
 | `--content-family`| `--content-family`| Family font konten (contoh: `LeagueSpartan` atau `Poppins`) | *dari config* |
