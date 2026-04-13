@@ -247,6 +247,8 @@ class ContentGenerator:
                 "tiktok_title": "Judul Postingan Catchy",
                 "tiktok_description": "Deskripsi/caption singkat dan menarik.",
                 "tiktok_tags": ["tag1", "tag2", "tag3"],
+                "title_font_family": "Bangers",
+                "content_font_family": "Outfit",
                 "slides": [
                     {{
                         "type": "judul",
@@ -293,6 +295,8 @@ class ContentGenerator:
                 "tiktok_title": "Judul Postingan Catchy",
                 "tiktok_description": "Deskripsi/caption singkat dan menarik.",
                 "tiktok_tags": ["tag1", "tag2", "tag3"],
+                "title_font_family": "Bangers",
+                "content_font_family": "Outfit",
                 "slides": [
                     {{
                         "type": "judul",
@@ -320,6 +324,12 @@ class ContentGenerator:
             {style_voice_rules}
             {density_rules}
             {format_wajib}
+
+            ATURAN PEMILIHAN FONT:
+            - Kamu wajib memilih "title_font_family" dan "content_font_family" dari daftar berikut:
+              {config.AVAILABLE_FONTS}
+            - Pilih font yang paling sesuai dengan TEMA ("cute" pakai font tebal/bulat/handwritten, "elegan" pakai serif, dsb).
+            - Untuk judul biasanya tebal, tegas, lucu, atau menarik. Untuk konten sebaiknya font Sans-Serif yang nyaman dibaca (Poppins, Outfit, Montserrat, dll).
 
             ATURAN OUTPUT UMUM:
             - keyword_gambar harus Bahasa Inggris

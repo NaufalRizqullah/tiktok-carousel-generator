@@ -4,20 +4,32 @@ import requests
 
 
 def get_font_path(family: str, weight: int) -> str:
-    """Mengembalikan path font berdasarkan family dan numerik weight (100-900)."""
+    """Mengembalikan path font berdasarkan family dan numerik weight (100-900).
+    Jika weight tidak ada, akan fallback ke Regular atau font pertama yang ada di folder.
+    """
     weight_map = {
-        100: "Thin",
-        200: "ExtraLight",
-        300: "Light",
-        400: "Regular",
-        500: "Medium",
-        600: "SemiBold",
-        700: "Bold",
-        800: "ExtraBold",
-        900: "Black"
+        100: "Thin", 200: "ExtraLight", 300: "Light", 400: "Regular",
+        500: "Medium", 600: "SemiBold", 700: "Bold", 800: "ExtraBold", 900: "Black"
     }
     weight_name = weight_map.get(weight, "Regular")
-    return os.path.join("fonts", family, f"{family}-{weight_name}.ttf")
+    
+    base_dir = os.path.join("fonts", family)
+    ideal_path = os.path.join(base_dir, f"{family}-{weight_name}.ttf")
+    
+    if os.path.exists(ideal_path):
+        return ideal_path
+        
+    regular_path = os.path.join(base_dir, f"{family}-Regular.ttf")
+    if os.path.exists(regular_path):
+        return regular_path
+        
+    # Fallback to any .ttf file in the folder
+    if os.path.exists(base_dir):
+        for file in os.listdir(base_dir):
+            if file.endswith(".ttf") or file.endswith(".otf"):
+                return os.path.join(base_dir, file)
+                
+    return ideal_path
 
 
 def download_font_if_missing(font_path: str, default_url: str = "https://raw.githubusercontent.com/JulietaUla/Montserrat/master/fonts/ttf/Montserrat-Black.ttf") -> None:

@@ -26,6 +26,7 @@ Mempermudah *Content Creator* dan *Affiliate Marketer* dalam memproduksi konten 
    - `portrait` (9:16 — 1080x1920): Format default untuk TikTok story/carousel vertikal.
    - `square` (1:1 — 1080x1080): Format optimal untuk TikTok photo post/feed agar gambar tidak tenggelam dan langsung terlihat penuh.
    - `portrait3_4` (3:4 — 1080x1440): Format portrait yang lebih membulat di TikTok, pas untuk konten edukasi feed.
+9. **🔠 Pemilihan Font Otomatis oleh AI:** Model kini akan secara dinamis memilih font untuk judul dan konten yang paling cocok dengan *vibe/tema* pembahasan (berdasarkan daftar font yang terpasang di sistem).
 
 ---
 
@@ -262,3 +263,12 @@ Berikut adalah contoh gambar yang dihasilkan oleh sistem ini untuk setiap format
 | ![Slide 00](src/images/square/box-title-content/slide_00.jpg) | ![Slide 01](src/images/square/box-title-content/slide_01.jpg) |
 | **Slide 02** | **Slide 03** |
 | ![Slide 02](src/images/square/box-title-content/slide_02.jpg) | ![Slide 03](src/images/square/box-title-content/slide_03.jpg) |
+
+---
+
+## 📝 Changelog
+
+### v0.5.0 - Dynamic AI Fonts
+- Menambahkan kapabilitas bagi algoritma Gemini untuk merekomendasikan `title_font_family` dan `content_font_family` yang relevan dengan topik pembahasan.
+- Menambahkan *fallback logic* pencarian file font di `utils.py` jika *exact weight* (misalnya `Bold` atau `SemiBold`) tidak tersedia di folder komputer lokal.
+- Menambahkan tata letak output baru: `portrait3_4` (resolusi 3:4 aspect ratio) yang sangat cocok untuk post foto berseri edukasi.

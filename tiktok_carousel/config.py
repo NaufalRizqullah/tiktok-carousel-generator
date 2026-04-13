@@ -15,6 +15,13 @@ TITLE_FONT_WEIGHT = 700
 CONTENT_FONT_FAMILY = "Poppins"
 CONTENT_FONT_WEIGHT = 400
 
+AVAILABLE_FONTS = [
+    "AmaticSC", "Bangers", "Caveat", "Chewy", "Cinzel", "CormorantGaramond", 
+    "DancingScript", "Fredoka", "GochiHand", "LeagueSpartan", "LilitaOne", 
+    "Lora", "Montserrat", "Outfit", "Pacifico", "PlayfairDisplay", "Poppins", 
+    "Prata", "Quicksand", "Righteous", "Urbanist"
+]
+
 # Preset output agar layout bisa responsif terhadap format gambar.
 # "portrait" = 9:16 (default), "square" = 1:1.
 OUTPUT_FORMAT = "portrait"

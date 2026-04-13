@@ -36,8 +36,6 @@ class TikTokCarouselGenerator:
 
     def run(self, topic: str, num_slides: int, style: str) -> None:
         """Jalankan pipeline: generate konten → cari gambar → render slide → simpan."""
-        download_font_if_missing(self.title_font_path)
-        download_font_if_missing(self.content_font_path)
         if not os.path.exists(self.output_dir):
             os.makedirs(self.output_dir)
 
@@ -56,6 +54,18 @@ class TikTokCarouselGenerator:
             tiktok_desc = full_data.get("tiktok_description", "")
             tiktok_tags = full_data.get("tiktok_tags", [])
             slides = full_data.get("slides", [])
+
+            ai_title_font = full_data.get("title_font_family", config.TITLE_FONT_FAMILY)
+            ai_content_font = full_data.get("content_font_family", config.CONTENT_FONT_FAMILY)
+            
+            title_font_path = get_font_path(ai_title_font, config.TITLE_FONT_WEIGHT)
+            content_font_path = get_font_path(ai_content_font, config.CONTENT_FONT_WEIGHT)
+            
+            print(f"\n🎨 AI merekomendasikan font Title: {ai_title_font}, Content: {ai_content_font}")
+            download_font_if_missing(title_font_path)
+            download_font_if_missing(content_font_path)
+            
+            self.renderer = SlideRenderer(title_font_path=title_font_path, content_font_path=content_font_path)
 
             # 3. Print Metadata ke Console
             print("\n" + "=" * 50)
