@@ -147,7 +147,9 @@ tiktok-image-gen/
 ├── output/                          # Folder hasil gambar & metadata
 ├── pyproject.toml                   # Konfigurasi project Python
 ├── requirements.txt                 # Daftar dependensi
-└── README.md
+├── web_app.py                       # Interface Web (Streamlit)
+├── README.md                        # Dokumentasi Bahasa Indonesia
+└── README_EN.md                     # Dokumentasi Bahasa Inggris
 ```
 
 ### Penjelasan Tiap Modul
@@ -272,3 +274,67 @@ Berikut adalah contoh gambar yang dihasilkan oleh sistem ini untuk setiap format
 - Menambahkan kapabilitas bagi algoritma Gemini untuk merekomendasikan `title_font_family` dan `content_font_family` yang relevan dengan topik pembahasan.
 - Menambahkan *fallback logic* pencarian file font di `utils.py` jika *exact weight* (misalnya `Bold` atau `SemiBold`) tidak tersedia di folder komputer lokal.
 - Menambahkan tata letak output baru: `portrait3_4` (resolusi 3:4 aspect ratio) yang sangat cocok untuk post foto berseri edukasi.
+
+---
+
+## 🌐 Web App (Streamlit Interface)
+
+Selain CLI, proyek ini juga menyediakan **interface web berbasis Streamlit** yang lebih user-friendly!
+
+### 🚀 Menjalankan Web App
+
+```bash
+# Install dependencies (jika belum)
+pip install streamlit
+
+# Jalankan web app
+streamlit run web_app.py --server.address 0.0.0.0 --server.port 8501
+```
+
+Atau gunakan Python dari virtual environment:
+```bash
+.venv/bin/python -m streamlit run web_app.py --server.address 0.0.0.0 --server.port 8501
+```
+
+### 📱 Fitur Web App
+
+1. **📝 Editor Context**
+   - Panel expander untuk melihat dan mengedit file `context.txt`
+   - Berguna untuk membuat konten seri (Part 1, Part 2, dst)
+   - AI tidak akan mengulang poin dari konten sebelumnya
+
+2. **⚙️ Pengaturan Interaktif**
+   - Input topik konten
+   - Slider jumlah slide (3-10)
+   - Dropdown gaya teks (outline, box, box-title-content)
+   - Dropdown format output (portrait, square, portrait3_4)
+
+3. **🖼️ Preview Hasil**
+   - Tampilan slide hasil generate dalam grid 3 kolom
+   - Download per slide (tanpa kehilangan data lain)
+   - Download semua slide sebagai ZIP
+   - Download metadata JSON
+
+4. **📤 Output untuk Telegram**
+   - Caption siap copy-paste untuk Telegram
+   - Tombol download per slide untuk dikirim manual
+   - Coba kirim otomatis ke Telegram (fitur experimental)
+
+5. **💾 State Management**
+   - Data hasil generate **tidak hilang** saat download
+   - Semua slide tetap tampil sampai klik "Generate Ulang"
+   - Tombol "Generate Ulang / Clear" di sidebar untuk memulai baru
+
+### 🎨 Tampilan Web App
+
+Web app didesain dengan:
+- Tema gelap (dark mode) sesuai estetika TikTok
+- Tombol berwarna merah muda (brand TikTok)
+- Responsive layout
+- Progress spinner saat generate
+
+### ⚠️ Catatan
+
+- Pastikan file `.env` sudah ada dengan `PEXELS_API_KEY` dan `GOOGLE_API_KEY`
+- Untuk akses dari luar server, buka port 8501 di firewall
+- Fitur kirim otomatis ke Telegram masih dalam tahap pengembangan

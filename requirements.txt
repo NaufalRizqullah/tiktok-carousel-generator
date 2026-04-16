@@ -2,3 +2,4 @@ google-genai
 pillow
 python-dotenv
 requests
+streamlit
