@@ -1,0 +1,384 @@
+{
+  "platform": "tiktok",
+  "version": 1,
+  "topics": [
+    {
+      "id": 1,
+      "urutan": 1,
+      "kategori": "Strategi Algoritma & Ide Konten",
+      "judul": "Rahasia Algoritma TikTok Terbaru 2024",
+      "status": "done"
+    },
+    {
+      "id": 2,
+      "urutan": 2,
+      "kategori": "Strategi Algoritma & Ide Konten",
+      "judul": "Hook 3 Detik Bikin Penonton Berhenti Scroll",
+      "status": "done"
+    },
+    {
+      "id": 3,
+      "urutan": 3,
+      "kategori": "Strategi Algoritma & Ide Konten",
+      "judul": "Format Photo Swipe (Carousel) Bikin FYP?",
+      "status": "done"
+    },
+    {
+      "id": 4,
+      "urutan": 4,
+      "kategori": "Strategi Algoritma & Ide Konten",
+      "judul": "Ide Konten \"A Day in My Life\" Kreator",
+      "status": "done"
+    },
+    {
+      "id": 5,
+      "urutan": 5,
+      "kategori": "Strategi Algoritma & Ide Konten",
+      "judul": "Cara Soft Selling Tanpa Kelihatan Jualan",
+      "status": "done"
+    },
+    {
+      "id": 6,
+      "urutan": 6,
+      "kategori": "Strategi Algoritma & Ide Konten",
+      "judul": "Bikin Konten Affiliate Modal Rekam Layar (AI/Code)",
+      "status": "done"
+    },
+    {
+      "id": 7,
+      "urutan": 7,
+      "kategori": "Strategi Algoritma & Ide Konten",
+      "judul": "Sound Trending vs Original Voiceover",
+      "status": "done"
+    },
+    {
+      "id": 8,
+      "urutan": 8,
+      "kategori": "Strategi Algoritma & Ide Konten",
+      "judul": "Jam Upload Terbaik Berdasarkan Data, Bukan Mitos",
+      "status": "done"
+    },
+    {
+      "id": 9,
+      "urutan": 9,
+      "kategori": "Strategi Algoritma & Ide Konten",
+      "judul": "Durasi Video Ideal Buat Affiliate Pemula",
+      "status": "done"
+    },
+    {
+      "id": 10,
+      "urutan": 10,
+      "kategori": "Strategi Algoritma & Ide Konten",
+      "judul": "Repurpose Konten: Dari Live Game ke VT Jualan",
+      "status": "done"
+    },
+    {
+      "id": 11,
+      "urutan": 11,
+      "kategori": "Optimasi Profil & Pemilihan Produk",
+      "judul": "Stop Jualan Palugada, Pilih Niche Spesifik!",
+      "status": "done"
+    },
+    {
+      "id": 12,
+      "urutan": 12,
+      "kategori": "Optimasi Profil & Pemilihan Produk",
+      "judul": "Bio TikTok Penghasil Cuan (Formula Copywriting)",
+      "status": "done"
+    },
+    {
+      "id": 13,
+      "urutan": 13,
+      "kategori": "Optimasi Profil & Pemilihan Produk",
+      "judul": "Trik Milih 3 Video Pinned Biar Closing Terus",
+      "status": "done"
+    },
+    {
+      "id": 14,
+      "urutan": 14,
+      "kategori": "Optimasi Profil & Pemilihan Produk",
+      "judul": "Kriteria Memilih Produk Camilan yang Pasti Laku",
+      "status": "done"
+    },
+    {
+      "id": 15,
+      "urutan": 15,
+      "kategori": "Optimasi Profil & Pemilihan Produk",
+      "judul": "Cara Merapikan Showcase Biar Pembeli Gak Pusing",
+      "status": "done"
+    },
+    {
+      "id": 16,
+      "urutan": 16,
+      "kategori": "Optimasi Profil & Pemilihan Produk",
+      "judul": "Strategi Bangun Personal Branding di Akun Affiliate",
+      "status": "done"
+    },
+    {
+      "id": 17,
+      "urutan": 17,
+      "kategori": "Optimasi Profil & Pemilihan Produk",
+      "judul": "Trik Tembus Sampel Gratis dari Seller",
+      "status": "done"
+    },
+    {
+      "id": 18,
+      "urutan": 18,
+      "kategori": "Optimasi Profil & Pemilihan Produk",
+      "judul": "Menyelaraskan Niche (Game/AI) dengan Produk (Camilan)",
+      "status": "done",
+      "processed_at": "2026-04-18T22:39:57.631526Z",
+      "telegram_sent": true
+    },
+    {
+      "id": 19,
+      "urutan": 19,
+      "kategori": "Optimasi Profil & Pemilihan Produk",
+      "judul": "Bahaya Promosi Produk yang Sedang Perang Harga",
+      "status": "done",
+      "processed_at": "2026-04-20T00:55:56.933270Z",
+      "telegram_sent": true
+    },
+    {
+      "id": 20,
+      "urutan": 20,
+      "kategori": "Optimasi Profil & Pemilihan Produk",
+      "judul": "Pentingnya Konsistensi Visual di Profil Kamu",
+      "status": "done",
+      "processed_at": "2026-05-03T14:08:18.762105Z",
+      "telegram_sent": true
+    },
+    {
+      "id": 21,
+      "urutan": 21,
+      "kategori": "Teknik Copywriting & Soft Selling",
+      "judul": "Kata Ajaib Pengganti \"Beli Sekarang\" (Urgensi)",
+      "status": "done",
+      "processed_at": "2026-05-03T14:08:23.107486Z",
+      "telegram_sent": true
+    },
+    {
+      "id": 22,
+      "urutan": 22,
+      "kategori": "Teknik Copywriting & Soft Selling",
+      "judul": "Formula Caption yang Mengundang Komentar",
+      "status": "done",
+      "processed_at": "2026-05-03T14:15:02.357217Z",
+      "telegram_sent": true
+    },
+    {
+      "id": 23,
+      "urutan": 23,
+      "kategori": "Teknik Copywriting & Soft Selling",
+      "judul": "Teks Berjalan di Video: Pentingnya Buat Algoritma",
+      "status": "done",
+      "processed_at": "2026-05-03T21:49:59.044025Z",
+      "telegram_sent": true
+    },
+    {
+      "id": 24,
+      "urutan": 24,
+      "kategori": "Teknik Copywriting & Soft Selling",
+      "judul": "Storytelling di Balik Bungkus Camilan",
+      "status": "done",
+      "processed_at": "2026-05-03T21:51:58.636807Z",
+      "telegram_sent": true
+    },
+    {
+      "id": 25,
+      "urutan": 25,
+      "kategori": "Teknik Copywriting & Soft Selling",
+      "judul": "Cara Balas Komentar Pake VT Biar Viral",
+      "status": "done",
+      "processed_at": "2026-05-04T22:27:54.906626Z",
+      "telegram_sent": true
+    },
+    {
+      "id": 26,
+      "urutan": 26,
+      "kategori": "Teknik Copywriting & Soft Selling",
+      "judul": "Teknik FOMO (Fear of Missing Out) Buat Flash Sale",
+      "status": "done",
+      "processed_at": "2026-05-04T22:36:09.604993Z",
+      "telegram_sent": true
+    },
+    {
+      "id": 27,
+      "urutan": 27,
+      "kategori": "Teknik Copywriting & Soft Selling",
+      "judul": "Bikin Judul Cover Video yang Mengundang Klik",
+      "status": "done",
+      "processed_at": "2026-05-06T06:21:56.692444Z",
+      "telegram_sent": true
+    },
+    {
+      "id": 28,
+      "urutan": 28,
+      "kategori": "Teknik Copywriting & Soft Selling",
+      "judul": "Prompt AI Rahasia buat Bikin Caption Menarik",
+      "status": "done",
+      "processed_at": "2026-05-06T06:22:57.089662Z",
+      "telegram_sent": true
+    },
+    {
+      "id": 29,
+      "urutan": 29,
+      "kategori": "Teknik Copywriting & Soft Selling",
+      "judul": "Menulis Skrip Soft Selling Sambil Main Game",
+      "status": "done",
+      "processed_at": "2026-05-06T07:23:47.601688Z",
+      "telegram_sent": true
+    },
+    {
+      "id": 30,
+      "urutan": 30,
+      "kategori": "Teknik Copywriting & Soft Selling",
+      "judul": "Hindari Kata-kata Pelanggaran Komunitas TikTok",
+      "status": "done",
+      "processed_at": "2026-05-07T02:53:20.661377Z",
+      "telegram_sent": true
+    },
+    {
+      "id": 31,
+      "urutan": 31,
+      "kategori": "Strategi Live Streaming Affiliate",
+      "judul": "Daur Ulang Live Game Jadi 5 VT Baru",
+      "status": "done",
+      "processed_at": "2026-05-07T04:21:27.900346Z",
+      "telegram_sent": true
+    },
+    {
+      "id": 32,
+      "urutan": 32,
+      "kategori": "Strategi Live Streaming Affiliate",
+      "judul": "Trik Nyemil Asik Saat Live Biar Penonton Ngiler",
+      "status": "pending"
+    },
+    {
+      "id": 33,
+      "urutan": 33,
+      "kategori": "Strategi Live Streaming Affiliate",
+      "judul": "Cara Bikin Judul Live yang Mengundang Banyak Viewers",
+      "status": "pending"
+    },
+    {
+      "id": 34,
+      "urutan": 34,
+      "kategori": "Strategi Live Streaming Affiliate",
+      "judul": "Setup Live Sederhana Modal HP & Ringlight",
+      "status": "pending"
+    },
+    {
+      "id": 35,
+      "urutan": 35,
+      "kategori": "Strategi Live Streaming Affiliate",
+      "judul": "Berinteraksi dengan Penonton Tanpa Harus Jualan Terus",
+      "status": "pending"
+    },
+    {
+      "id": 36,
+      "urutan": 36,
+      "kategori": "Strategi Live Streaming Affiliate",
+      "judul": "Strategi Flash Sale Dadakan Saat Live Game",
+      "status": "pending"
+    },
+    {
+      "id": 37,
+      "urutan": 37,
+      "kategori": "Strategi Live Streaming Affiliate",
+      "judul": "Mengatasi Sepi Penonton di 15 Menit Pertama Live",
+      "status": "pending"
+    },
+    {
+      "id": 38,
+      "urutan": 38,
+      "kategori": "Strategi Live Streaming Affiliate",
+      "judul": "Call to Action Halus Saat Momen Seru di Game",
+      "status": "pending"
+    },
+    {
+      "id": 39,
+      "urutan": 39,
+      "kategori": "Strategi Live Streaming Affiliate",
+      "judul": "Pentingnya Konsistensi Jadwal Live Streaming",
+      "status": "pending"
+    },
+    {
+      "id": 40,
+      "urutan": 40,
+      "kategori": "Strategi Live Streaming Affiliate",
+      "judul": "Cara Membaca Data Analitik Setelah Live Selesai",
+      "status": "pending"
+    },
+    {
+      "id": 41,
+      "urutan": 41,
+      "kategori": "Analisis Data & Konsistensi",
+      "judul": "Mitos vs Fakta Jam FYP (Cek Data Analitikmu!)",
+      "status": "pending"
+    },
+    {
+      "id": 42,
+      "urutan": 42,
+      "kategori": "Analisis Data & Konsistensi",
+      "judul": "Membaca Metrik Retention Rate di TikTok Studio",
+      "status": "pending"
+    },
+    {
+      "id": 43,
+      "urutan": 43,
+      "kategori": "Analisis Data & Konsistensi",
+      "judul": "Mengevaluasi Video yang Gagal FYP",
+      "status": "pending"
+    },
+    {
+      "id": 44,
+      "urutan": 44,
+      "kategori": "Analisis Data & Konsistensi",
+      "judul": "Mindset Tepat: Jangan Menyerah di Bulan Pertama",
+      "status": "pending"
+    },
+    {
+      "id": 45,
+      "urutan": 45,
+      "kategori": "Analisis Data & Konsistensi",
+      "judul": "Cara Menemukan Winning Product Lewat Data",
+      "status": "pending"
+    },
+    {
+      "id": 46,
+      "urutan": 46,
+      "kategori": "Analisis Data & Konsistensi",
+      "judul": "Melacak Konversi dari Klik Keranjang Kuning",
+      "status": "pending"
+    },
+    {
+      "id": 47,
+      "urutan": 47,
+      "kategori": "Analisis Data & Konsistensi",
+      "judul": "Pentingnya Konsisten Upload 1-2 VT Sehari",
+      "status": "pending"
+    },
+    {
+      "id": 48,
+      "urutan": 48,
+      "kategori": "Analisis Data & Konsistensi",
+      "judul": "Mengelola Waktu: Ngedit, Live, dan Riset Produk",
+      "status": "pending"
+    },
+    {
+      "id": 49,
+      "urutan": 49,
+      "kategori": "Analisis Data & Konsistensi",
+      "judul": "A/B Testing: Coba 2 Hook Berbeda untuk 1 Video",
+      "status": "pending"
+    },
+    {
+      "id": 50,
+      "urutan": 50,
+      "kategori": "Analisis Data & Konsistensi",
+      "judul": "Kapan Harus Ganti Strategi Konten Affiliate?",
+      "status": "pending"
+    }
+  ]
+}

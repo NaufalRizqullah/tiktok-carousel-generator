@@ -1,0 +1,708 @@
+{
+  "platform": "lemon8",
+  "version": 1,
+  "topics": [
+    {
+      "id": 1,
+      "urutan": 1,
+      "kategori": "Produktivitas & Manajemen Waktu",
+      "judul": "3 Kebiasaan Pagi yang Bikin Kamu Produktif Seharian",
+      "status": "done"
+    },
+    {
+      "id": 2,
+      "urutan": 2,
+      "kategori": "Produktivitas & Manajemen Waktu",
+      "judul": "Cara Keluar dari Fase \"Slump\" dan Mulai Nugas/Kerja Lagi",
+      "status": "done"
+    },
+    {
+      "id": 3,
+      "urutan": 3,
+      "kategori": "Produktivitas & Manajemen Waktu",
+      "judul": "Teknik Pomodoro: Beneran Ampuh Atau Cuma Mitos?",
+      "status": "done"
+    },
+    {
+      "id": 4,
+      "urutan": 4,
+      "kategori": "Produktivitas & Manajemen Waktu",
+      "judul": "Setup Meja Kerja Aesthetic & Bikin Betah Berjam-jam",
+      "status": "done"
+    },
+    {
+      "id": 5,
+      "urutan": 5,
+      "kategori": "Produktivitas & Manajemen Waktu",
+      "judul": "Cara Mengatur Waktu Antara Kuliah, Kerja, dan Side Hustle",
+      "status": "done"
+    },
+    {
+      "id": 6,
+      "urutan": 6,
+      "kategori": "Produktivitas & Manajemen Waktu",
+      "judul": "Rekomendasi Tools AI Gratis yang Bikin Hidup Lebih Mudah",
+      "status": "done"
+    },
+    {
+      "id": 7,
+      "urutan": 7,
+      "kategori": "Produktivitas & Manajemen Waktu",
+      "judul": "Tips Tetap Fokus Saat Banyak Distraksi di Rumah/Kos",
+      "status": "done"
+    },
+    {
+      "id": 8,
+      "urutan": 8,
+      "kategori": "Produktivitas & Manajemen Waktu",
+      "judul": "Berhenti Lakuin Ini Kalau Mau Kerjaan Cepat Selesai!",
+      "status": "done"
+    },
+    {
+      "id": 9,
+      "urutan": 9,
+      "kategori": "Produktivitas & Manajemen Waktu",
+      "judul": "Rutinitas Malam Agar Besok Bangun Lebih Segar & Tidak Telat",
+      "status": "done"
+    },
+    {
+      "id": 10,
+      "urutan": 10,
+      "kategori": "Produktivitas & Manajemen Waktu",
+      "judul": "Cara Mengatasi Burnout Saat Deadline Sedang Menumpuk",
+      "status": "done"
+    },
+    {
+      "id": 11,
+      "urutan": 11,
+      "kategori": "Produktivitas & Manajemen Waktu",
+      "judul": "Tracker Habit Sederhana yang Bikin Kamu Konsisten",
+      "status": "done"
+    },
+    {
+      "id": 12,
+      "urutan": 12,
+      "kategori": "Produktivitas & Manajemen Waktu",
+      "judul": "Trik Mengalahkan Rasa Malas (Prokrastinasi) dalam 5 Menit",
+      "status": "done"
+    },
+    {
+      "id": 13,
+      "urutan": 13,
+      "kategori": "Produktivitas & Manajemen Waktu",
+      "judul": "Rahasia Menemukan \"Jam Produktif\" Dirimu Sendiri",
+      "status": "done"
+    },
+    {
+      "id": 14,
+      "urutan": 14,
+      "kategori": "Produktivitas & Manajemen Waktu",
+      "judul": "Jangan Remehkan, Ini Pentingnya Istirahat Buat Jaga Kewarasan",
+      "status": "done"
+    },
+    {
+      "id": 15,
+      "urutan": 15,
+      "kategori": "Produktivitas & Manajemen Waktu",
+      "judul": "Cara Tetap On-Track Menyelesaikan Proyek Meski Lagi Nggak Mood",
+      "status": "done"
+    },
+    {
+      "id": 16,
+      "urutan": 16,
+      "kategori": "Produktivitas & Manajemen Waktu",
+      "judul": "Gratitude Journal: Cara Sederhana Ubah Mindset Jadi Positif",
+      "status": "done"
+    },
+    {
+      "id": 17,
+      "urutan": 17,
+      "kategori": "Produktivitas & Manajemen Waktu",
+      "judul": "Membangun Kedisiplinan Tanpa Rasa Tertekan/Tersiksa",
+      "status": "done",
+      "processed_at": "2026-04-18T22:43:42.375662Z",
+      "telegram_sent": true
+    },
+    {
+      "id": 18,
+      "urutan": 18,
+      "kategori": "Produktivitas & Manajemen Waktu",
+      "judul": "Beda Sibuk vs Produktif yang Wajib Kamu Tahu!",
+      "status": "pending"
+    },
+    {
+      "id": 19,
+      "urutan": 19,
+      "kategori": "Produktivitas & Manajemen Waktu",
+      "judul": "Cara Menghadapi Hari Senin dengan Semangat Menyala",
+      "status": "pending"
+    },
+    {
+      "id": 20,
+      "urutan": 20,
+      "kategori": "Produktivitas & Manajemen Waktu",
+      "judul": "Review Aplikasi Pencatat/Produktivitas Andalanku Sehari-hari",
+      "status": "pending"
+    },
+    {
+      "id": 21,
+      "urutan": 21,
+      "kategori": "Pengembangan Diri & Karir",
+      "judul": "Growth Mindset 101: Cara Ubah Cara Pikir Buat Pemula",
+      "status": "pending"
+    },
+    {
+      "id": 22,
+      "urutan": 22,
+      "kategori": "Pengembangan Diri & Karir",
+      "judul": "Cara Belajar Skill Baru (Misal: Programming/Bahasa) dari Nol",
+      "status": "pending"
+    },
+    {
+      "id": 23,
+      "urutan": 23,
+      "kategori": "Pengembangan Diri & Karir",
+      "judul": "Kenapa Kegagalan Adalah Guru Terbaik dalam Karir",
+      "status": "pending"
+    },
+    {
+      "id": 24,
+      "urutan": 24,
+      "kategori": "Pengembangan Diri & Karir",
+      "judul": "Tips Persiapan Mentality Sebelum Wawancara Kerja/Magang",
+      "status": "pending"
+    },
+    {
+      "id": 25,
+      "urutan": 25,
+      "kategori": "Pengembangan Diri & Karir",
+      "judul": "Berhenti Membandingkan Dirimu di Sosmed! Lakukan Ini Saja",
+      "status": "pending"
+    },
+    {
+      "id": 26,
+      "urutan": 26,
+      "kategori": "Pengembangan Diri & Karir",
+      "judul": "Cara Aku Menghadapi Imposter Syndrome",
+      "status": "pending"
+    },
+    {
+      "id": 27,
+      "urutan": 27,
+      "kategori": "Pengembangan Diri & Karir",
+      "judul": "Alasan Kenapa Kamu Harus Punya Portfolio Mulai Sekarang",
+      "status": "pending"
+    },
+    {
+      "id": 28,
+      "urutan": 28,
+      "kategori": "Pengembangan Diri & Karir",
+      "judul": "Channel YouTube Edukatif Buat Upgrade Diri Tiap Weekend",
+      "status": "pending"
+    },
+    {
+      "id": 29,
+      "urutan": 29,
+      "kategori": "Pengembangan Diri & Karir",
+      "judul": "Quotes Motivasi Saat Kamu Merasa Ingin Menyerah Hari Ini",
+      "status": "pending"
+    },
+    {
+      "id": 30,
+      "urutan": 30,
+      "kategori": "Pengembangan Diri & Karir",
+      "judul": "Ingat: Konsistensi Itu Lebih Penting Daripada Kesempurnaan",
+      "status": "pending"
+    },
+    {
+      "id": 31,
+      "urutan": 31,
+      "kategori": "Pengembangan Diri & Karir",
+      "judul": "Sering Merasa Tertinggal dari Teman Seumur? Baca Ini!",
+      "status": "pending"
+    },
+    {
+      "id": 32,
+      "urutan": 32,
+      "kategori": "Pengembangan Diri & Karir",
+      "judul": "Cara Membangun Personal Branding yang Otentik dan Anti-Fake",
+      "status": "pending"
+    },
+    {
+      "id": 33,
+      "urutan": 33,
+      "kategori": "Pengembangan Diri & Karir",
+      "judul": "Seni Berkomunikasi Asik Buat Kaum Introvert",
+      "status": "pending"
+    },
+    {
+      "id": 34,
+      "urutan": 34,
+      "kategori": "Pengembangan Diri & Karir",
+      "judul": "Rekomendasi Buku yang Mengubah Cara Pandangku Tentang Hidup",
+      "status": "pending"
+    },
+    {
+      "id": 35,
+      "urutan": 35,
+      "kategori": "Pengembangan Diri & Karir",
+      "judul": "Podcast Self-Improvement Terbaik untuk Menemani Perjalanan",
+      "status": "pending"
+    },
+    {
+      "id": 36,
+      "urutan": 36,
+      "kategori": "Pengembangan Diri & Karir",
+      "judul": "Berani Bilang \"Tidak\": Seni Menetapkan Batasan (Boundaries)",
+      "status": "pending"
+    },
+    {
+      "id": 37,
+      "urutan": 37,
+      "kategori": "Pengembangan Diri & Karir",
+      "judul": "Belajar Hal Kecil Setiap Hari Terapkan Aturan 1% Ini",
+      "status": "pending"
+    },
+    {
+      "id": 38,
+      "urutan": 38,
+      "kategori": "Pengembangan Diri & Karir",
+      "judul": "Kenapa Kamu Harus Berani Keluar dari Zona Nyaman Bulan Ini",
+      "status": "pending"
+    },
+    {
+      "id": 39,
+      "urutan": 39,
+      "kategori": "Pengembangan Diri & Karir",
+      "judul": "Tips Cepat Paham Saat Membaca Materi/Jurnal yang Berat",
+      "status": "pending"
+    },
+    {
+      "id": 40,
+      "urutan": 40,
+      "kategori": "Pengembangan Diri & Karir",
+      "judul": "Hal-Hal yang Kuharap Aku Tahu di Awal Umur 20-an",
+      "status": "pending"
+    },
+    {
+      "id": 41,
+      "urutan": 41,
+      "kategori": "Self-Care & Mental Health",
+      "judul": "Glow Up Luar Dalam: Skincare Routine Dipadu Mindset Positif",
+      "status": "pending"
+    },
+    {
+      "id": 42,
+      "urutan": 42,
+      "kategori": "Self-Care & Mental Health",
+      "judul": "Kulit Kusam & Berkomedo Pas Lagi Stres? Ini Cara Aku Mengatasinya",
+      "status": "pending"
+    },
+    {
+      "id": 43,
+      "urutan": 43,
+      "kategori": "Self-Care & Mental Health",
+      "judul": "Self-Reward Sederhana yang Nggak Bikin Dompet Boncos",
+      "status": "pending"
+    },
+    {
+      "id": 44,
+      "urutan": 44,
+      "kategori": "Self-Care & Mental Health",
+      "judul": "Pentingnya Me-Time Berkualitas di Tengah Jadwal Padat",
+      "status": "pending"
+    },
+    {
+      "id": 45,
+      "urutan": 45,
+      "kategori": "Self-Care & Mental Health",
+      "judul": "Makanan & Minuman Sehat yang Bikin Mood Boost Seharian",
+      "status": "pending"
+    },
+    {
+      "id": 46,
+      "urutan": 46,
+      "kategori": "Self-Care & Mental Health",
+      "judul": "Olahraga Ringan di Kamar Buat Kaum Mageran",
+      "status": "pending"
+    },
+    {
+      "id": 47,
+      "urutan": 47,
+      "kategori": "Self-Care & Mental Health",
+      "judul": "Digital Detox: Manfaat Puasa Sosmed Selama 24 Jam",
+      "status": "pending"
+    },
+    {
+      "id": 48,
+      "urutan": 48,
+      "kategori": "Self-Care & Mental Health",
+      "judul": "Perjalananku Berdamai dengan Rasa Insecure",
+      "status": "pending"
+    },
+    {
+      "id": 49,
+      "urutan": 49,
+      "kategori": "Self-Care & Mental Health",
+      "judul": "Membangun Kepercayaan Diri Lewat Cara Berpakaian (OOTD)",
+      "status": "pending"
+    },
+    {
+      "id": 50,
+      "urutan": 50,
+      "kategori": "Self-Care & Mental Health",
+      "judul": "Tips Tidur Nyenyak Buat yang Suka Overthinking Tiap Malam",
+      "status": "pending"
+    },
+    {
+      "id": 51,
+      "urutan": 51,
+      "kategori": "Self-Care & Mental Health",
+      "judul": "Manfaat Jalan Kaki Setiap Hari Buat Kesehatan Mental",
+      "status": "pending"
+    },
+    {
+      "id": 52,
+      "urutan": 52,
+      "kategori": "Self-Care & Mental Health",
+      "judul": "Percaya Deh, Menjaga Kebersihan Kamar = Menjaga Mentalmu",
+      "status": "pending"
+    },
+    {
+      "id": 53,
+      "urutan": 53,
+      "kategori": "Self-Care & Mental Health",
+      "judul": "5 Hal Kecil yang Berhasil Bikin Aku Bahagia Hari Ini",
+      "status": "pending"
+    },
+    {
+      "id": 54,
+      "urutan": 54,
+      "kategori": "Self-Care & Mental Health",
+      "judul": "Punya Hobi Sederhana (Contoh: Street Photography) Untuk Ngelepas Penat",
+      "status": "pending"
+    },
+    {
+      "id": 55,
+      "urutan": 55,
+      "kategori": "Self-Care & Mental Health",
+      "judul": "Cara Berhenti Peduli Sama Omongan Negatif Orang Lain",
+      "status": "pending"
+    },
+    {
+      "id": 56,
+      "urutan": 56,
+      "kategori": "Self-Care & Mental Health",
+      "judul": "Self-Love Itu Beda Sama Egois, Ini Letak Perbedaannya!",
+      "status": "pending"
+    },
+    {
+      "id": 57,
+      "urutan": 57,
+      "kategori": "Self-Care & Mental Health",
+      "judul": "Hacks Skincare Hemat Buat Kulit Berminyak Biar Tetap Fresh",
+      "status": "pending"
+    },
+    {
+      "id": 58,
+      "urutan": 58,
+      "kategori": "Self-Care & Mental Health",
+      "judul": "Menemukan Kedamaian Saat Sedang Sendirian (Solitude)",
+      "status": "pending"
+    },
+    {
+      "id": 59,
+      "urutan": 59,
+      "kategori": "Self-Care & Mental Health",
+      "judul": "Rekomendasi Playlist Lagu Kesukaan untuk Nemenin Santai",
+      "status": "pending"
+    },
+    {
+      "id": 60,
+      "urutan": 60,
+      "kategori": "Self-Care & Mental Health",
+      "judul": "Ritual Pagi (Morning Routine) yang Bikin Hati Tenang",
+      "status": "pending"
+    },
+    {
+      "id": 61,
+      "urutan": 61,
+      "kategori": "Motivasi Finansial & Side Hustle",
+      "judul": "Ide Side Hustle Cuan buat Mahasiswa & Pekerja",
+      "status": "pending"
+    },
+    {
+      "id": 62,
+      "urutan": 62,
+      "kategori": "Motivasi Finansial & Side Hustle",
+      "judul": "Mindset Keuangan \"Ilmu Padi\" yang Bikin Kamu Tenang di Masa Depan",
+      "status": "pending"
+    },
+    {
+      "id": 63,
+      "urutan": 63,
+      "kategori": "Motivasi Finansial & Side Hustle",
+      "judul": "Cara Nabung Konsisten Meskipun Pemasukan Lagi Pas-pasan",
+      "status": "pending"
+    },
+    {
+      "id": 64,
+      "urutan": 64,
+      "kategori": "Motivasi Finansial & Side Hustle",
+      "judul": "Realita Cari Cuan Tambahan dari Affiliate Marketing / Konten Kreator",
+      "status": "pending"
+    },
+    {
+      "id": 65,
+      "urutan": 65,
+      "kategori": "Motivasi Finansial & Side Hustle",
+      "judul": "Bertahan di Era Gig Economy: Tips Jadi Freelancer Tangguh",
+      "status": "pending"
+    },
+    {
+      "id": 66,
+      "urutan": 66,
+      "kategori": "Motivasi Finansial & Side Hustle",
+      "judul": "Bedanya Beli \"Aset\" vs \"Beban\" Biar Nggak Menyesal",
+      "status": "pending"
+    },
+    {
+      "id": 67,
+      "urutan": 67,
+      "kategori": "Motivasi Finansial & Side Hustle",
+      "judul": "Alasan Kenapa Punya Uang/Dana Darurat Itu Super Penting",
+      "status": "pending"
+    },
+    {
+      "id": 68,
+      "urutan": 68,
+      "kategori": "Motivasi Finansial & Side Hustle",
+      "judul": "Trik Mengatur Uang Jajan/Gaji Biar Nggak Nangis di Akhir Bulan",
+      "status": "pending"
+    },
+    {
+      "id": 69,
+      "urutan": 69,
+      "kategori": "Motivasi Finansial & Side Hustle",
+      "judul": "Frugal Living: Gaya Hidup Pelit Atau Malah Cerdas?",
+      "status": "pending"
+    },
+    {
+      "id": 70,
+      "urutan": 70,
+      "kategori": "Motivasi Finansial & Side Hustle",
+      "judul": "Cara Mengubah Hobi (Misal: Edit Video) Jadi Penghasilan Tambahan",
+      "status": "pending"
+    },
+    {
+      "id": 71,
+      "urutan": 71,
+      "kategori": "Motivasi Finansial & Side Hustle",
+      "judul": "Kesalahan Finansial di Usia Muda yang Wajib Dihindari!",
+      "status": "pending"
+    },
+    {
+      "id": 72,
+      "urutan": 72,
+      "kategori": "Motivasi Finansial & Side Hustle",
+      "judul": "Investasi Leher ke Atas (Ilmu) yang Paling Worth It Kucoba",
+      "status": "pending"
+    },
+    {
+      "id": 73,
+      "urutan": 73,
+      "kategori": "Motivasi Finansial & Side Hustle",
+      "judul": "Langkah Pertama Memulai Budgeting Buat Kamu yang Pemula Banget",
+      "status": "pending"
+    },
+    {
+      "id": 74,
+      "urutan": 74,
+      "kategori": "Motivasi Finansial & Side Hustle",
+      "judul": "Aplikasi Pengatur Keuangan yang Wajib Ada di HP Kamu",
+      "status": "pending"
+    },
+    {
+      "id": 75,
+      "urutan": 75,
+      "kategori": "Motivasi Finansial & Side Hustle",
+      "judul": "Mitos Seputar Uang yang Harus Kamu Berhenti Percaya",
+      "status": "pending"
+    },
+    {
+      "id": 76,
+      "urutan": 76,
+      "kategori": "Motivasi Finansial & Side Hustle",
+      "judul": "Pelajaran dari Kegagalan Saat Mencoba Bisnis Kecil-kecilan",
+      "status": "pending"
+    },
+    {
+      "id": 77,
+      "urutan": 77,
+      "kategori": "Motivasi Finansial & Side Hustle",
+      "judul": "Tips Nahan Godaan Biar Nggak Kalap Saat Promo Tanggal Kembar",
+      "status": "pending"
+    },
+    {
+      "id": 78,
+      "urutan": 78,
+      "kategori": "Motivasi Finansial & Side Hustle",
+      "judul": "Membangun Abundance Mindset (Pola Pikir Kelimpahan)",
+      "status": "pending"
+    },
+    {
+      "id": 79,
+      "urutan": 79,
+      "kategori": "Motivasi Finansial & Side Hustle",
+      "judul": "Cara Membedakan \"Kebutuhan\" vs \"Keinginan\" Pakai Logika",
+      "status": "pending"
+    },
+    {
+      "id": 80,
+      "urutan": 80,
+      "kategori": "Motivasi Finansial & Side Hustle",
+      "judul": "Tantangan Menabung Nominal Kecil Secara Rutin, Berani Coba?",
+      "status": "pending"
+    },
+    {
+      "id": 81,
+      "urutan": 81,
+      "kategori": "Inspirasi Relasi & Makna Kehidupan",
+      "judul": "5 Tanda Valid Kalau Kamu Sedang Mengalami Glow Up Mental",
+      "status": "pending"
+    },
+    {
+      "id": 82,
+      "urutan": 82,
+      "kategori": "Inspirasi Relasi & Makna Kehidupan",
+      "judul": "Susahnya Mencari Teman Baru Saat Dewasa? Ini Tipsnya",
+      "status": "pending"
+    },
+    {
+      "id": 83,
+      "urutan": 83,
+      "kategori": "Inspirasi Relasi & Makna Kehidupan",
+      "judul": "Cara Menghadapi Lingkungan/Teman Toxic Tanpa Perlu Drama",
+      "status": "pending"
+    },
+    {
+      "id": 84,
+      "urutan": 84,
+      "kategori": "Inspirasi Relasi & Makna Kehidupan",
+      "judul": "Seni Menjadi Pendengar yang Baik Buat Orang Terdekat",
+      "status": "pending"
+    },
+    {
+      "id": 85,
+      "urutan": 85,
+      "kategori": "Inspirasi Relasi & Makna Kehidupan",
+      "judul": "Sepenting Apa Sih Punya Support System yang Sehat?",
+      "status": "pending"
+    },
+    {
+      "id": 86,
+      "urutan": 86,
+      "kategori": "Inspirasi Relasi & Makna Kehidupan",
+      "judul": "Belajar Bersyukur dari Hal-Hal Paling Sederhana Hari Ini",
+      "status": "pending"
+    },
+    {
+      "id": 87,
+      "urutan": 87,
+      "kategori": "Inspirasi Relasi & Makna Kehidupan",
+      "judul": "Pelajaran Hidup yang Kudapat dari Kejadian Random di Jalan",
+      "status": "pending"
+    },
+    {
+      "id": 88,
+      "urutan": 88,
+      "kategori": "Inspirasi Relasi & Makna Kehidupan",
+      "judul": "Bagaimana Cara Meminta Maaf Secara Elegan dan Tulus?",
+      "status": "pending"
+    },
+    {
+      "id": 89,
+      "urutan": 89,
+      "kategori": "Inspirasi Relasi & Makna Kehidupan",
+      "judul": "Turunkan Ekspektasimu Agar Hidup Jauh Lebih Tenang",
+      "status": "pending"
+    },
+    {
+      "id": 90,
+      "urutan": 90,
+      "kategori": "Inspirasi Relasi & Makna Kehidupan",
+      "judul": "Menghargai Sebuah Pencapaian Kecil (Small Wins) Tiap Harinya",
+      "status": "pending"
+    },
+    {
+      "id": 91,
+      "urutan": 91,
+      "kategori": "Inspirasi Relasi & Makna Kehidupan",
+      "judul": "Momen Berani Mengambil Keputusan Sulit dalam Hidup",
+      "status": "pending"
+    },
+    {
+      "id": 92,
+      "urutan": 92,
+      "kategori": "Inspirasi Relasi & Makna Kehidupan",
+      "judul": "Sosok Inspiratif yang Paling Mengubah Cara Pandangku",
+      "status": "pending"
+    },
+    {
+      "id": 93,
+      "urutan": 93,
+      "kategori": "Inspirasi Relasi & Makna Kehidupan",
+      "judul": "Apa Itu Ikigai? Cara Jepang Menemukan Tujuan Hidup",
+      "status": "pending"
+    },
+    {
+      "id": 94,
+      "urutan": 94,
+      "kategori": "Inspirasi Relasi & Makna Kehidupan",
+      "judul": "Mengatasi Rasa Cemburu/Iri Saat Melihat Kesuksesan Orang Lain",
+      "status": "pending"
+    },
+    {
+      "id": 95,
+      "urutan": 95,
+      "kategori": "Inspirasi Relasi & Makna Kehidupan",
+      "judul": "Mengenal Filosofi Stoikisme Praktis Buat Anak Muda",
+      "status": "pending"
+    },
+    {
+      "id": 96,
+      "urutan": 96,
+      "kategori": "Inspirasi Relasi & Makna Kehidupan",
+      "judul": "Mengapa Kita Harus Punya Sikap Welas Asih Pada Diri Sendiri (Self-Compassion)",
+      "status": "pending"
+    },
+    {
+      "id": 97,
+      "urutan": 97,
+      "kategori": "Inspirasi Relasi & Makna Kehidupan",
+      "judul": "Berhenti Obsesi Sama Kesempurnaan: Merayakan Sebuah Kegagalan",
+      "status": "pending"
+    },
+    {
+      "id": 98,
+      "urutan": 98,
+      "kategori": "Inspirasi Relasi & Makna Kehidupan",
+      "judul": "Tips Menjaga Hubungan & Komunikasi Baik dengan Keluarga",
+      "status": "pending"
+    },
+    {
+      "id": 99,
+      "urutan": 99,
+      "kategori": "Inspirasi Relasi & Makna Kehidupan",
+      "judul": "Sebuah Pesan Penyemangat Untuk Diriku di Masa Depan",
+      "status": "pending"
+    },
+    {
+      "id": 100,
+      "urutan": 100,
+      "kategori": "Inspirasi Relasi & Makna Kehidupan",
+      "judul": "Kenapa Perjalanan Hidup Setiap Orang Berbeda & Unik? (Kesimpulan Hidup)",
+      "status": "pending"
+    }
+  ]
+}
