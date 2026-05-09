@@ -194,7 +194,8 @@ class SlideRenderer:
         img = img.crop((left, top, left + target_size[0], top + target_size[1]))
 
         img = img.convert("RGBA")
-        draw = ImageDraw.Draw(img)
+        overlay = Image.new("RGBA", img.size, (0, 0, 0, 0))
+        draw = ImageDraw.Draw(overlay)
 
         # Tentukan opacity box (bisa di-override dari parameter)
         effective_opacity = box_opacity if box_opacity is not None else config.BOX_OPACITY
@@ -259,6 +260,7 @@ class SlideRenderer:
 
                 content_y = box_bottom + config.PARAGRAPH_SPACING
 
+            img = Image.alpha_composite(img, overlay)
             return img.convert("RGB")
 
         font_type = "title" if is_title else "content"
@@ -327,4 +329,5 @@ class SlideRenderer:
                 spacing=config.TEXT_LINE_SPACING
             )
 
+        img = Image.alpha_composite(img, overlay)
         return img.convert("RGB")
