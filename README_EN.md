@@ -16,18 +16,21 @@ To make it easy for *Content Creators* and *Affiliate Marketers* to produce educ
    - Automatically *crop* and *resize* images to 9:16 ratio (1080x1920) or 1:1 (1080x1080).
    - Add precision text *overlay* centered on screen.
    - **Auto-shrink Text:** Font size automatically shrinks if the text is too long, preventing overflow.
-4. **💅 Three TikTok Text Visual Styles:**
+4. **💅 Four TikTok Text Visual Styles:**
    - `outline`: Bold white text with thick black *stroke* (Classic TikTok style).
    - `box`: Text inside a semi-transparent rounded rectangle box.
    - `box-title-content`: Storytelling-style text (personal) with an *uppercase* title in a separate box on top, and content paragraphs split into floating boxes.
-5. **🧠 Smart Context Memory (Multi-part Series):** Automatically saves generation history to `context.txt`. When creating "Part 2", the AI reads this file and **won't repeat** the same points from "Part 1".
-6. **📦 Auto-Metadata Generation:** Produces a `metadata.json` file containing a Catchy Title, Description/Caption, and Hashtags ready to *copy-paste* when uploading.
-7. **🅰️ Auto-Download Font:** Don't have a *bold* font? The system will automatically download **Montserrat-Black** if the font file is not found on your machine.
-8. **📐 Three Output Formats:**
+   - `plain`: Plain white text without outline/box, with a subtle *drop shadow* for readability.
+5. **🔲 Box Transparency Control:** For `box` and `box-title-content` styles, a slider is available to adjust box transparency (0 = fully transparent, 255 = solid white).
+6. **🧠 Smart Context Memory (Multi-part Series):** Automatically saves generation history to `context.txt`. When creating "Part 2", the AI reads this file and **won't repeat** the same points from "Part 1".
+7. **📦 Auto-Metadata Generation:** Produces a `metadata.json` file containing a Catchy Title, Description/Caption, and Hashtags ready to *copy-paste* when uploading.
+8. **🅰️ Auto-Download Font:** Don't have a *bold* font? The system will automatically download **Montserrat-Black** if the font file is not found on your machine.
+9. **📐 Three Output Formats:**
    - `portrait` (9:16 — 1080x1920): Default format for TikTok vertical story/carousel.
    - `square` (1:1 — 1080x1080): Optimal format for TikTok photo post/feed so images display fully without being cropped.
    - `portrait3_4` (3:4 — 1080x1440): A slightly shorter portrait format, perfect for educational feed content on TikTok.
-9. **🔠 Dynamic AI Font Selection:** The model will now dynamically choose the most appropriate fonts for the title and content based on the vibe/theme of the topic (selected from the locally installed font list).
+10. **🔠 Dynamic AI Font Selection (All Styles):** Gemini will dynamically choose `title_font_family` and `content_font_family` that best match the topic's *vibe/theme* for **all** text styles (outline, box, box-title-content, and plain).
+11. **📋 Topic Queue System:** Manage content topic lists per platform (TikTok, Lemon8, Quotes) using JSON files. Topics are processed sequentially and can be marked as done/skipped.
 
 ---
 
@@ -99,7 +102,8 @@ python main.py -t "Small Business Ideas part 2" -o "business_p2"
 | :--- | :--- | :--- | :--- |
 | `-t` | `--topic` | **(Required)** Topic for AI to generate content about | *None* |
 | `-s` | `--slides` | Number of content slides (excluding the title slide) | `5` |
-| `--style` | `--style` | Text visual style (`outline`, `box`, or `box-title-content`) | `outline` |
+| `--style` | `--style` | Text visual style (`outline`, `box`, `box-title-content`, or `plain`) | `outline` |
+| `--box-opacity` | `--box-opacity` | Box transparency (0=transparent, 255=solid). Only for box/box-title-content styles | *from config* |
 | `--format` | `--format` | Output format (`portrait` = 9:16, `square` = 1:1, `portrait3_4` = 3:4) | `portrait` |
 | `--title-family`| `--title-family`| Font family for title (e.g., `LeagueSpartan`) | *from config* |
 | `--title-weight`| `--title-weight`| Title font weight (`100` - `900`) | *from config* |
@@ -146,6 +150,9 @@ tiktok-image-gen/
 ├── context.txt                      # Auto-generated: context memory between Parts
 ├── fonts/                           # Directory for storing custom font files (.ttf)
 ├── output/                          # Output folder for images & metadata
+├── topik_tiktok.json                # Topic queue for TikTok platform
+├── topik_lemon8.json                # Topic queue for Lemon8 platform
+├── topik_quotes.json                # Topic queue for Quotes platform
 ├── pyproject.toml                   # Python project configuration
 ├── requirements.txt                 # Dependency list
 ├── web_app.py                       # Web Interface (Streamlit)
@@ -161,7 +168,7 @@ tiktok-image-gen/
 | `utils.py` | Pure utility functions: auto-download Montserrat-Black font, read/write `context.txt` for the *memory* feature, and text sanitization (remove emoji/non-BMP characters). |
 | `content.py` | `ContentGenerator` class — handles communication with Google Gemini AI, including *prompt engineering*, *retry logic* with *exponential backoff*, and JSON response parsing. |
 | `image_source.py` | `PexelsImageSource` class — searches & downloads *portrait* images from the Pexels API, with *anti-duplicate* logic to prevent image repetition. |
-| `renderer.py` | `SlideRenderer` class — processes images (*resize/crop* to 9:16), renders text in various styles (`outline`, `box`, `box-title-content`), including *auto-shrink* and *text wrapping*. |
+| `renderer.py` | `SlideRenderer` class — processes images (*resize/crop* to 9:16), renders text in various styles (`outline`, `box`, `box-title-content`, `plain`), including *auto-shrink*, *text wrapping*, and box *opacity* control. |
 | `generator.py` | `TikTokCarouselGenerator` class — *Orchestrator* that unifies all modules into a single *pipeline*: generate content → fetch images → render slides → save files. |
 
 ---
@@ -208,6 +215,7 @@ Here is the complete list of customizable variables:
 | `BOX_PADDING_X` | Horizontal spacing between text and inner box edge. | `55` |
 | `BOX_PADDING_Y` | Vertical spacing between text and inner box edge. | `35` |
 | `BOX_RADIUS` | Corner rounding level (*rounded rectangle*). | `28` |
+| `BOX_OPACITY` | Box transparency level (0 = fully transparent, 255 = solid). Can be *overridden* via Web App. | `235` |
 | `BOX_FILL` | Box background color in `(R, G, B, Opacity)` format. Default is semi-transparent white. | `(255, 255, 255, 235)` |
 | `BOX_TEXT_FILL` | Text color inside the box. Default is black. | `(0, 0, 0)` |
 
@@ -217,6 +225,13 @@ Here is the complete list of customizable variables:
 | `OUTLINE_TEXT_FILL` | Main text color. | `"white"` |
 | `OUTLINE_STROKE_FILL`| Stroke/outline edge color. | `"black"` |
 | `OUTLINE_STROKE_RATIO`| Stroke thickness ratio relative to font size (e.g., `0.08` × font `85`). | `0.08` |
+
+### ✨ Visual Style: Plain (Plain White Text)
+| Variable | Description | Default |
+| :--- | :--- | :--- |
+| `PLAIN_TEXT_FILL` | Main text color. | `"white"` |
+| `PLAIN_SHADOW_FILL` | Shadow color behind text (semi-transparent). | `(0, 0, 0, 180)` |
+| `PLAIN_SHADOW_OFFSET` | Shadow offset distance from text (pixels). | `3` |
 
 ### 💾 Output Settings
 | Variable | Description | Default |
@@ -271,6 +286,11 @@ Here are example images generated by this system for each format and visual styl
 
 ## 📝 Changelog
 
+### v0.6.0 - Plain Style, Box Opacity & AI Font for All
+- Added a new text style: `plain` (plain white text with subtle *drop shadow*).
+- Added **box transparency** control (opacity slider 0–255) for `box` and `box-title-content` styles.
+- Strengthened AI instructions so fonts are dynamically selected by Gemini for **all** styles (previously only optimal for `box-title-content`).
+
 ### v0.5.0 - Dynamic AI Fonts
 - Added the capability for the Gemini algorithm to recommend topic-relevant `title_font_family` and `content_font_family`.
 - Added a fallback search logic in `utils.py` to handle scenarios where an *exact weight* (e.g., `Bold` or `SemiBold`) is missing from the local fonts directory.
@@ -299,29 +319,35 @@ Or using Python from a virtual environment:
 
 ### 📱 Web App Features
 
-1. **📝 Context Editor**
+1. **📋 Topic Queue System**
+   - Select platform (TikTok, Lemon8, Quotes) — next topic auto-populates
+   - Real-time queue statistics (pending, done, skipped)
+   - "Mark as Done" and "Skip" buttons for topic navigation
+
+2. **📝 Context Editor**
    - Expander panel to view and edit the `context.txt` file.
    - Useful for creating content series (Part 1, Part 2, etc.).
    - AI will not repeat points from previous content.
 
-2. **⚙️ Interactive Settings**
-   - Content topic input.
-   - Number of slides slider (3-10).
-   - Text style dropdown (outline, box, box-title-content).
-   - Output format dropdown (portrait, square, portrait3_4).
+3. **⚙️ Interactive Settings**
+   - Content topic input (auto-filled from queue)
+   - Number of slides slider (3-10)
+   - Text style dropdown (outline, box, box-title-content, **plain**)
+   - **Box transparency slider** (auto-appears for box/box-title-content styles)
+   - Output format dropdown (portrait, square, portrait3_4)
 
-3. **🖼️ Result Preview**
+4. **🖼️ Result Preview**
    - Display generated slides in a 3-column grid.
    - Individual slide downloads (without losing other data).
    - Download all slides as a ZIP file.
    - Download metadata JSON.
 
-4. **📤 Telegram Output**
+5. **📤 Telegram Output**
    - Ready-to-copy-paste captions for Telegram.
    - Individual slide download buttons for manual sending.
    - Automatic sending to Telegram (experimental feature).
 
-5. **💾 State Management**
+6. **💾 State Management**
    - Generated data is **not lost** during downloads.
    - All slides remain displayed until "Regenerate" is clicked.
    - "Regenerate / Clear" button in the sidebar to start over.
@@ -334,9 +360,79 @@ The web app is designed with:
 - Responsive layout.
 - Progress spinner during generation.
 
+---
+
+## 📋 Topic Queue System (Topic Queue JSON)
+
+This project uses JSON files as a content topic queue *database*. 3 template files are available per platform:
+
+| File | Platform | Description |
+| :--- | :--- | :--- |
+| `topik_tiktok.json` | TikTok | Educational & affiliate marketing topics |
+| `topik_lemon8.json` | Lemon8 | Self-improvement, productivity, and lifestyle topics |
+| `topik_quotes.json` | Quotes | 1000+ motivational, emotional, and inspirational quote topics |
+
+### 📐 Topic JSON Structure
+
+Each file follows this format:
+
+```json
+{
+  "platform": "tiktok",
+  "version": 1,
+  "topics": [
+    {
+      "id": 1,
+      "urutan": 1,
+      "kategori": "Algorithm Strategy & Content Ideas",
+      "judul": "Latest TikTok Algorithm Secrets 2024",
+      "status": "pending"
+    },
+    {
+      "id": 2,
+      "urutan": 2,
+      "kategori": "Copywriting & Soft Selling",
+      "judul": "Caption Formula that Drives Comments",
+      "status": "done",
+      "processed_at": "2026-05-03T14:15:02Z",
+      "telegram_sent": true
+    }
+  ]
+}
+```
+
+### 📌 Fields per Topic
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `id` | `int` | Unique topic ID |
+| `urutan` | `int` | Processing order number |
+| `kategori` | `string` | Topic category/group |
+| `judul` | `string` | Topic title used as AI input |
+| `status` | `string` | Status: `"pending"`, `"done"`, or `"skipped"` |
+| `processed_at` | `string` | *(auto)* Timestamp when topic was processed |
+| `telegram_sent` | `bool` | *(auto)* Whether it was sent to Telegram |
+
+### 🛠️ Adding New Topics
+
+Add a new object to the `topics` array in the appropriate JSON file:
+
+```json
+{
+  "id": 51,
+  "urutan": 51,
+  "kategori": "New Category",
+  "judul": "New Topic Title to Generate",
+  "status": "pending"
+}
+```
+
+> ⚠️ Ensure `id` and `urutan` are not duplicated. Status must be `"pending"` to be picked up by the Web App.
+
 ### ⚠️ Notes
 
 - Ensure the `.env` file exists with `PEXELS_API_KEY` and `GOOGLE_API_KEY`.
 - For external access, open port 8501 in your firewall.
 - The automatic Telegram sending feature is still under development.
+- Topic JSON file paths in `web_app.py` can be adjusted via the `PROJECT_DIR` variable.
 
