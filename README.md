@@ -15,18 +15,21 @@ Mempermudah *Content Creator* dan *Affiliate Marketer* dalam memproduksi konten 
 3. **🎨 Smart Image Processing (Pillow):** - Otomatis *crop* dan *resize* gambar ke rasio 9:16 (1080x1920) atau 1:1 (1080x1080).
    - Menambahkan *overlay* teks presisi di tengah layar.
    - **Auto-shrink Text:** Ukuran font akan otomatis mengecil jika teks terlalu panjang agar tidak keluar batas layar.
-4. **💅 Tiga Gaya Visual Teks TikTok:**
+4. **💅 Empat Gaya Visual Teks TikTok:**
    - `outline`: Teks putih tebal dengan garis luar (*stroke*) hitam pekat (Gaya klasik TikTok).
    - `box`: Teks putih di dalam kotak transparan bersudut melengkung (*Rounded Rectangle*).
    - `box-title-content`: Teks bergaya cerita (personal) dengan judul *uppercase* di kotak terpisah pada posisi atas, serta isi tulisan yang dipecah per baris menjadi kotak-kotak melayang.
-5. **🧠 Smart Context Memory (Multi-part Series):** Otomatis menyimpan histori *generate* ke dalam `context.txt`. Jika kamu membuat "Part 2", AI akan membaca file ini dan **tidak akan mengulangi** poin yang sama dari "Part 1".
-6. **📦 Auto-Metadata Generation:** Menghasilkan file `metadata.json` yang berisi Judul Catchy, Deskripsi/Caption, dan Hashtag yang siap di-*copy-paste* saat *upload*.
-7. **🅰️ Auto-Download Font:** Tidak punya font *bold*? Sistem akan otomatis mengunduh font **Montserrat-Black** jika file font tidak ditemukan di komputermu.
-8. **📐 Tiga Format Output:**
+   - `plain`: Teks putih polos tanpa outline/box, dengan *drop shadow* halus untuk keterbacaan.
+5. **🔲 Kontrol Transparansi Box:** Untuk style `box` dan `box-title-content`, tersedia slider untuk mengatur tingkat transparansi kotak (0 = transparan penuh, 255 = solid putih).
+6. **🧠 Smart Context Memory (Multi-part Series):** Otomatis menyimpan histori *generate* ke dalam `context.txt`. Jika kamu membuat "Part 2", AI akan membaca file ini dan **tidak akan mengulangi** poin yang sama dari "Part 1".
+7. **📦 Auto-Metadata Generation:** Menghasilkan file `metadata.json` yang berisi Judul Catchy, Deskripsi/Caption, dan Hashtag yang siap di-*copy-paste* saat *upload*.
+8. **🅰️ Auto-Download Font:** Tidak punya font *bold*? Sistem akan otomatis mengunduh font **Montserrat-Black** jika file font tidak ditemukan di komputermu.
+9. **📐 Tiga Format Output:**
    - `portrait` (9:16 — 1080x1920): Format default untuk TikTok story/carousel vertikal.
    - `square` (1:1 — 1080x1080): Format optimal untuk TikTok photo post/feed agar gambar tidak tenggelam dan langsung terlihat penuh.
    - `portrait3_4` (3:4 — 1080x1440): Format portrait yang lebih membulat di TikTok, pas untuk konten edukasi feed.
-9. **🔠 Pemilihan Font Otomatis oleh AI:** Model kini akan secara dinamis memilih font untuk judul dan konten yang paling cocok dengan *vibe/tema* pembahasan (berdasarkan daftar font yang terpasang di sistem).
+10. **🔠 Pemilihan Font Otomatis oleh AI (Semua Style):** Model Gemini akan secara dinamis memilih `title_font_family` dan `content_font_family` yang paling cocok dengan *vibe/tema* topik untuk **semua** gaya teks (outline, box, box-title-content, dan plain).
+11. **📋 Sistem Antrian Topik (Topic Queue):** Kelola daftar topik konten per platform (TikTok, Lemon8, Quotes) menggunakan file JSON. Topik diproses berurutan dan bisa ditandai selesai/skip.
 
 ---
 
@@ -98,7 +101,7 @@ python main.py -t "Ide Usaha Modal Kecil part 2" -o "usaha_p2"
 | :--- | :--- | :--- | :--- |
 | `-t` | `--topic` | **(Wajib)** Topik pembahasan untuk di-generate AI | *None* |
 | `-s` | `--slides` | Jumlah slide konten (tidak termasuk slide judul) | `5` |
-| `--style` | `--style` | Gaya visual teks (`outline`, `box`, atau `box-title-content`) | `outline` |
+| `--style` | `--style` | Gaya visual teks (`outline`, `box`, `box-title-content`, atau `plain`) | `outline` |
 | `--format` | `--format` | Format output (`portrait` = 9:16, `square` = 1:1, `portrait3_4` = 3:4) | `portrait` |
 | `--title-family`| `--title-family`| Family font judul (contoh: `LeagueSpartan` atau `Poppins`) | *dari config* |
 | `--title-weight`| `--title-weight`| Ketebalan font judul (angka `100` - `900`) | *dari config* |
@@ -145,6 +148,9 @@ tiktok-image-gen/
 ├── context.txt                      # Auto-generated: memori konteks antar Part
 ├── fonts/                           # Direktori untuk menyimpan file font (.ttf)
 ├── output/                          # Folder hasil gambar & metadata
+├── topik_tiktok.json                # Antrian topik platform TikTok
+├── topik_lemon8.json                # Antrian topik platform Lemon8
+├── topik_quotes.json                # Antrian topik platform Quotes
 ├── pyproject.toml                   # Konfigurasi project Python
 ├── requirements.txt                 # Daftar dependensi
 ├── web_app.py                       # Interface Web (Streamlit)
@@ -160,7 +166,7 @@ tiktok-image-gen/
 | `utils.py` | Fungsi utilitas murni: auto-download font Montserrat-Black, baca/tulis file `context.txt` untuk fitur *memory*, dan sanitasi teks (hapus emoji/non-BMP). |
 | `content.py` | Class `ContentGenerator` — menangani komunikasi dengan Google Gemini AI, termasuk *prompt engineering*, *retry logic* dengan *exponential backoff*, dan parsing JSON respons. |
 | `image_source.py` | Class `PexelsImageSource` — mencari & mengunduh gambar *portrait* dari Pexels API, dilengkapi logika *anti-duplikat* agar gambar tidak berulang. |
-| `renderer.py` | Class `SlideRenderer` — memproses gambar (*resize/crop* ke 9:16), merender teks dengan berbagai gaya (`outline`, `box`, `box-title-content`), termasuk *auto-shrink* dan *text wrapping*. |
+| `renderer.py` | Class `SlideRenderer` — memproses gambar (*resize/crop* ke 9:16), merender teks dengan berbagai gaya (`outline`, `box`, `box-title-content`, `plain`), termasuk *auto-shrink*, *text wrapping*, dan kontrol *opacity* box. |
 | `generator.py` | Class `TikTokCarouselGenerator` — *Orchestrator* yang menyatukan semua modul menjadi satu *pipeline*: generate konten → cari gambar → render slide → simpan file. |
 
 ---
@@ -207,6 +213,7 @@ Berikut adalah daftar lengkap variabel yang bisa kamu kustomisasi:
 | `BOX_PADDING_X` | Jarak spasi horizontal antara teks dengan tepi dalam kotak. | `55` |
 | `BOX_PADDING_Y` | Jarak spasi vertikal antara teks dengan tepi dalam kotak. | `35` |
 | `BOX_RADIUS` | Tingkat kelengkungan sudut kotak (*rounded rectangle*). | `28` |
+| `BOX_OPACITY` | Tingkat transparansi kotak (0 = transparan penuh, 255 = solid). Bisa di-*override* via Web App. | `235` |
 | `BOX_FILL` | Warna latar kotak dalam format `(R, G, B, Opacity)`. Default adalah putih semi-transparan. | `(255, 255, 255, 235)` |
 | `BOX_TEXT_FILL` | Warna teks di dalam kotak. Default adalah hitam. | `(0, 0, 0)` |
 
@@ -216,6 +223,13 @@ Berikut adalah daftar lengkap variabel yang bisa kamu kustomisasi:
 | `OUTLINE_TEXT_FILL` | Warna utama teks. | `"white"` |
 | `OUTLINE_STROKE_FILL`| Warna garis tepi (*stroke/outline*). | `"black"` |
 | `OUTLINE_STROKE_RATIO`| Rasio ketebalan garis tepi terhadap ukuran font (misal: `0.08` x font `85`). | `0.08` |
+
+### ✨ Gaya Visual: Plain (Teks Putih Polos)
+| Variabel | Deskripsi | Default |
+| :--- | :--- | :--- |
+| `PLAIN_TEXT_FILL` | Warna teks utama. | `"white"` |
+| `PLAIN_SHADOW_FILL` | Warna bayangan di belakang teks (semi-transparan). | `(0, 0, 0, 180)` |
+| `PLAIN_SHADOW_OFFSET` | Jarak bayangan dari teks (pixel). | `3` |
 
 ### 💾 Pengaturan Output
 | Variabel | Deskripsi | Default |
@@ -270,6 +284,11 @@ Berikut adalah contoh gambar yang dihasilkan oleh sistem ini untuk setiap format
 
 ## 📝 Changelog
 
+### v0.6.0 - Plain Style, Box Opacity & AI Font for All
+- Menambahkan gaya teks baru: `plain` (teks putih polos dengan *drop shadow* halus).
+- Menambahkan kontrol **transparansi box** (slider opacity 0–255) untuk style `box` dan `box-title-content`.
+- Memperkuat instruksi AI agar font dipilih secara dinamis oleh Gemini untuk **semua** style (sebelumnya hanya optimal di `box-title-content`).
+
 ### v0.5.0 - Dynamic AI Fonts
 - Menambahkan kapabilitas bagi algoritma Gemini untuk merekomendasikan `title_font_family` dan `content_font_family` yang relevan dengan topik pembahasan.
 - Menambahkan *fallback logic* pencarian file font di `utils.py` jika *exact weight* (misalnya `Bold` atau `SemiBold`) tidak tersedia di folder komputer lokal.
@@ -298,29 +317,35 @@ Atau gunakan Python dari virtual environment:
 
 ### 📱 Fitur Web App
 
-1. **📝 Editor Context**
+1. **📋 Sistem Antrian Topik (Topic Queue)**
+   - Pilih platform (TikTok, Lemon8, Quotes) — topik berikutnya otomatis tampil
+   - Statistik queue real-time (pending, done, skipped)
+   - Tombol "Tandai Selesai" dan "Skip" untuk navigasi topik
+
+2. **📝 Editor Context**
    - Panel expander untuk melihat dan mengedit file `context.txt`
    - Berguna untuk membuat konten seri (Part 1, Part 2, dst)
    - AI tidak akan mengulang poin dari konten sebelumnya
 
-2. **⚙️ Pengaturan Interaktif**
-   - Input topik konten
+3. **⚙️ Pengaturan Interaktif**
+   - Input topik konten (auto-fill dari antrian)
    - Slider jumlah slide (3-10)
-   - Dropdown gaya teks (outline, box, box-title-content)
+   - Dropdown gaya teks (outline, box, box-title-content, **plain**)
+   - **Slider transparansi box** (muncul otomatis untuk style box/box-title-content)
    - Dropdown format output (portrait, square, portrait3_4)
 
-3. **🖼️ Preview Hasil**
+4. **🖼️ Preview Hasil**
    - Tampilan slide hasil generate dalam grid 3 kolom
    - Download per slide (tanpa kehilangan data lain)
    - Download semua slide sebagai ZIP
    - Download metadata JSON
 
-4. **📤 Output untuk Telegram**
+5. **📤 Output untuk Telegram**
    - Caption siap copy-paste untuk Telegram
    - Tombol download per slide untuk dikirim manual
    - Coba kirim otomatis ke Telegram (fitur experimental)
 
-5. **💾 State Management**
+6. **💾 State Management**
    - Data hasil generate **tidak hilang** saat download
    - Semua slide tetap tampil sampai klik "Generate Ulang"
    - Tombol "Generate Ulang / Clear" di sidebar untuk memulai baru
@@ -333,8 +358,78 @@ Web app didesain dengan:
 - Responsive layout
 - Progress spinner saat generate
 
+---
+
+## 📋 Sistem Antrian Topik (Topic Queue JSON)
+
+Proyek ini menggunakan file JSON sebagai *database* antrian topik konten. Tersedia 3 file template sesuai platform:
+
+| File | Platform | Deskripsi |
+| :--- | :--- | :--- |
+| `topik_tiktok.json` | TikTok | Topik konten edukasi & affiliate marketing |
+| `topik_lemon8.json` | Lemon8 | Topik self-improvement, produktivitas, dan lifestyle |
+| `topik_quotes.json` | Quotes | 1000+ topik quotes motivasi, galau, dan inspirasi |
+
+### 📐 Struktur JSON Topik
+
+Setiap file mengikuti format berikut:
+
+```json
+{
+  "platform": "tiktok",
+  "version": 1,
+  "topics": [
+    {
+      "id": 1,
+      "urutan": 1,
+      "kategori": "Strategi Algoritma & Ide Konten",
+      "judul": "Rahasia Algoritma TikTok Terbaru 2024",
+      "status": "pending"
+    },
+    {
+      "id": 2,
+      "urutan": 2,
+      "kategori": "Teknik Copywriting & Soft Selling",
+      "judul": "Formula Caption yang Mengundang Komentar",
+      "status": "done",
+      "processed_at": "2026-05-03T14:15:02Z",
+      "telegram_sent": true
+    }
+  ]
+}
+```
+
+### 📌 Field pada Setiap Topik
+
+| Field | Tipe | Deskripsi |
+| :--- | :--- | :--- |
+| `id` | `int` | ID unik topik |
+| `urutan` | `int` | Nomor urut untuk diproses |
+| `kategori` | `string` | Kategori/kelompok topik |
+| `judul` | `string` | Judul topik yang akan dijadikan input AI |
+| `status` | `string` | Status: `"pending"`, `"done"`, atau `"skipped"` |
+| `processed_at` | `string` | *(otomatis)* Timestamp saat topik selesai diproses |
+| `telegram_sent` | `bool` | *(otomatis)* Apakah sudah dikirim ke Telegram |
+
+### 🛠️ Cara Menambah Topik Baru
+
+Tambahkan objek baru ke array `topics` di file JSON yang sesuai:
+
+```json
+{
+  "id": 51,
+  "urutan": 51,
+  "kategori": "Kategori Baru",
+  "judul": "Judul Topik Baru yang Ingin Di-generate",
+  "status": "pending"
+}
+```
+
+> ⚠️ Pastikan `id` dan `urutan` tidak duplikat. Status harus `"pending"` agar terbaca oleh Web App.
+
 ### ⚠️ Catatan
 
 - Pastikan file `.env` sudah ada dengan `PEXELS_API_KEY` dan `GOOGLE_API_KEY`
 - Untuk akses dari luar server, buka port 8501 di firewall
 - Fitur kirim otomatis ke Telegram masih dalam tahap pengembangan
+- Path file topik JSON di `web_app.py` bisa disesuaikan via variabel `PROJECT_DIR`
