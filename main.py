@@ -13,8 +13,9 @@ def main():
     parser = argparse.ArgumentParser(description="TikTok Carousel Image Generator")
     parser.add_argument("-t", "--topic", type=str, required=True, help="Topik pembahasan untuk di-generate AI")
     parser.add_argument("-s", "--slides", type=int, default=5, help="Jumlah slide konten (default: 5)")
-    parser.add_argument("--style", type=str, choices=['outline', 'box', 'box-title-content'], default="outline", help="Gaya teks (outline/box/box-title-content)")
+    parser.add_argument("--style", type=str, choices=['outline', 'box', 'box-title-content', 'plain'], default="outline", help="Gaya teks (outline/box/box-title-content/plain)")
     parser.add_argument("--format", type=str, choices=['portrait', 'square', 'portrait3_4'], default="portrait", help="Format output gambar (portrait=9:16, square=1:1, portrait3_4=3:4)")
+    parser.add_argument("--box-opacity", type=int, default=None, help="Transparansi box (0=transparan, 255=solid). Hanya untuk style box/box-title-content")
     parser.add_argument("--title-family", type=str, default=None, help="Family font judul (contoh: LeagueSpartan)")
     parser.add_argument("--title-weight", type=int, default=None, help="Weight font judul (100-900, default di config)")
     parser.add_argument("--content-family", type=str, default=None, help="Family font konten (contoh: Poppins)")
@@ -43,7 +44,8 @@ def main():
     app.run(
         topic=args.topic, 
         num_slides=args.slides, 
-        style=args.style
+        style=args.style,
+        box_opacity=args.box_opacity,
     )
 
 if __name__ == "__main__":
