@@ -325,11 +325,19 @@ class ContentGenerator:
             {density_rules}
             {format_wajib}
 
-            ATURAN PEMILIHAN FONT:
-            - Kamu wajib memilih "title_font_family" dan "content_font_family" dari daftar berikut:
+            ATURAN PEMILIHAN FONT (WAJIB UNTUK SEMUA STYLE — outline, box, box-title-content, plain):
+            - WAJIB sertakan field "title_font_family" dan "content_font_family" di dalam JSON output.
+            - Jangan pernah skip field ini. Kedua field ini WAJIB ADA di root-level JSON, bukan di dalam slides.
+            - Pilih dari daftar berikut SAJA (case-sensitive):
               {config.AVAILABLE_FONTS}
-            - Pilih font yang paling sesuai dengan TEMA ("cute" pakai font tebal/bulat/handwritten, "elegan" pakai serif, dsb).
-            - Untuk judul biasanya tebal, tegas, lucu, atau menarik. Untuk konten sebaiknya font Sans-Serif yang nyaman dibaca (Poppins, Outfit, Montserrat, dll).
+            - Pilih font yang paling COCOK dengan TEMA dan MOOD topik:
+              * Topik lucu/santai → font tebal/bulat/handwritten (Bangers, Chewy, Fredoka, GochiHand, LilitaOne)
+              * Topik elegan/serius → font serif (Cinzel, CormorantGaramond, Lora, PlayfairDisplay, Prata)
+              * Topik modern/clean → font sans-serif (Outfit, Montserrat, Poppins, Quicksand, Urbanist)
+              * Topik kreatif/ekspresif → font display/script (Pacifico, DancingScript, Caveat, Righteous, AmaticSC)
+            - title_font_family: font untuk JUDUL — pilih yang tebal, tegas, eye-catching.
+            - content_font_family: font untuk ISI — pilih yang nyaman dibaca (Sans-Serif direkomendasikan).
+            - JANGAN selalu pakai font yang sama. Sesuaikan dengan karakter topik.
 
             ATURAN OUTPUT UMUM:
             - keyword_gambar harus Bahasa Inggris

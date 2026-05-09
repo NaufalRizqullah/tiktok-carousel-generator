@@ -176,7 +176,7 @@ class SlideRenderer:
 
         return best_layout
 
-    def process_slide(self, img: Image.Image, text: str, font_size: int, style: str, title_text: str = "", is_title: bool = False) -> Image.Image:
+    def process_slide(self, img: Image.Image, text: str, font_size: int, style: str, title_text: str = "", is_title: bool = False, box_opacity: int = None) -> Image.Image:
         """Proses gambar slide: resize/crop sesuai preset, lalu render teks sesuai style."""
         target_size = (config.CANVAS_WIDTH, config.CANVAS_HEIGHT)
         img_ratio = img.width / img.height
@@ -195,6 +195,10 @@ class SlideRenderer:
 
         img = img.convert("RGBA")
         draw = ImageDraw.Draw(img)
+
+        # Tentukan opacity box (bisa di-override dari parameter)
+        effective_opacity = box_opacity if box_opacity is not None else config.BOX_OPACITY
+        box_fill = (255, 255, 255, effective_opacity)
 
         if style == "box-title-content" and title_text:
             title_text = title_text.upper()
@@ -220,7 +224,7 @@ class SlideRenderer:
             draw.rounded_rectangle(
                 [title_box_left, title_box_top, title_box_right, title_box_bottom],
                 radius=config.BOX_RADIUS,
-                fill=config.BOX_FILL
+                fill=box_fill
             )
             draw.multiline_text(
                 (title_x - layout["title_offset_x"], title_y - layout["title_offset_y"]),
@@ -243,7 +247,7 @@ class SlideRenderer:
                 box_right = px + max(paragraph["width"], 10) + config.BOX_PADDING_X
                 box_bottom = content_y + paragraph["height"] + (config.BOX_PADDING_Y * 2)
 
-                draw.rounded_rectangle([box_left, box_top, box_right, box_bottom], radius=config.BOX_RADIUS, fill=config.BOX_FILL)
+                draw.rounded_rectangle([box_left, box_top, box_right, box_bottom], radius=config.BOX_RADIUS, fill=box_fill)
                 draw.multiline_text(
                     (px - paragraph["offset_x"], py - paragraph["offset_y"]),
                     paragraph["text"],
@@ -291,7 +295,7 @@ class SlideRenderer:
             draw.rounded_rectangle(
                 [box_left, box_top, box_right, box_bottom],
                 radius=config.BOX_RADIUS,
-                fill=config.BOX_FILL
+                fill=box_fill
             )
 
             draw.multiline_text(
@@ -299,6 +303,26 @@ class SlideRenderer:
                 wrapped_text,
                 font=font,
                 fill=config.BOX_TEXT_FILL,
+                align="center",
+                spacing=config.TEXT_LINE_SPACING
+            )
+
+        elif style == "plain":
+            # Style plain: teks putih dengan drop shadow halus untuk keterbacaan
+            shadow_offset = config.PLAIN_SHADOW_OFFSET
+            draw.multiline_text(
+                (x_pos - text_offset_x + shadow_offset, y_pos - text_offset_y + shadow_offset),
+                wrapped_text,
+                font=font,
+                fill=config.PLAIN_SHADOW_FILL,
+                align="center",
+                spacing=config.TEXT_LINE_SPACING
+            )
+            draw.multiline_text(
+                (x_pos - text_offset_x, y_pos - text_offset_y),
+                wrapped_text,
+                font=font,
+                fill=config.PLAIN_TEXT_FILL,
                 align="center",
                 spacing=config.TEXT_LINE_SPACING
             )

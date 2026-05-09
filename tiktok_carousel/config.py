@@ -150,13 +150,19 @@ def apply_output_preset(preset_name: str = "portrait") -> None:
 apply_output_preset(OUTPUT_FORMAT)
 
 # Warna style box
-BOX_FILL = (255, 255, 255, 235)   # putih
+BOX_OPACITY = 235                 # transparansi box (0=transparan penuh, 255=solid)
+BOX_FILL = (255, 255, 255, BOX_OPACITY)   # putih + opacity
 BOX_TEXT_FILL = (0, 0, 0)         # hitam
 
 # Warna style outline
 OUTLINE_TEXT_FILL = "white"
 OUTLINE_STROKE_FILL = "black"
 OUTLINE_STROKE_RATIO = 0.08
+
+# Warna style plain (teks putih tanpa outline/box)
+PLAIN_TEXT_FILL = "white"
+PLAIN_SHADOW_FILL = (0, 0, 0, 180)  # bayangan hitam semi-transparan
+PLAIN_SHADOW_OFFSET = 3              # offset bayangan pixel
 
 # Kualitas JPG output
 JPG_QUALITY = 95

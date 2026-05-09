@@ -34,7 +34,7 @@ class TikTokCarouselGenerator:
         self.image_source = PexelsImageSource(api_key=pexels_key)
         self.renderer = SlideRenderer(title_font_path=self.title_font_path, content_font_path=self.content_font_path)
 
-    def run(self, topic: str, num_slides: int, style: str) -> None:
+    def run(self, topic: str, num_slides: int, style: str, box_opacity: int = None) -> None:
         """Jalankan pipeline: generate konten → cari gambar → render slide → simpan."""
         if not os.path.exists(self.output_dir):
             os.makedirs(self.output_dir)
@@ -110,7 +110,7 @@ class TikTokCarouselGenerator:
                 is_title = slide.get("type") == "judul"
 
                 raw_img = self.image_source.get_image(slide.get("keyword_gambar", "background"))
-                final_img = self.renderer.process_slide(raw_img, slide_text, font_size, style, slide_title, is_title)
+                final_img = self.renderer.process_slide(raw_img, slide_text, font_size, style, slide_title, is_title, box_opacity=box_opacity)
 
                 filename = os.path.join(self.output_dir, f"slide_{i:02d}.jpg")
                 final_img.save(filename, quality=config.JPG_QUALITY)

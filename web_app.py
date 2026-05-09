@@ -301,14 +301,26 @@ def main():
 
         style = st.selectbox(
             "🎨 Gaya Teks",
-            ["outline", "box", "box-title-content"],
+            ["outline", "box", "box-title-content", "plain"],
             index=2,
             format_func=lambda x: {
                 "outline": "Outline (Klasik TikTok)",
                 "box": "Box (Kotak Transparan)",
                 "box-title-content": "Box Title Content (Cerita)",
+                "plain": "Plain (Teks Putih Polos)",
             }.get(x, x),
         )
+
+        # Opacity slider — hanya tampil untuk style box
+        box_opacity = None
+        if style in ("box", "box-title-content"):
+            box_opacity = st.slider(
+                "🔲 Transparansi Box",
+                min_value=0,
+                max_value=255,
+                value=235,
+                help="0 = transparan penuh, 255 = solid putih",
+            )
 
         output_format = st.selectbox(
             "📐 Format Output",
@@ -353,7 +365,7 @@ def main():
                 # Clear output folder first
                 clear_output_folder()
 
-                generator.run(topic=topic, num_slides=num_slides, style=style)
+                generator.run(topic=topic, num_slides=num_slides, style=style, box_opacity=box_opacity)
 
                 metadata_path = os.path.join(generator.output_dir, "metadata.json")
                 with open(metadata_path, "r", encoding="utf-8") as f:
